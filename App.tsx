@@ -1,20 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Login from './src/components/login';
+import { StatusBar, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { ThemeProvider } from 'styled-components/native';
+import { useColorScheme } from 'react-native';
+import { reactotron } from './src/config/reactotron'
+import themes from './src/themes';
+
+console.tron = reactotron
 
 export default function App() {
+  const deviceTheme = useColorScheme()
+  const theme = deviceTheme != null && deviceTheme != undefined
+    ? themes[deviceTheme]
+    : themes['light']
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider theme={theme}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#FFC830' }}>
+        <StatusBar animated backgroundColor={'#FFC830'} />
+        <Login />
+      </SafeAreaView>
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
