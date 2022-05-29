@@ -1,9 +1,10 @@
-import Login from './src/components/login';
+import Login from './src/components/signIn';
 import { StatusBar, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import { useColorScheme } from 'react-native';
 import { reactotron } from './src/config/reactotron'
 import themes from './src/themes';
+import Routes from './src/routes';
 
 console.tron = reactotron
 
@@ -17,7 +18,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#FFC830' }}>
         <StatusBar animated backgroundColor={'#FFC830'} />
-        <Login />
+        <Routes />
       </SafeAreaView>
     </ThemeProvider>
   );

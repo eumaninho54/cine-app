@@ -16,18 +16,25 @@ interface MainLoginProps {
   }
 }
 
+interface ImageLoginProps {
+  show: boolean,
+  type: 'banner' | 'logo'
+}
 
-export const MainLogin = styled.View`
+
+export const MainLogin = styled.KeyboardAvoidingView`
   background-color: ${({theme}: MainLoginProps) => theme.background};
   flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  `;
+`
 
-export const ImageLogin = styled.Image`
-  width: 300px; 
-  height: 300px;
+export const ImageLogin = styled.Image<ImageLoginProps>`
+  width: ${(props: ImageLoginProps) => props.type == 'logo' ? '170px' : '300px'}; 
+  height: ${(props: ImageLoginProps) => props.type == 'logo' ? '100px' : '300px'}; 
+  display: ${(props: ImageLoginProps) => props.show ? 'flex' : 'none'};
+  margin-bottom: ${(props: ImageLoginProps) => props.type == 'logo' ? '20px' : '0px'};
 `
 
 export const InputLogin = styled.TextInput`

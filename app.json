@@ -8,7 +8,6 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/icon3.png",
-
       "resizeMode": "contain",
       "backgroundColor": "#FFC830"
     },
@@ -19,13 +18,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "automatic"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "softwareKeyboardLayoutMode": "pan",
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/favicon.png"
