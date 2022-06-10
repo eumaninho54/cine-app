@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components/native';
 import { useColorScheme } from 'react-native';
 import { reactotron } from './src/config/reactotron'
 import themes from './src/themes';
+import { AuthProvider } from "./src/context/authContext"
 import Routes from './src/routes';
 
 console.tron = reactotron
@@ -16,10 +17,12 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#FFC830' }}>
-        <StatusBar animated backgroundColor={'#FFC830'} />
-        <Routes />
-      </SafeAreaView>
+      <AuthProvider>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFC830' }}>
+          <StatusBar animated backgroundColor={'#FFC830'} />
+          <Routes />
+        </SafeAreaView>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

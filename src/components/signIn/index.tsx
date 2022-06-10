@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MainLogin, InputLogin, ButtonLogin, TextLogin, ImageLogin, DetailsView } from '../../templates/login/styles';
 import banner from '../../../assets/icon2.png'
 import logo from '../../../assets/logo.png'
 import { ScrollView, TouchableOpacity } from 'react-native'
+import authService from '../../services/authService';
 import { useNavigation } from '@react-navigation/native';
+import FlashMessage from 'react-native-flash-message';
+import * as SecureStore from 'expo-secure-store';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string }) => void
@@ -13,8 +16,20 @@ const SignIn: React.FC = () => {
   const [focusInput, setFocusInput] = useState(false)
   const navigation = useNavigation<navigateProp>()
 
+  const onSingIn = async() => {
+    await authService.singIn("test.test@test.com", "testtest")
+    const keychanToken = await SecureStore.getItemAsync("token")
+
+    if(keychanToken){
+      console.tron.log!(keychanToken)
+    }else{
+      console.tron.log!("n foi")
+    }
+  }
+
   return (
     <MainLogin behavior='padding'>
+      <FlashMessage position="top" />
       <ScrollView 
         contentContainerStyle={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
         <ImageLogin show={!focusInput} source={banner} type={'banner'} />
@@ -32,7 +47,7 @@ const SignIn: React.FC = () => {
           onFocus={() => setFocusInput(true)}
         />
 
-        <ButtonLogin onPress={() => navigation.navigate('BrowserNavigation', {})}>
+        <ButtonLogin onPress={onSingIn}>
           <TextLogin color='reverseColor'>SIGN IN</TextLogin>
         </ButtonLogin>
 
