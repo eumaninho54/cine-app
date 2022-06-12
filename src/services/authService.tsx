@@ -1,5 +1,4 @@
 import axios from "axios"
-import { showMessage } from "react-native-flash-message"
 import * as SecureStore from 'expo-secure-store';
 
 class AuthService {
@@ -7,21 +6,16 @@ class AuthService {
 
   constructor() { }
 
-  async verifyToken(token: string): Promise<boolean>{
+  async verifyToken(token: string): Promise<boolean> {
     const req = await axios({
       method: "get",
       url: this.baseURL + "/user",
-      headers: { "x-access-token": token}
-    }).then(() => {
-      console.tron.log!("valido")
-      return true
-    }).catch((err) => {
-      console.tron.log!('err')
-      return false
-    })
+      headers: { "x-access-token": token }
+    }).then(() => true)
+      .catch(() => false)
 
     return req
-    
+
   }
 
   async singIn(email: string, password: string) {
@@ -32,15 +26,26 @@ class AuthService {
         email: email,
         password: password
       }
-    }).then(async(res) => {
+    }).then(async (res) => {
       await SecureStore.setItemAsync("token", res.data["token"])
-    }).catch(() => {
-      showMessage({
-        message: "ERRO PORRA",
-        icon: 'warning',
-        type: "warning"
-      })
+    }).catch(async () => {
+      await SecureStore.deleteItemAsync("token")
     })
+  }
+
+  async singUp(email: string, password: string): Promise<boolean> {
+    const req = await axios({
+      method: "post",
+      url: this.baseURL + "/user/new",
+      data: {
+        email: email,
+        password: password,
+        username: email.split("@")
+      }
+    }).then(() => true)
+      .catch(() => false)
+
+    return req
   }
 }
 

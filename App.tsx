@@ -6,6 +6,7 @@ import { reactotron } from './src/config/reactotron'
 import themes from './src/themes';
 import { AuthProvider } from "./src/context/authContext"
 import Routes from './src/routes';
+import FlashMessage from 'react-native-flash-message';
 
 console.tron = reactotron
 
@@ -20,6 +21,7 @@ export default function App() {
       <AuthProvider>
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFC830' }}>
           <StatusBar animated backgroundColor={'#FFC830'} />
+          <FlashMessage position="top" />
           <Routes />
         </SafeAreaView>
       </AuthProvider>
