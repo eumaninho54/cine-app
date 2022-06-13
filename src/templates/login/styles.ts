@@ -1,29 +1,18 @@
 import React from "react";
 import styled from "styled-components/native";
+import { ImageLoginProps, MainLoginProps } from "../../models/styledModel";
 
-interface TextLoginProps {
-  color: string,
+export interface TextLoginProps {
+  color: string;
   theme: {
-    background: string,
-    color: string,
-    reverseColor: string
-  }
+    background: string;
+    color: string;
+    reverseColor: string;
+  };
 }
-
-interface MainLoginProps {
-  theme: {
-    background: string
-  }
-}
-
-interface ImageLoginProps {
-  show: boolean,
-  type: 'banner' | 'logo'
-}
-
 
 export const MainLogin = styled.KeyboardAvoidingView`
-  background-color: ${({theme}: MainLoginProps) => theme.background};
+  background-color: ${({theme}: MainLoginProps) => theme.backgroundLogin};
   flex: 1;
   flex-direction: column;
   align-items: center;

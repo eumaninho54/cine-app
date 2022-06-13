@@ -2,7 +2,7 @@ import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
 
 class AuthService {
-  private baseURL = "http://192.168.1.100:3333"
+  private baseURL = "http://192.168.1.103:3333"
 
   constructor() { }
 
@@ -40,7 +40,7 @@ class AuthService {
       data: {
         email: email,
         password: password,
-        username: email.split("@")
+        username: email.split("@")[0]
       }
     }).then(() => true)
       .catch(() => false)

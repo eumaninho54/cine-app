@@ -3,16 +3,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SignIn from '../../components/signIn'
 import SignUp from '../../components/signUp'
 import { ThemeContext } from 'styled-components/native'
+import { themeModel } from '../../models/themeModel'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
-interface themeContextProps {
-  background: string,
-  color: string
-}
 
 const LoginNavigation: React.FC = () => {
-  const theme = useContext<themeContextProps>(ThemeContext)
+  const theme = useContext<themeModel>(ThemeContext)
 
   return (
     <Navigator

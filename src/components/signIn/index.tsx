@@ -1,4 +1,4 @@
-import React, { Ref, useContext, useEffect, useRef, useState } from 'react';
+import React, { Ref, useContext, useRef, useState } from 'react';
 import { MainLogin, InputLogin, ButtonLogin, TextLogin, ImageLogin, DetailsView } from '../../templates/login/styles';
 import banner from '../../../assets/icon2.png'
 import logo from '../../../assets/logo.png'
@@ -25,7 +25,7 @@ const SignIn: React.FC = () => {
   const onSingIn = async () => {
     await authService.singIn(inputEmail, inputPassword)
     const keychanToken = await SecureStore.getItemAsync("token")
-
+    
     if (keychanToken) {
       authContext.setAuthState({auth: true, token: keychanToken})
       navigation.navigate('BrowserNavigation', {})

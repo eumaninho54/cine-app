@@ -16,6 +16,7 @@ export default function App() {
     ? themes[deviceTheme]
     : themes['light']
 
+  
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
