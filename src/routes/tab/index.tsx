@@ -1,14 +1,16 @@
 import React, { useContext, useRef } from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { BottomTabHeaderProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Highlights from '../../components/highlights'
 import Movies from '../../components/movies'
 import Features from '../../components/features'
 import Bag from '../../components/bag'
 import { ThemeContext } from 'styled-components'
 import { themeModel } from '../../models/themeModel'
-import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
-import { Icon } from 'react-native-elements'
-import { Animated, Dimensions, View } from 'react-native'
+import { FontAwesome5 } from "@expo/vector-icons"
+import { Animated, Dimensions, View, Image } from 'react-native'
+import IconProfileHeader from '../../templates/iconProfileHeader'
+import logoBlack from "../../../assets/logoBlack.png"
+import IconTicketHeader from '../../templates/iconTicketHeader'
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
@@ -24,9 +26,18 @@ export default function TabNav() {
   return (
     <>
       <Navigator
+        initialRouteName='Highlights'
         screenOptions={{
+          headerLeft: () => (
+            <View style={{marginLeft: 20}}>
+              <Image source={logoBlack} style={{width: 90, height: 50}}/>
+            </View>
+          ),
+          headerTitle: () => (<></>),
+          headerShadowVisible: false,
+          headerLeftLabelVisible: false,
+          headerStyle: { backgroundColor: '#FFC830' },
           tabBarShowLabel: false,
-          headerShown: false,
           tabBarStyle: {
             borderTopColor: themeContext.tabNav,
             backgroundColor: themeContext.tabNav,
@@ -45,7 +56,7 @@ export default function TabNav() {
           }
         }}>
         <Screen
-          name='Highlights'
+          name='High'
           component={Highlights}
           listeners={({ navigation, route }) => ({
             tabPress: e => {
@@ -56,6 +67,12 @@ export default function TabNav() {
             }
           })}
           options={{
+            headerRight: (props) => (
+              <View style={{flexDirection: 'row', paddingRight: 20}}>
+                <IconTicketHeader />
+                <IconProfileHeader />
+              </View>
+            ),
             tabBarIcon: ({ focused }) => (
               <View>
                 <FontAwesome5
@@ -131,19 +148,19 @@ export default function TabNav() {
           }} />
       </Navigator>
 
-      <Animated.View style={{
-        width: getWidth() - 30,
-        height: 2,
-        backgroundColor: '#FFC830',
-        position: 'absolute',
-        bottom: 78,
-        left: 33,
-        borderRadius: 50,
-        transform: [
-          { translateX: tabOffsetValue}
-        ]
-      }}>
-
+      <Animated.View
+        style={{
+          width: getWidth() - 30,
+          height: 2,
+          backgroundColor: '#FFC830',
+          position: 'absolute',
+          bottom: 78,
+          left: 33,
+          borderRadius: 50,
+          transform: [
+            { translateX: tabOffsetValue }
+          ]
+        }}>
       </Animated.View>
     </>
   )

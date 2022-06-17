@@ -15,7 +15,8 @@ const LoginNavigation: React.FC = () => {
     <Navigator
       screenOptions={
         {
-          headerStyle: {backgroundColor: theme['background']},
+          headerShadowVisible: false,
+          headerStyle: {backgroundColor: theme['backgroundLogin']},
           headerTintColor: theme['color'],
           headerBackButtonMenuEnabled: true,
           headerTitleAlign: 'center'

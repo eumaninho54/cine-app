@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const verifyToken = async () => {
       const token = await SecureStore.getItemAsync("token")
-
+      
       if (token != null) {
         const isActived = await authService.verifyToken(token)
 

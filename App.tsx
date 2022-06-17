@@ -20,7 +20,8 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFC830' }}>
+        <SafeAreaView style={{ flex: 0, backgroundColor: '#FFC830' }}/>
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
           <StatusBar animated backgroundColor={'#FFC830'} />
           <FlashMessage position="top" />
           <Routes />
