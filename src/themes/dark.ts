@@ -1,4 +1,5 @@
 export default {
+    primaryColor: "#FFC830",
     backgroundLogin: "#161616",
     background: '#161616',
     tabNav: "#303030",

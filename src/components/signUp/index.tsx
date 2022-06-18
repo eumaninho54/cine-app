@@ -9,6 +9,8 @@ import { authContextProps } from '../../models/authModel';
 import authService from '../../services/authService';
 import * as SecureStore from 'expo-secure-store';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { themeModel } from '../../models/themeModel';
+import { ThemeContext } from 'styled-components';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string }) => void
@@ -16,6 +18,7 @@ interface navigateProp {
 
 
 const SignUp: React.FC = () => {
+  const themeContext = useContext<themeModel>(ThemeContext)
   const authContext = useContext<authContextProps>(AuthContext)
   const [inputEmail, setInputEmail] = useState("")
   const [inputPassword, setInputPassword] = useState("")
@@ -31,7 +34,7 @@ const SignUp: React.FC = () => {
       showMessage({
         message: "Subscribe failed",
         description: "Invalid credentials",
-        backgroundColor: "#FFC830",
+        backgroundColor: themeContext.primaryColor,
         icon: 'warning',
         type: "warning"
       })
@@ -42,7 +45,7 @@ const SignUp: React.FC = () => {
       showMessage({
         message: "Subscribe failed",
         description: "Password must be 8 characters",
-        backgroundColor: "#FFC830",
+        backgroundColor: themeContext.primaryColor,
         icon: 'warning',
         type: "warning"
       })
@@ -54,7 +57,7 @@ const SignUp: React.FC = () => {
       showMessage({
         message: "Subscribe successful",
         description: "Sign in to your account",
-        backgroundColor: "#FFC830",
+        backgroundColor: themeContext.primaryColor,
         icon: 'success',
         type: "success"
       })
@@ -63,7 +66,7 @@ const SignUp: React.FC = () => {
       showMessage({
         message: "Subscribe failed",
         description: "Email already used",
-        backgroundColor: "#FFC830",
+        backgroundColor: themeContext.primaryColor,
         icon: 'warning',
         type: "warning"
       })

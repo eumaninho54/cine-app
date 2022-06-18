@@ -9,12 +9,15 @@ import FlashMessage, { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../../context/authContext';
 import { authContextProps } from '../../models/authModel';
+import { themeModel } from '../../models/themeModel';
+import { ThemeContext } from 'styled-components';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string }) => void
 }
 
 const SignIn: React.FC = () => {
+  const themeContext = useContext<themeModel>(ThemeContext)
   const [focusInput, setFocusInput] = useState(false)
   const [inputEmail, setInputEmail] = useState("")
   const [inputPassword, setInputPassword] = useState("")
@@ -35,7 +38,7 @@ const SignIn: React.FC = () => {
       showMessage({
         message: "Login failed",
         description: "Invalid credentials",
-        backgroundColor: "#FFC830",
+        backgroundColor: themeContext.primaryColor,
         icon: 'warning',
         type: "warning"
       })
@@ -74,7 +77,7 @@ const SignIn: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('LoginNavigation', { screen: 'SignUp' })}>
-            <TextLogin color='#FFC830'>Signup</TextLogin>
+            <TextLogin color={themeContext.primaryColor}>Signup</TextLogin>
           </TouchableOpacity>
         </DetailsView>
       </ScrollView>

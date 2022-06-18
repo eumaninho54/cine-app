@@ -11,12 +11,20 @@ import { Animated, Dimensions, View, Image } from 'react-native'
 import IconProfileHeader from '../../templates/iconProfileHeader'
 import logoBlack from "../../../assets/logoBlack.png"
 import IconTicketHeader from '../../templates/iconTicketHeader'
+import IconSearchHeader from '../../templates/iconSearchHeader'
+import { useNavigation } from '@react-navigation/native'
+
+interface navigateProp {
+  navigate: (route: string, { screen }: { screen?: string }) => void
+}
+
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
 export default function TabNav() {
   const themeContext = useContext<themeModel>(ThemeContext)
   const tabOffsetValue = useRef(new Animated.Value(0)).current
+  const navigation = useNavigation<navigateProp>()
 
   const getWidth = () => {
     let width = Dimensions.get("window").width
@@ -36,7 +44,7 @@ export default function TabNav() {
           headerTitle: () => (<></>),
           headerShadowVisible: false,
           headerLeftLabelVisible: false,
-          headerStyle: { backgroundColor: '#FFC830' },
+          headerStyle: { backgroundColor: themeContext.primaryColor },
           tabBarShowLabel: false,
           tabBarStyle: {
             borderTopColor: themeContext.tabNav,
@@ -70,7 +78,7 @@ export default function TabNav() {
             headerRight: (props) => (
               <View style={{flexDirection: 'row', paddingRight: 20}}>
                 <IconTicketHeader />
-                <IconProfileHeader />
+                <IconProfileHeader navigation={navigation}/>
               </View>
             ),
             tabBarIcon: ({ focused }) => (
@@ -78,7 +86,7 @@ export default function TabNav() {
                 <FontAwesome5
                   name="star"
                   size={20}
-                  color={focused ? '#FFC830' : themeContext.iconTabNav} />
+                  color={focused ? themeContext.primaryColor : themeContext.iconTabNav} />
               </View>
             )
           }} />
@@ -94,12 +102,18 @@ export default function TabNav() {
             }
           })}
           options={{
+            headerRight: () => (
+              <View style={{flexDirection: 'row', paddingRight: 20}}>
+                <IconTicketHeader />
+                <IconProfileHeader navigation={navigation}/>
+              </View>
+            ),
             tabBarIcon: ({ focused }) => (
               <View>
                 <FontAwesome5
                   name="shopping-bag"
                   size={20}
-                  color={focused ? '#FFC830' : themeContext.iconTabNav} />
+                  color={focused ? themeContext.primaryColor : themeContext.iconTabNav} />
               </View>
             )
           }} />
@@ -115,12 +129,18 @@ export default function TabNav() {
             }
           })}
           options={{
+            headerRight: () => (
+              <View style={{flexDirection: 'row', paddingRight: 20}}>
+                <IconSearchHeader />
+                <IconProfileHeader navigation={navigation}/>
+              </View>
+            ),
             tabBarIcon: ({ focused }) => (
               <View>
                 <FontAwesome5
                   name="film"
                   size={20}
-                  color={focused ? '#FFC830' : themeContext.iconTabNav} />
+                  color={focused ? themeContext.primaryColor : themeContext.iconTabNav} />
               </View>
             )
           }} />
@@ -136,12 +156,18 @@ export default function TabNav() {
             }
           })}
           options={{
+            headerRight: () => (
+              <View style={{flexDirection: 'row', paddingRight: 20}}>
+                <IconSearchHeader />
+                <IconProfileHeader navigation={navigation}/>
+              </View>
+            ),
             tabBarIcon: ({ focused }) => (
               <View>
                 <FontAwesome5
                   name="calendar"
                   size={20}
-                  color={focused ? '#FFC830' : themeContext.iconTabNav}
+                  color={focused ? themeContext.primaryColor : themeContext.iconTabNav}
                 />
               </View>
             )
@@ -152,7 +178,7 @@ export default function TabNav() {
         style={{
           width: getWidth() - 30,
           height: 2,
-          backgroundColor: '#FFC830',
+          backgroundColor: themeContext.primaryColor,
           position: 'absolute',
           bottom: 78,
           left: 33,

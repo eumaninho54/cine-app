@@ -1,5 +1,6 @@
 export interface MainLoginProps {
   theme: {
+    primaryColor: string
     backgroundLogin: string
     background: string
     tabNav: string

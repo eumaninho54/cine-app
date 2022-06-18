@@ -16,13 +16,12 @@ export default function App() {
     ? themes[deviceTheme]
     : themes['light']
 
-  
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <SafeAreaView style={{ flex: 0, backgroundColor: '#FFC830' }}/>
+        <SafeAreaView style={{ flex: 0, backgroundColor: theme.primaryColor }}/>
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
-          <StatusBar animated backgroundColor={'#FFC830'} />
+          <StatusBar barStyle={'dark-content'}  animated backgroundColor={theme.primaryColor} />
           <FlashMessage position="top" />
           <Routes />
         </SafeAreaView>

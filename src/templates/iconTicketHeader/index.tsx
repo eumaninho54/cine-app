@@ -11,7 +11,7 @@ const IconTicketHeader: React.FC = () => {
   const [valueBadge, setValueBadge] = useState(1)
 
   return (
-    <TouchableOpacity style={{ marginRight: 6, padding: 10 }}>
+    <TouchableOpacity style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
       <FontAwesome
         name="ticket"
         size={28}
@@ -25,7 +25,7 @@ const IconTicketHeader: React.FC = () => {
           backgroundColor: "#303030",
           borderColor: "#303030"
         }}
-        containerStyle={{ position: "absolute", top: 6, left: 9 }} />
+        containerStyle={{ position: "absolute", top: 3, left: 4 }} />
     </TouchableOpacity>
   )
 }

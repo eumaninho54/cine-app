@@ -36,7 +36,7 @@ export const InputLogin = styled.TextInput`
 `
 
 export const ButtonLogin = styled.TouchableOpacity`
-  background-color: #FFC830;
+  background-color: ${({theme}: MainLoginProps) => theme.primaryColor};
   margin-top: 10px;
   width: 300px;
   height: 40px;
