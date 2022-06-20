@@ -45,7 +45,6 @@ export default function Routes() {
             initialRouteName='LoginNavigation'
             screenOptions={{ headerShown: false }}>
             <Screen name='LoginNavigation' component={LoginNavigation} />
-            <Screen name='BrowserNavigation' component={TabNav} />
           </Navigator>
         </NavigationContainer>
       )

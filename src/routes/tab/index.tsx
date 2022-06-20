@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react'
 import { BottomTabHeaderProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Highlights from '../../components/highlights'
+import Trending from '../../components/trending'
 import Movies from '../../components/movies'
 import Features from '../../components/features'
 import Bag from '../../components/bag'
@@ -34,7 +34,7 @@ export default function TabNav() {
   return (
     <>
       <Navigator
-        initialRouteName='Highlights'
+        initialRouteName='Trending'
         screenOptions={{
           headerLeft: () => (
             <View style={{marginLeft: 20}}>
@@ -64,8 +64,8 @@ export default function TabNav() {
           }
         }}>
         <Screen
-          name='High'
-          component={Highlights}
+          name='Trending'
+          component={Trending}
           listeners={({ navigation, route }) => ({
             tabPress: e => {
               Animated.spring(tabOffsetValue, {
