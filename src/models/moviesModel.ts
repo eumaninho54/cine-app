@@ -6,5 +6,6 @@ export interface dataMoviesModel {
   poster_path: string;
   title: string;
   popularity: number;
+  genre_ids: number[]
 }
 

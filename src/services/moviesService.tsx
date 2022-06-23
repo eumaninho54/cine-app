@@ -11,7 +11,7 @@ class MoviesService {
   async getTrending() {
     const req = await axios({
       method: "get",
-      url: this.baseURL + "/trending/all/day?api_key=" + KEY_THEMOVIEDB
+      url: this.baseURL + "/trending/movie/day?api_key=" + KEY_THEMOVIEDB
     })
 
     return req.data["results"]

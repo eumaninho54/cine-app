@@ -2,7 +2,7 @@ import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
 
 class AuthService {
-  private baseURL = "http://192.168.1.103:3333"
+  private baseURL = "http://192.168.1.104:3333"
 
   constructor() { }
 
