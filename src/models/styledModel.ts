@@ -2,10 +2,11 @@ export interface MainLoginProps {
   theme: {
     primaryColor: string
     backgroundLogin: string
+    textColorLogin: string
     background: string
+    textColor: string
     tabNav: string
     iconTabNav: string
-    textColor: string
     reverseColor: string
   };
 }

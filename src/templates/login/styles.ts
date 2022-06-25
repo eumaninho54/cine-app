@@ -5,8 +5,8 @@ import { ImageLoginProps, MainLoginProps } from "../../models/styledModel";
 interface TextLoginProps {
   color: string;
   theme: {
-    background: string;
-    textColor: string;
+    backgroundLogin: string;
+    textColorLogin: string;
     reverseColor: string;
   };
 }
@@ -46,7 +46,7 @@ export const ButtonLogin = styled.TouchableOpacity`
 `
 
 export const TextLogin = styled.Text<TextLoginProps>`
-  color: ${(props: TextLoginProps) => props.color == 'color' ? props.theme.textColor : props.color == 'reverseColor' ? props.theme.reverseColor : props.color};
+  color: ${(props: TextLoginProps) => props.color == 'color' ? props.theme.textColorLogin : props.color == 'reverseColor' ? props.theme.reverseColor : props.color};
   font-weight: bold;
 `
 

@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, Image, ImageBackground, Animated } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
-import { BannerTrendingView, InfoTrendingView, MainTrending } from './styles';
+import { BannerTrendingView, InfoTrendingText, InfoTrendingView, MainTrending, TrendingRatingImage, TrendingRatingView } from './styles';
 import moviesService from '../../services/moviesService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { LinearGradient } from 'expo-linear-gradient';
 import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
+import popcornRating from '../../../assets/popcorn.png'
 
 
 const Trending: React.FC = () => {
@@ -27,6 +28,7 @@ const Trending: React.FC = () => {
         console.tron.log!("a")
         return
       }
+      console.tron.log!(moviesTrending)
       setCounterImages((previus) => previus + moviesTrending.length)
 
       setDataTrendings(moviesTrending)
@@ -39,10 +41,7 @@ const Trending: React.FC = () => {
   const isImagesRequested = () => {
     imagesRequested.current += 1
 
-    console.tron.log!(imagesRequested.current)
-    console.tron.log!(counterImages)
-
-    if(imagesRequested.current == 1){
+    if (imagesRequested.current == 1) {
       Animated.timing(fadeLoading, {
         toValue: 0,
         duration: 1000,
@@ -51,16 +50,17 @@ const Trending: React.FC = () => {
     }
   }
 
+
   return (
     <MainTrending>
-      <LoadingScreen opacity={fadeLoading}/>
+      <LoadingScreen opacity={fadeLoading} />
 
       {isDataFetched &&
         <BannerTrendingView>
           <ImageBackground
             onLoad={(e) => isImagesRequested()}
             onError={(e) => { console.tron.log!(e) }}
-            style={{ width: '100%', height: 170 }}
+            style={{ width: '100%', height: 220 }}
             source={{ uri: imageUrl + dataTrendings[0].backdrop_path }}>
             <LinearGradient
               colors={['#00000000', themeContext.background]}
@@ -68,13 +68,33 @@ const Trending: React.FC = () => {
             </LinearGradient>
 
             <InfoTrendingView>
-              
+              <InfoTrendingText style={{fontWeight: "500"}}>
+                {dataTrendings[0].title}
+              </InfoTrendingText>
+
+              <InfoTrendingText style={{fontSize: 14}}>
+                {dataTrendings[0].genre_ids[0] &&
+                  genreMovie[dataTrendings[0].genre_ids[0] as keyof genreMovieProps]}
+                {dataTrendings[0].genre_ids[1] &&
+                  " - " + genreMovie[dataTrendings[0].genre_ids[1] as keyof genreMovieProps]}
+                {dataTrendings[0].genre_ids[2] &&
+                  " - " + genreMovie[dataTrendings[0].genre_ids[2] as keyof genreMovieProps]}
+              </InfoTrendingText>
+
+              <TrendingRatingView>
+                <TrendingRatingImage source={popcornRating}/>
+
+                <InfoTrendingText style={{fontSize: 14}}>
+                  {dataTrendings[0].vote_average.toFixed(1)}
+                </InfoTrendingText>
+              </TrendingRatingView>
+
             </InfoTrendingView>
           </ImageBackground>
         </BannerTrendingView>
-}
+      }
     </MainTrending>
-    
+
   )
 }
 
