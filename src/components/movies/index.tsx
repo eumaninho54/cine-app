@@ -10,7 +10,7 @@ const Movies: React.FC = () => {
 
   return (
     <MainMovies>
-      <Text style={{ fontSize: 20, color: themeContext.color }}>Movies</Text>
+      <Text style={{ fontSize: 20, color: themeContext.textColor }}>Movies</Text>
     </MainMovies>
   )
 }

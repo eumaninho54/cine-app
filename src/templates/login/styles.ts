@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components/native";
 import { ImageLoginProps, MainLoginProps } from "../../models/styledModel";
 
-export interface TextLoginProps {
+interface TextLoginProps {
   color: string;
   theme: {
     background: string;
-    color: string;
+    textColor: string;
     reverseColor: string;
   };
 }
@@ -46,7 +46,7 @@ export const ButtonLogin = styled.TouchableOpacity`
 `
 
 export const TextLogin = styled.Text<TextLoginProps>`
-  color: ${(props: TextLoginProps) => props.color == 'color' ? props.theme.color : props.color == 'reverseColor' ? props.theme.reverseColor : props.color};
+  color: ${(props: TextLoginProps) => props.color == 'color' ? props.theme.textColor : props.color == 'reverseColor' ? props.theme.reverseColor : props.color};
   font-weight: bold;
 `
 

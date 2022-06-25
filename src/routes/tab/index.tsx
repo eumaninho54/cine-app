@@ -177,10 +177,10 @@ export default function TabNav() {
       <Animated.View
         style={{
           width: getWidth() - 30,
-          height: 2,
+          height: 3,
           backgroundColor: themeContext.primaryColor,
           position: 'absolute',
-          bottom: 78,
+          bottom: 77,
           left: 33,
           borderRadius: 50,
           transform: [

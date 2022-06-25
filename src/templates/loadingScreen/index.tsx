@@ -1,13 +1,24 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import { ActivityIndicator } from '@react-native-material/core';
+import React, { useContext } from 'react';
+import { View, Text, Animated } from 'react-native';
+import { ThemeContext } from 'styled-components';
+import { themeModel } from '../../models/themeModel';
+import { LoadingMain } from './styles';
 
-// import { Container } from './styles';
+interface loadingScreenProps {
+  opacity: Animated.Value
+}
 
-const LoadingScreen: React.FC = () => {
+const LoadingScreen: React.FC<loadingScreenProps> = ({ opacity }) => {
+  const themeContext = useContext<themeModel>(ThemeContext)
+
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Carregando!</Text>
-    </View>
+    <LoadingMain style={{ opacity: opacity }}>
+      <ActivityIndicator
+        size="large"
+        color={themeContext.primaryColor}
+        style={{ flex: 1 }} />
+    </LoadingMain>
   )
 }
 

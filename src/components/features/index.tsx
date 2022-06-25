@@ -10,7 +10,7 @@ const Features: React.FC = () => {
 
   return (
     <MainFeatures>
-      <Text style={{ fontSize: 20, color: themeContext.color }}>Features</Text>
+      <Text style={{ fontSize: 20, color: themeContext.textColor }}>Features</Text>
     </MainFeatures>
   )
 }

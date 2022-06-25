@@ -8,13 +8,16 @@ class MoviesService {
 
   constructor() { }
 
-  async getTrending() {
-    const req = await axios({
+  async getTrending(): Promise<dataMoviesModel[] | null> {
+    let req: dataMoviesModel[] | null = null
+
+    await axios.request({
       method: "get",
       url: this.baseURL + "/trending/movie/day?api_key=" + KEY_THEMOVIEDB
-    })
+    }).then((res) => { req = res.data["results"] })
+      .catch((res) => { req = null })
 
-    return req.data["results"]
+    return req
   }
 }
 

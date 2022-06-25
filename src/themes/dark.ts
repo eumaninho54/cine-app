@@ -1,9 +1,9 @@
 export default {
     primaryColor: "#FFC830",
     backgroundLogin: "#161616",
-    background: '#161616',
-    tabNav: "#303030",
+    background: '#303030', 
+    tabNav: "#161616",
     iconTabNav: "#d0d0d0",
-    color: '#fff',
+    textColor: '#fff',
     reverseColor: '#000'
 }

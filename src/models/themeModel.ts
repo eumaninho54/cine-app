@@ -4,6 +4,6 @@ export interface themeModel {
   background: string
   tabNav: string
   iconTabNav: string
-  color: string
+  textColor: string
   reverseColor: string
 }

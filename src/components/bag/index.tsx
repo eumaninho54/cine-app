@@ -9,7 +9,7 @@ const Bag: React.FC = () => {
 
   return (
     <MainBag>
-      <Text style={{ fontSize: 20, color: themeContext.color }}>Bag</Text>
+      <Text style={{ fontSize: 20, color: themeContext.textColor }}>Bag</Text>
     </MainBag>
   )
 }

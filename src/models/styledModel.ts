@@ -5,7 +5,7 @@ export interface MainLoginProps {
     background: string
     tabNav: string
     iconTabNav: string
-    color: string
+    textColor: string
     reverseColor: string
   };
 }
