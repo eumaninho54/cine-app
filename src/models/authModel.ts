@@ -1,5 +1,5 @@
 export interface authStateProps {
-    auth: boolean
+    auth: null | boolean
     token: null | string
   }
   

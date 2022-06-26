@@ -6,9 +6,10 @@ import LoginNavigation from './login'
 import TabNav from './tab'
 import { authContextProps } from '../models/authModel'
 import Profile from '../components/profile'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { themeModel } from '../models/themeModel'
 import { ThemeContext } from 'styled-components'
+import LoadingScreen from '../templates/loadingScreen'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 

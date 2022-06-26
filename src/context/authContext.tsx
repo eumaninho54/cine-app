@@ -4,13 +4,17 @@ import { authStateProps, authContextProps } from '../models/authModel';
 import * as SecureStore from 'expo-secure-store';
 import authService from '../services/authService';
 
+interface AuthProviderProps {
+  children: React.ReactNode
+}
+
 
 export const AuthContext = createContext<authContextProps | any>({})
 const { Provider } = AuthContext
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authState, setAuthState] = useState<authStateProps>({
-    auth: false,
+    auth: null,
     token: null
   })
 
@@ -33,8 +37,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (token != null) {
         const isActived = await authService.verifyToken(token)
 
-        if (isActived) setAuthState({ auth: true, token: token })
+        if (isActived) {
+          setAuthState({ auth: true, token: token })
+          return
+        }
       }
+
+      setAuthState({ auth: false, token: null})
     }
 
     verifyToken()
