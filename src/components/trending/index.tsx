@@ -59,7 +59,6 @@ const Trending: React.FC = () => {
         <TouchableWithoutFeedback onPress={() => console.warn("f")}>
           <Image
             onLoad={() => isImagesRequested()}
-            onError={(e) => { }}
             source={{ uri: imageUrl + item.poster_path }}
             style={{ width: 100, height: 150 }}
           />
@@ -78,7 +77,6 @@ const Trending: React.FC = () => {
           <BannerTrendingView>
             <ImageBackground
               onLoad={(e) => isImagesRequested()}
-              onError={(e) => { }}
               style={{ width: '100%', height: 240 }}
               source={{ uri: imageUrl + dataTrendings[0].backdrop_path }}>
 
@@ -120,8 +118,7 @@ const Trending: React.FC = () => {
             contentContainerStyle={{ flexGrow: 1 }}
             keyExtractor={(movie) => String(movie.id)}
             showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={false}
-            initialNumToRender={4} />
+            removeClippedSubviews={false}/>
 
         </MainTrending>
       }

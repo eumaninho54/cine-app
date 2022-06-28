@@ -25,12 +25,13 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation<navigateProp>()
   const authContext = useContext<authContextProps>(AuthContext)
 
-  const onSingIn = async () => {
-    await authService.singIn(inputEmail, inputPassword)
-    const keychanToken = await SecureStore.getItemAsync("token")
+  const onSignIn = async () => {
+    const reqSignIn = await authService.signIn(inputEmail, inputPassword)
     
-    if (keychanToken) {
-      authContext.setAuthState({auth: true, token: keychanToken})
+    if (reqSignIn != null) {
+      await SecureStore.setItemAsync("token", reqSignIn.authentication["token"])
+      authContext.setInfoUser(reqSignIn.infoUser)
+      authContext.setAuthState(reqSignIn.authentication)
       navigation.navigate('BrowserNavigation', {})
     } else {
       setInputPassword("")
@@ -67,7 +68,7 @@ const SignIn: React.FC = () => {
           onFocus={() => setFocusInput(true)}
         />
 
-        <ButtonLogin onPress={onSingIn}>
+        <ButtonLogin onPress={onSignIn}>
           <TextLogin color='reverseColor'>SIGN IN</TextLogin>
         </ButtonLogin>
 

@@ -17,7 +17,7 @@ const LoginNavigation: React.FC = () => {
         {
           headerShadowVisible: false,
           headerStyle: {backgroundColor: theme['backgroundLogin']},
-          headerTintColor: theme['color'],
+          headerTintColor: theme["textColorLogin"],
           headerBackButtonMenuEnabled: true,
           headerTitleAlign: 'center'
         }

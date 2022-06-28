@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useReducer, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { authStateProps, authContextProps } from '../models/authModel';
+import { authStateProps, authContextProps, userProps } from '../models/authModel';
 import * as SecureStore from 'expo-secure-store';
 import authService from '../services/authService';
 
@@ -17,6 +17,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     auth: null,
     token: null
   })
+  const [infoUser, setInfoUser] = useState<userProps>({
+    email: "",
+    username: ""
+  })
 
   const logout = async () => {
     await SecureStore.deleteItemAsync("token")
@@ -26,10 +30,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     })
   }
 
-  const getAccessToken = () => {
-    return authState.token
-  }
-
   useEffect(() => {
     const verifyToken = async () => {
       const token = await SecureStore.getItemAsync("token")
@@ -37,7 +37,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (token != null) {
         const isActived = await authService.verifyToken(token)
 
-        if (isActived) {
+        if (isActived != null) {
+          setInfoUser(isActived)
           setAuthState({ auth: true, token: token })
           return
         }
@@ -54,8 +55,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         authState,
         setAuthState,
-        getAccessToken,
-        logout
+        logout,
+        infoUser,
+        setInfoUser
       }}>
       {children}
     </Provider>

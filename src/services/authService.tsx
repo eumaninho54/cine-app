@@ -1,39 +1,39 @@
 import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
+import { signInProps, userProps } from "../models/authModel";
 
 class AuthService {
   private baseURL = "http://192.168.1.104:3333"
 
   constructor() { }
 
-  async verifyToken(token: string): Promise<boolean> {
-    const req = await axios({
+  async verifyToken(token: string): Promise<userProps | null> {
+    const req = await axios.request<userProps>({
       method: "get",
       url: this.baseURL + "/user",
       headers: { "x-access-token": token }
-    }).then(() => true)
-      .catch(() => false)
+    }).then((res) => res.data)
+      .catch(() => null)
 
     return req
 
   }
 
-  async singIn(email: string, password: string) {
-    await axios({
+  async signIn(email: string, password: string) {
+    const req = await axios.request<signInProps>({
       method: "post",
       url: this.baseURL + "/login",
       data: {
         email: email,
         password: password
       }
-    }).then(async (res) => {
-      await SecureStore.setItemAsync("token", res.data["token"])
-    }).catch(async () => {
-      await SecureStore.deleteItemAsync("token")
-    })
+    }).then((res) => res.data)
+      .catch(() => null)
+
+    return req
   }
 
-  async singUp(email: string, password: string): Promise<boolean> {
+  async signUp(email: string, password: string): Promise<boolean> {
     const req = await axios({
       method: "post",
       url: this.baseURL + "/user/new",
