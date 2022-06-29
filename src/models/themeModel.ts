@@ -7,4 +7,6 @@ export interface themeModel {
   tabNav: string
   iconTabNav: string
   reverseColor: string
+  gray: string
+  white: string
 }

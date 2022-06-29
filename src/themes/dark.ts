@@ -6,5 +6,7 @@ export default {
     textColor: "#f0f0f0", 
     tabNav: "#161616",
     iconTabNav: "#d0d0d0",
-    reverseColor: "#000"
+    reverseColor: "#000",
+    gray: "#c5c5c5",
+    white: "#ddd",
 }

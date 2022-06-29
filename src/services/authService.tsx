@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { signInProps, userProps } from "../models/authModel";
 
 class AuthService {
-  private baseURL = "http://192.168.1.104:3333"
+  private baseURL = "http://192.168.1.105:3333"
 
   constructor() { }
 

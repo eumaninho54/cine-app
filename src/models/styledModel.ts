@@ -8,6 +8,8 @@ export interface MainLoginProps {
     tabNav: string
     iconTabNav: string
     reverseColor: string
+    gray: string
+    white:string
   };
 }
 

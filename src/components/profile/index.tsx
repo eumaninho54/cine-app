@@ -1,25 +1,38 @@
-import React, { useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
-import { FontAwesome5 } from "@expo/vector-icons"
+import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { AuthContext } from '../../context/authContext';
 import { authContextProps } from '../../models/authModel';
-import { ExitText, HeaderInfo, ProfileBackground, ProfileHeader, TextWelcome } from './styles';
-import { useNavigation } from '@react-navigation/native';
-
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string }) => void
-}
+import { EmoteLink, ExitText, HeaderInfo, InfoLink, InfoView, ProfileBackground, ProfileHeader, SectionLink, TextHeaderProfile, TextModifyUsername } from './styles';
 
 
 const Profile: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const { infoUser, logout } = useContext<authContextProps>(AuthContext)
-  const navigation = useNavigation<navigateProp>()
+  const [modalVisible, setModalVisible] = useState(false)
 
-  const exitProfile = () => {
-    logout()
+  const changeUsername = () => {
+  }
+
+  const linkSection = async(linkTo: string) => {
+    let supported: boolean
+
+    switch (linkTo) {
+      case "linkedin":
+        supported = await Linking.canOpenURL("https://www.linkedin.com/in/angelo-menti-663040210/")
+
+        if(supported) await Linking.openURL("https://www.linkedin.com/in/angelo-menti-663040210/")
+        break;
+
+      case "repository":
+        supported = await Linking.canOpenURL("https://github.com/eumaninho54")
+
+        if(supported) await Linking.openURL("https://github.com/eumaninho54")
+      break;
+    
+    }
   }
 
   return (
@@ -29,15 +42,57 @@ const Profile: React.FC = () => {
           <FontAwesome5
             name="user-circle"
             size={35}
-            color={themeContext.iconTabNav}/>
+            color={themeContext.iconTabNav} />
 
-          <TextWelcome>Hello {infoUser.username} !</TextWelcome>
+          <View>
+            <TextHeaderProfile>Hello, {infoUser.username} !</TextHeaderProfile>
+
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <TextModifyUsername>Press to modify username</TextModifyUsername>
+            </TouchableOpacity>
+          </View>
         </HeaderInfo>
 
-        <TouchableOpacity onPress={exitProfile}>
+        <TouchableOpacity onPress={logout}>
           <ExitText>Exit</ExitText>
         </TouchableOpacity>
       </ProfileHeader>
+
+      <SectionLink onPress={() => linkSection("linkedin")}>
+        <InfoView>
+          <EmoteLink>
+            <FontAwesome5
+              name="linkedin"
+              size={30}
+              color={themeContext.white} />
+
+          </EmoteLink>
+
+          <InfoLink>Talk to me</InfoLink>
+        </InfoView>
+
+        <FontAwesome
+          name="angle-right"
+          size={35}
+          color={themeContext.primaryColor} />
+      </SectionLink>
+
+      <SectionLink onPress={() => linkSection("repository")}>
+        <InfoView>
+          <EmoteLink>
+            <FontAwesome
+              name="mobile"
+              size={35}
+              color={themeContext.white} />
+          </EmoteLink>
+
+          <InfoLink>See app info</InfoLink>
+        </InfoView>
+          <FontAwesome
+            name="angle-right"
+            size={35}
+            color={themeContext.primaryColor} />
+      </SectionLink>
     </ProfileBackground>
   )
 }
