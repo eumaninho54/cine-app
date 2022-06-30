@@ -9,6 +9,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
 import popcornRating from '../../../assets/popcorn.png'
+import { useNavigation } from '@react-navigation/native';
+
+interface navigateProp {
+  navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
+}
 
 
 const Trending: React.FC = () => {
@@ -20,6 +25,7 @@ const Trending: React.FC = () => {
   const [displayLoading, setDisplayLoading] = useState(true)
   const [isDataFetched, setIsLoaded] = useState(false)
   const themeContext = useContext<themeModel>(ThemeContext)
+  const navigation = useNavigation<navigateProp>()
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -56,17 +62,17 @@ const Trending: React.FC = () => {
   const renderItemFlatList = ({ item, index }: { item: dataMoviesModel, index: number }) => {
     return (
       <View style={{ paddingHorizontal: 10 }}>
-        <TouchableWithoutFeedback onPress={() => console.warn("f")}>
+        <TouchableWithoutFeedback onPress={() => {
+          navigation.navigate('PosterMovie', { dataMovie: item})
+        }}>
           <Image
             onLoad={() => isImagesRequested()}
             source={{ uri: imageUrl + item.poster_path }}
-            style={{ width: 100, height: 150 }}
-          />
+            style={{ width: 100, height: 150 }}/>
         </TouchableWithoutFeedback>
       </View>
     )
   }
-
 
   return (
     <>
@@ -118,7 +124,7 @@ const Trending: React.FC = () => {
             contentContainerStyle={{ flexGrow: 1 }}
             keyExtractor={(movie) => String(movie.id)}
             showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={false}/>
+            removeClippedSubviews={false} />
 
         </MainTrending>
       }

@@ -30,7 +30,7 @@ const Profile: React.FC = () => {
         supported = await Linking.canOpenURL("https://github.com/eumaninho54")
 
         if(supported) await Linking.openURL("https://github.com/eumaninho54")
-      break;
+        break;
     
     }
   }

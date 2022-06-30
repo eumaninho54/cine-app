@@ -10,6 +10,7 @@ import { StyleSheet, View } from 'react-native'
 import { themeModel } from '../models/themeModel'
 import { ThemeContext } from 'styled-components'
 import LoadingScreen from '../templates/loadingScreen'
+import PosterMovie from '../components/posterMovie'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -26,6 +27,15 @@ export default function Routes() {
             initialRouteName='BrowserNavigation'
             screenOptions={{ headerShown: false }}>
             <Screen name='BrowserNavigation' component={TabNav} />
+            <Screen name='PosterMovie' component={PosterMovie} options={{
+              presentation: "card",
+              headerShown: true,
+              headerBackTitleVisible: false,
+              headerTitle: () => (<></>),
+              headerShadowVisible: false,
+              headerTintColor: themeContext.primaryColor,
+              headerTransparent: true
+            }}/>
             <Screen name='Profile' component={Profile} options={{
               presentation: "modal",
               headerShown: true,

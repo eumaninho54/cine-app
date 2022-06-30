@@ -53,7 +53,7 @@ const SignUp: React.FC = () => {
     }
 
     //Request
-    if (await authService.singUp(inputEmail, inputPassword)) {
+    if (await authService.signUp(inputEmail, inputPassword)) {
       showMessage({
         message: "Subscribe successful",
         description: "Sign in to your account",
