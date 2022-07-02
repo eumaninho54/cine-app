@@ -7,8 +7,9 @@ import { ThemeContext } from 'styled-components';
 import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
-import { MainPosterMovie } from './styles';
+import { MainPosterMovie, PosterGenres, PosterImage, PosterInfoView, PosterTitle, PosterView, RatingPopcorn, RatingText, RatingView, TabView } from './styles';
 import popcornRating from '../../../assets/popcorn.png'
+import PostMovieTab from '../../routes/postMovieTab';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
@@ -41,43 +42,35 @@ const PosterMovie: React.FC = () => {
           style={{ height: '100%', width: '100%' }}>
         </LinearGradient>
 
-        <View
-          style={{
-            position: "absolute",
-            width: '100%',
-            height: '100%',
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-          }}>
-          <Image
-            source={{ uri: imageUrl + dataMovie.poster_path }}
-            style={{ width: 140, height: 210 }} />
+        <PosterView>
+          <PosterImage source={{ uri: imageUrl + dataMovie.poster_path }}/>
 
-          <View style={{width: 200, paddingLeft: 12}}>
-            <Text style={{ color: themeContext.textColor, paddingBottom: 10 }}>{dataMovie.title}</Text>
+          <PosterInfoView>
+            <PosterTitle>{dataMovie.title}</PosterTitle>
 
-            <Text style={{ color: themeContext.textColor, paddingBottom: 15 }}>
+            <PosterGenres>
               {dataMovie.genre_ids[0] &&
                 genreMovie[dataMovie.genre_ids[0] as keyof genreMovieProps]}
               {dataMovie.genre_ids[1] &&
                 " - " + genreMovie[dataMovie.genre_ids[1] as keyof genreMovieProps]}
               {dataMovie.genre_ids[2] &&
                 " - " + genreMovie[dataMovie.genre_ids[2] as keyof genreMovieProps]}
-            </Text>
+            </PosterGenres>
 
-            <View style={{flexDirection: "row", alignItems: "center"}}>
-              <Image source={popcornRating} style={{width: 25, height: 25}} />
+            <RatingView>
+              <RatingPopcorn source={popcornRating}/>
 
-              <Text style={{ fontSize: 14, paddingBottom: 0, color: "#fff" }}>
+              <RatingText>
                 {dataMovie.vote_average.toFixed(1)}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-
+              </RatingText>
+            </RatingView>
+          </PosterInfoView>
+        </PosterView>
       </ImageBackground>
+
+      <TabView>
+        <PostMovieTab/>
+      </TabView>
     </MainPosterMovie>
   )
 }
