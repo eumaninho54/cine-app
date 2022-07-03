@@ -8,6 +8,8 @@ export interface themeModel {
   textColor: string
   tabNav: string
   iconTabNav: string
+  ticketStrong: string,
+  ticketLight: string,
   reverseColor: string
   gray: string
   white: string

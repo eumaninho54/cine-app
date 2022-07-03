@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components/native";
 import { MainLoginProps } from "../../models/themeModel";
 
-
 export const MainPosterMovie = styled.ScrollView`
   background-color: ${({ theme }: MainLoginProps) => theme.background};
   flex: 1;

@@ -5,7 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import { ThemeContext } from 'styled-components';
 import { dataDays, dataDaysProps } from '../../models/dayWeek';
 import { themeModel } from '../../models/themeModel';
-import { TicketCarouselBg, TicketCarouselBorder, TicketCarouselView } from './styles';
+import { DayText, GradientSelected, MainSessions, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 
 
 const SLIDER_WIDTH = Dimensions.get("window").width
@@ -16,23 +16,8 @@ const Sessions: React.FC = () => {
   const [indexDateSelected, setIndexDateSelected] = useState(3)
   const dateSelected = useState(new Animated.Value(0))[0]
 
-  const animateCarousel = () => {
-    Animated.timing(dateSelected, {
-      toValue: 0,
-      duration: 1,
-      useNativeDriver: true
-    }).start(() => {
-      Animated.timing(dateSelected, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true
-      }).start()
-    })
-    return dateSelected
-  }
-
   const renderItemCarousel = ({ item, index }: { item: dataDaysProps, index: number }) => {
-    if(index == indexDateSelected){
+    if (index == indexDateSelected) {
       Animated.timing(dateSelected, {
         toValue: 0,
         duration: 1,
@@ -49,116 +34,66 @@ const Sessions: React.FC = () => {
     return (
       <TicketCarouselBorder style={{ width: ITEM_WIDTH - 20 }}>
         <LinearGradient
-          colors={['#444', "#363636", "#444"]}
+          colors={[themeContext.ticketLight, themeContext.ticketStrong]}
           style={{ height: '100%', width: '100%', position: "absolute" }}>
         </LinearGradient>
 
         {index == indexDateSelected &&
-          <Animated.View style={{
-            height: '100%',
-            width: '100%',
-            position: "absolute",
-            opacity: dateSelected
-          }}>
+          <TicketSelectedBorder style={{ opacity: dateSelected }}>
             <LinearGradient
               colors={[themeContext.primaryColor, themeContext.secundaryColor]}
               style={{ height: '100%', width: '100%', position: "absolute" }}>
             </LinearGradient>
-          </Animated.View>
+          </TicketSelectedBorder>
         }
 
-        <View style={{
-          borderRadius: 12,
-          height: 12,
-          width: 12,
-          bottom: '20%',
-          left: -5,
-          position: "absolute",
-          zIndex: 3,
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden"
-        }} >
+        <TicketDetailView style={{ left: -5 }}>
           <LinearGradient
-            colors={['#363636', '#444444']}
+            colors={[themeContext.ticketLight, themeContext.ticketStrong]}
             style={{ height: '100%', width: '100%', position: "absolute" }}>
           </LinearGradient>
 
-          <View style={{
-            backgroundColor: themeContext.background,
-            width: 10,
-            height: 10,
-            borderRadius: 10
-          }} />
-        </View>
+          <TicketDetail />
+        </TicketDetailView>
 
-        <View style={{
-          backgroundColor: "blue",
-          borderRadius: 12,
-          height: 12,
-          width: 12,
-          bottom: '20%',
-          right: -5,
-          position: "absolute",
-          zIndex: 3,
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden"
-        }} >
+        <TicketDetailView style={{ right: -5 }} >
           <LinearGradient
-            colors={['#363636', '#444444']}
+            colors={[themeContext.ticketLight, themeContext.ticketStrong]}
             style={{ height: '100%', width: '100%', position: "absolute" }}>
           </LinearGradient>
 
-          <View style={{
-            backgroundColor: themeContext.background,
-            width: 10,
-            height: 10,
-            borderRadius: 10
-          }} />
-        </View>
+          <TicketDetail />
+        </TicketDetailView>
 
         <TicketCarouselBg>
-          <Animated.View style={{ height: "100%", width: '100%', position: "absolute" }}>
-            <LinearGradient
-              colors={['#363636', '#000',]}
-              style={{ height: "100%", width: '100%', position: "absolute" }}>
-            </LinearGradient>
-
-          </Animated.View>
+          <LinearGradient
+            colors={[themeContext.ticketStrong, '#000']}
+            style={{ height: "100%", width: '100%', position: "absolute" }}>
+          </LinearGradient>
 
           {index == indexDateSelected &&
-            <Animated.View
-              style={{
-                height: "100%",
-                width: '100%',
-                position: "absolute",
-                opacity: dateSelected
-              }}>
+            <GradientSelected style={{ opacity: dateSelected}}>
               <LinearGradient
                 colors={[themeContext.primaryColor, themeContext.secundaryColor,]}
                 style={{ height: "100%", width: '100%', position: "absolute" }}>
               </LinearGradient>
-            </Animated.View>
+            </GradientSelected>
           }
-
+          
           <TicketCarouselView>
-            <View style={{ backgroundColor: themeContext.background, borderRadius: 10, height: 10, width: 10 }} />
+            <TicketDetail />
 
-            <Text style={{ fontSize: 20, color: 'white', fontWeight: "200" }}>{item.week}</Text>
-            <Text style={{ fontSize: 20, color: "white", fontWeight: 'bold' }}>{item.day}</Text>
-
-
+            <WeekText>{item.week}</WeekText>
+            <DayText>{item.day}</DayText>
           </TicketCarouselView>
         </TicketCarouselBg>
-
       </TicketCarouselBorder>
     )
   }
 
 
   return (
-    <View style={{ backgroundColor: themeContext.background, width: '100%', flex: 1 }}>
+    <MainSessions>
       <Carousel
         data={dataDays}
         firstItem={3}
@@ -168,7 +103,7 @@ const Sessions: React.FC = () => {
         itemWidth={ITEM_WIDTH}
         onBeforeSnapToItem={(index) => setIndexDateSelected(index)}
       />
-    </View>
+    </MainSessions>
   )
 }
 

@@ -8,6 +8,8 @@ export default {
     textColor: "#d0d0d0",
     tabNav: "#fff",
     iconTabNav: "#808080",
+    ticketStrong: "#aaa",
+    ticketLight: "#888",
     reverseColor: "#fff",
     gray: "#979797",
     white: "#fff",
