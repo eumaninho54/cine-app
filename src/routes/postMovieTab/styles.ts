@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated } from "react-native";
 import styled from "styled-components/native";
-import { MainLoginProps } from "../../models/styledModel";
+import { MainLoginProps } from "../../models/themeModel";
 
 interface ScreenViewProps {
   focused: boolean
@@ -13,7 +13,7 @@ interface ScreenViewProps {
 
 export const ScreenView = styled.View<ScreenViewProps>`
   background-color: ${({ focused, theme }: ScreenViewProps) => focused ? theme.tabNav : "#00000000"}; 
-  width: 120px;
+  width: 130px;
   height: 40px;
   border-radius: 3px;
   align-items: center;

@@ -6,6 +6,7 @@ import themes from './src/themes';
 import { AuthProvider } from "./src/context/authContext"
 import Routes from './src/routes';
 import FlashMessage from 'react-native-flash-message';
+import "./src/config/ignoreWarnings"
 
 console.tron = reactotron
 

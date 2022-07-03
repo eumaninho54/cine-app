@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import { MainLoginProps } from "../../models/styledModel";
+import { MainLoginProps } from "../../models/themeModel";
 
 
 export const MainMovies = styled.View`

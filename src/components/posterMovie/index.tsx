@@ -69,7 +69,7 @@ const PosterMovie: React.FC = () => {
       </ImageBackground>
 
       <TabView>
-        <PostMovieTab/>
+        <PostMovieTab dataMovie={dataMovie}/>
       </TabView>
     </MainPosterMovie>
   )

@@ -36,6 +36,7 @@ const Trending: React.FC = () => {
       }
       setCounterImages((previus) => previus + moviesTrending.slice(0, 9).length)
 
+      console.tron.log!(moviesTrending.slice(0,9))
       setDataTrendings(moviesTrending.slice(0, 9))
       setIsLoaded(true)
     }
@@ -55,7 +56,7 @@ const Trending: React.FC = () => {
 
       setTimeout(() => {
         setDisplayLoading(false)
-      }, 1000)
+      }, 800)
     }
   }
 
