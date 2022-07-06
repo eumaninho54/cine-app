@@ -35,8 +35,6 @@ const Trending: React.FC = () => {
         return
       }
       setCounterImages((previus) => previus + moviesTrending.slice(0, 9).length)
-
-      console.tron.log!(moviesTrending.slice(0,9))
       setDataTrendings(moviesTrending.slice(0, 9))
       setIsLoaded(true)
     }
@@ -47,7 +45,7 @@ const Trending: React.FC = () => {
   const isImagesRequested = () => {
     imagesRequested.current += 1
 
-    if (imagesRequested.current == counterImages + 1) {
+    if (imagesRequested.current == 4) {
       Animated.timing(fadeLoading, {
         toValue: 0,
         duration: 1000,
@@ -125,8 +123,7 @@ const Trending: React.FC = () => {
             contentContainerStyle={{ flexGrow: 1 }}
             keyExtractor={(movie) => String(movie.id)}
             showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={false} />
-
+            removeClippedSubviews={true} />
         </MainTrending>
       }
     </>

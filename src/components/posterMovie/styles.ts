@@ -53,7 +53,8 @@ export const RatingText = styled.Text`
 `;
 
 export const TabView = styled.View`
-  height: 600px;
+  height: 550px;
+  flex: 1;
   padding-top: 10px;
 `;
 

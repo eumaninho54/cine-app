@@ -19,7 +19,6 @@ const PostMovieTab: React.FC<PostMovieTabProps> = ({dataMovie}) => {
 
   return (
     <Navigator
-      
       screenOptions={{
         tabBarPressColor: "#00000000",
         tabBarIndicator: () => <></>,
@@ -28,6 +27,7 @@ const PostMovieTab: React.FC<PostMovieTabProps> = ({dataMovie}) => {
           alignItems: "center",
           justifyContent: "center" 
         },
+        
         tabBarStyle: {
           backgroundColor: "#00000000",
           marginHorizontal: 20,
@@ -36,7 +36,6 @@ const PostMovieTab: React.FC<PostMovieTabProps> = ({dataMovie}) => {
           elevation: 0,
           shadowOpacity: 0,
           marginBottom: 10
-          
         }
       }}>
 

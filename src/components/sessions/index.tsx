@@ -1,12 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Dimensions, Animated } from 'react-native';
+import { View, Text, Dimensions, Animated, TouchableOpacity } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { ThemeContext } from 'styled-components';
 import { dataDays, dataDaysProps } from '../../models/dayWeek';
 import { themeModel } from '../../models/themeModel';
-import { DayText, GradientSelected, MainSessions, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
-
+import { CarouselView, DayText, GradientSelected, MainSessions, SelectDateText, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 
 const SLIDER_WIDTH = Dimensions.get("window").width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.30
@@ -14,22 +13,44 @@ const ITEM_WIDTH = SLIDER_WIDTH * 0.30
 const Sessions: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const [indexDateSelected, setIndexDateSelected] = useState(3)
-  const dateSelected = useState(new Animated.Value(0))[0]
+  const hoursObject = ["13:00", "15:15", "17:30"]
+  const [hourSelected, setHourSelected] = useState<number>()
+
+  const onHourSession = (props: any) => {
+    console.tron.log!(props)
+  }
+
+  const HoursMap = () => {
+
+    return (
+      <View style={{
+        width: '70%',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around"
+      }}>
+        {
+          hoursObject.map((hour, index) => {
+            return (
+              <TouchableOpacity
+                onPress={() => setHourSelected(index)}
+                style={{
+                  borderColor: hourSelected == index ? themeContext.primaryColor : "white",
+                  borderWidth: 4,
+                  borderRadius: 2,
+                  padding: 10
+                }}
+                key={index}>
+                <Text style={{ color: "white" }}>{hour}</Text>
+              </TouchableOpacity>
+            )
+          })
+        }
+      </View>
+    )
+  }
 
   const renderItemCarousel = ({ item, index }: { item: dataDaysProps, index: number }) => {
-    if (index == indexDateSelected) {
-      Animated.timing(dateSelected, {
-        toValue: 0,
-        duration: 1,
-        useNativeDriver: true
-      }).start(() => {
-        Animated.timing(dateSelected, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true
-        }).start()
-      })
-    }
 
     return (
       <TicketCarouselBorder style={{ width: ITEM_WIDTH - 20 }}>
@@ -39,7 +60,7 @@ const Sessions: React.FC = () => {
         </LinearGradient>
 
         {index == indexDateSelected &&
-          <TicketSelectedBorder style={{ opacity: dateSelected }}>
+          <TicketSelectedBorder>
             <LinearGradient
               colors={[themeContext.primaryColor, themeContext.secundaryColor]}
               style={{ height: '100%', width: '100%', position: "absolute" }}>
@@ -72,14 +93,14 @@ const Sessions: React.FC = () => {
           </LinearGradient>
 
           {index == indexDateSelected &&
-            <GradientSelected style={{ opacity: dateSelected}}>
+            <GradientSelected>
               <LinearGradient
                 colors={[themeContext.primaryColor, themeContext.secundaryColor,]}
                 style={{ height: "100%", width: '100%', position: "absolute" }}>
               </LinearGradient>
             </GradientSelected>
           }
-          
+
           <TicketCarouselView>
             <TicketDetail />
 
@@ -91,18 +112,51 @@ const Sessions: React.FC = () => {
     )
   }
 
-
   return (
     <MainSessions>
-      <Carousel
-        data={dataDays}
-        firstItem={3}
-        keyExtractor={(item) => String(item.day)}
-        renderItem={renderItemCarousel}
-        sliderWidth={SLIDER_WIDTH + 20}
-        itemWidth={ITEM_WIDTH}
-        onBeforeSnapToItem={(index) => setIndexDateSelected(index)}
-      />
+      <SelectDateText>
+        {'Select '}
+        <SelectDateText style={{ fontWeight: "400" }}>
+          Date
+        </SelectDateText>
+      </SelectDateText>
+      <CarouselView>
+        <Carousel
+          data={dataDays}
+          firstItem={3}
+          keyExtractor={(item) => String(item.day)}
+          renderItem={renderItemCarousel}
+          sliderWidth={SLIDER_WIDTH + 20}
+          itemWidth={ITEM_WIDTH}
+          onBeforeSnapToItem={(index) => setIndexDateSelected(index)}
+        />
+      </CarouselView>
+
+      {HoursMap()}
+
+      <View style={{marginTop: 40, width: '100%', alignItems: "center", justifyContent: "center"}}>
+        <TouchableOpacity style={{ 
+          backgroundColor: 'white',
+          padding: 15,
+          borderRadius: 5,
+          width: '90%',
+          justifyContent: "center",
+          alignItems: "center"}}>
+          <Text>Add to car</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{ 
+          backgroundColor: themeContext.primaryColor,
+          padding: 15,
+          marginTop: 20,
+          borderRadius: 5,
+          width: '90%',
+          justifyContent: "center",
+          alignItems: "center"}}>
+          <Text>Purchase</Text>
+        </TouchableOpacity>
+      </View>
+
     </MainSessions>
   )
 }

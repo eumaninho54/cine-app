@@ -11,7 +11,7 @@ interface ScreenViewProps {
   };
 }
 
-export const ScreenView = styled.View<ScreenViewProps>`
+export const ScreenView = styled.TouchableOpacity<ScreenViewProps>`
   background-color: ${({ focused, theme }: ScreenViewProps) => focused ? theme.tabNav : "#00000000"}; 
   width: 130px;
   height: 40px;

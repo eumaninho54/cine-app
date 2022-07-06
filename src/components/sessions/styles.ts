@@ -8,6 +8,7 @@ export const MainSessions = styled.View`
   background-color: ${({ theme }: MainLoginProps) => theme.background};
   width: 100%; 
   flex: 1;
+  align-items: center;
 `;
 
 export const TicketCarouselBorder = styled.View`
@@ -77,5 +78,17 @@ export const WeekText = styled.Text`
 export const DayText = styled.Text`
   font-size: 20px;
   color: white; 
-  font-weight: bold;
+  font-weight: 900;
+`;
+
+export const SelectDateText = styled.Text`
+  color: ${({ theme }: MainLoginProps) => theme.textColor};
+  font-weight: bold; 
+  font-size: 20px;
+  width: 100%; 
+  padding: 10px 20px;
+`;
+
+export const CarouselView = styled.View`
+  height: 160px;
 `;

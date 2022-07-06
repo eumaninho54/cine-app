@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ImageBackground, View, Image, Text } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
@@ -69,7 +69,7 @@ const PosterMovie: React.FC = () => {
       </ImageBackground>
 
       <TabView>
-        <PostMovieTab dataMovie={dataMovie}/>
+        <PostMovieTab  dataMovie={dataMovie}/>
       </TabView>
     </MainPosterMovie>
   )
