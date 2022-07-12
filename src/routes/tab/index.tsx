@@ -12,7 +12,7 @@ import IconProfileHeader from '../../templates/iconProfileHeader'
 import logoBlack from "../../../assets/logoBlack.png"
 import IconTicketHeader from '../../templates/iconTicketHeader'
 import IconSearchHeader from '../../templates/iconSearchHeader'
-import { useNavigation } from '@react-navigation/native'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string }) => void
@@ -24,7 +24,7 @@ const { Navigator, Screen } = createBottomTabNavigator()
 export default function TabNav() {
   const themeContext = useContext<themeModel>(ThemeContext)
   const tabOffsetValue = useRef(new Animated.Value(0)).current
-  const navigation = useNavigation<navigateProp>()
+  const navigation = useNavigation<NavigationProp<any>>()
 
   const getWidth = () => {
     let width = Dimensions.get("window").width

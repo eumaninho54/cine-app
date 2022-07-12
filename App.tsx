@@ -7,6 +7,8 @@ import { AuthProvider } from "./src/context/authContext"
 import Routes from './src/routes';
 import FlashMessage from 'react-native-flash-message';
 import "./src/config/ignoreWarnings"
+import React from 'react';
+import { TicketProvider } from './src/context/ticketContext';
 
 console.tron = reactotron
 
@@ -18,14 +20,16 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <SafeAreaView style={{ flex: 0, backgroundColor: theme.primaryColor }} />
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
-          <StatusBar barStyle={'dark-content'} animated backgroundColor={theme.primaryColor} />
-          <FlashMessage position="top" />
-          <Routes />
-        </SafeAreaView>
-      </AuthProvider>
+      <TicketProvider>
+        <AuthProvider>
+          <SafeAreaView style={{ flex: 0, backgroundColor: theme.primaryColor }} />
+          <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
+            <StatusBar barStyle={'dark-content'} animated backgroundColor={theme.primaryColor} />
+            <FlashMessage position="top" />
+            <Routes />
+          </SafeAreaView>
+        </AuthProvider>
+      </TicketProvider>
     </ThemeProvider>
   );
 }

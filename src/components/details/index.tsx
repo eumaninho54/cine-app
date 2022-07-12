@@ -35,7 +35,7 @@ const Details: React.FC = () => {
 
       <SectionView>
         <SectionTitle>Overview</SectionTitle>
-        <SectionInfo>{dataMovie.overview}</SectionInfo>
+        <SectionInfo numberOfLines={4}>{dataMovie.overview}</SectionInfo>
       </SectionView>
 
       <SectionView>

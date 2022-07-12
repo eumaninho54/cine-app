@@ -8,6 +8,7 @@ export const MainDetails = styled.View`
   border-width: 6px;
   flex: 1;
   padding: 25px 20px;
+  max-height: 500px;
 `;
 
 export const MainTitle = styled.Text`
@@ -18,6 +19,7 @@ export const MainTitle = styled.Text`
 
 export const SectionView = styled.View`
   margin: 15px 0px;
+  max-height: 80px;
 `;
 
 export const SectionTitle = styled.Text`

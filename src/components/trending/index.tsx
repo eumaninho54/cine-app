@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
 import popcornRating from '../../../assets/popcorn.png'
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
@@ -25,7 +25,7 @@ const Trending: React.FC = () => {
   const [displayLoading, setDisplayLoading] = useState(true)
   const [isDataFetched, setIsLoaded] = useState(false)
   const themeContext = useContext<themeModel>(ThemeContext)
-  const navigation = useNavigation<navigateProp>()
+  const navigation = useNavigation<NavigationProp<any>>()
 
   useEffect(() => {
     const loadingMovies = async () => {

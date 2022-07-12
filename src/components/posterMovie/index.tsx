@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useState } from 'react';
@@ -11,9 +11,6 @@ import { MainPosterMovie, PosterGenres, PosterImage, PosterInfoView, PosterTitle
 import popcornRating from '../../../assets/popcorn.png'
 import PostMovieTab from '../../routes/postMovieTab';
 
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
-}
 
 interface routeProp {
   key: string;
@@ -28,7 +25,7 @@ interface routeProp {
 const PosterMovie: React.FC = () => {
   const imageUrl = "https://image.tmdb.org/t/p/original"
   const themeContext = useContext<themeModel>(ThemeContext)
-  const navigation = useNavigation<navigateProp>()
+  const navigation = useNavigation<NavigationProp<any>>()
   const { dataMovie } = useRoute<routeProp>().params
 
   return (
@@ -69,7 +66,7 @@ const PosterMovie: React.FC = () => {
       </ImageBackground>
 
       <TabView>
-        <PostMovieTab  dataMovie={dataMovie}/>
+        <PostMovieTab dataMovie={dataMovie}/>
       </TabView>
     </MainPosterMovie>
   )

@@ -4,11 +4,13 @@ import { FontAwesome } from "@expo/vector-icons"
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
 import { Badge, withBadge } from 'react-native-elements'
+import { TicketContext } from '../../context/ticketContext';
+import { ticketContextProps } from '../../models/ticketModel';
 
 
 const IconTicketHeader: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const [valueBadge, setValueBadge] = useState(1)
+  const { numTicketCar, setNumTicketCar } = useContext<ticketContextProps>(TicketContext)
 
   return (
     <TouchableOpacity style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
@@ -19,9 +21,9 @@ const IconTicketHeader: React.FC = () => {
       />
 
       <Badge
-        value={valueBadge}
+        value={numTicketCar}
         badgeStyle={{
-          display: valueBadge == 0 ? "none" : "flex",
+          display: numTicketCar == 0 ? "none" : "flex",
           backgroundColor: "#303030",
           borderColor: "#303030"
         }}

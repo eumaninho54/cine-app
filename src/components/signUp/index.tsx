@@ -3,7 +3,7 @@ import { MainLogin, InputLogin, ButtonLogin, TextLogin, ImageLogin } from '../..
 import banner from '../../../assets/icon2.png'
 import logo from '../../../assets/logo.png'
 import { ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../context/authContext';
 import { authContextProps } from '../../models/authModel';
 import authService from '../../services/authService';
@@ -24,7 +24,7 @@ const SignUp: React.FC = () => {
   const [inputPassword, setInputPassword] = useState("")
   const [inputConfirmPassword, setInputConfirmPassword] = useState("")
   const [focusInput, setFocusInput] = useState(false)
-  const navigation = useNavigation<navigateProp>()
+  const navigation = useNavigation<NavigationProp<any>>()
 
 
   const onSignUp = async () => {

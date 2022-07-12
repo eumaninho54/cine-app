@@ -4,7 +4,7 @@ import banner from '../../../assets/icon2.png'
 import logo from '../../../assets/logo.png'
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native'
 import authService from '../../services/authService';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../../context/authContext';
@@ -12,9 +12,6 @@ import { authContextProps } from '../../models/authModel';
 import { themeModel } from '../../models/themeModel';
 import { ThemeContext } from 'styled-components';
 
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string }) => void
-}
 
 const SignIn: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
@@ -22,7 +19,7 @@ const SignIn: React.FC = () => {
   const [inputEmail, setInputEmail] = useState("")
   const [inputPassword, setInputPassword] = useState("")
   const refPassword = useRef<any>()
-  const navigation = useNavigation<navigateProp>()
+  const navigation = useNavigation<NavigationProp<any>>()
   const authContext = useContext<authContextProps>(AuthContext)
 
   const onSignIn = async () => {

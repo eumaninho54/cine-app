@@ -14,20 +14,20 @@ interface PostMovieTabProps {
 
 const { Navigator, Screen } = createMaterialTopTabNavigator()
 
-const PostMovieTab: React.FC<PostMovieTabProps> = ({dataMovie}) => {
+const PostMovieTab: React.FC<PostMovieTabProps> = ({ dataMovie }) => {
   const themeContext = useContext<themeModel>(ThemeContext)
 
   return (
     <Navigator
+      style={{ flex: 1 }}
       screenOptions={{
         tabBarPressColor: "#00000000",
-        tabBarIndicator: () => <></>,
+        tabBarIndicator: () => (<></>),
         tabBarShowLabel: false,
         tabBarIconStyle: {
           alignItems: "center",
-          justifyContent: "center" 
+          justifyContent: "center",
         },
-        
         tabBarStyle: {
           backgroundColor: "#00000000",
           marginHorizontal: 20,
@@ -62,7 +62,6 @@ const PostMovieTab: React.FC<PostMovieTabProps> = ({dataMovie}) => {
             </ScreenView>
           )
         }} />
-
     </Navigator>
   )
 }

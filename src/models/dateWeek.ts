@@ -70,3 +70,5 @@ export const setDataDays = () => [
 ];
 
 export const dataDays: dataDaysProps[] = setDataDays();
+
+export const hoursObject = ["13:00", "15:15", "17:30"]
