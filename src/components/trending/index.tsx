@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, Image, ImageBackground, Animated, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, ImageBackground, Animated, FlatList, TouchableWithoutFeedback, Dimensions, StyleSheet } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
-import { BannerTrendingView, InfoTrendingText, InfoTrendingView, MainTrending, SectionMovieTitle, TrendingRatingImage, TrendingRatingView } from './styles';
 import moviesService from '../../services/moviesService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,10 +9,15 @@ import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
 import popcornRating from '../../../assets/popcorn.png'
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { MainTrending } from './styles';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
 }
+
+const { width, height} = Dimensions.get("screen")
+const imageW = width * 0.7
+const imageH = imageW * 1.54
 
 
 const Trending: React.FC = () => {
@@ -22,10 +26,11 @@ const Trending: React.FC = () => {
   const [counterImages, setCounterImages] = useState(0)
   const imagesRequested = useRef(0)
   const fadeLoading = useState(new Animated.Value(1))[0]
-  const [displayLoading, setDisplayLoading] = useState(true)
-  const [isDataFetched, setIsLoaded] = useState(false)
+  const [displayLoading, setDisplayLoading] = useState(false)
+  const [isDataFetched, setIsDataFetched] = useState(false)
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
+  const scrollX = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -36,39 +41,37 @@ const Trending: React.FC = () => {
       }
       setCounterImages((previus) => previus + moviesTrending.slice(0, 9).length)
       setDataTrendings(moviesTrending.slice(0, 9))
-      setIsLoaded(true)
+      setIsDataFetched(true)
     }
 
     loadingMovies()
   }, [])
 
-  const isImagesRequested = () => {
-    imagesRequested.current += 1
-
-    if (imagesRequested.current == 4) {
-      Animated.timing(fadeLoading, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start()
-
-      setTimeout(() => {
-        setDisplayLoading(false)
-      }, 800)
-    }
-  }
-
-  const renderItemFlatList = ({ item, index }: { item: dataMoviesModel, index: number }) => {
+  const renderItem = ({item}: {item: dataMoviesModel}) => {
     return (
-      <View style={{ paddingHorizontal: 10 }}>
-        <TouchableWithoutFeedback onPress={() => {
-          navigation.navigate('PosterMovie', { dataMovie: item})
+      <View style={{
+        width, 
+        justifyContent: "center", 
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        elevation: 10,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+        shadowRadius: 20,
         }}>
-          <Image
-            onLoad={() => isImagesRequested()}
-            source={{ uri: imageUrl + item.poster_path }}
-            style={{ width: 100, height: 150 }}/>
-        </TouchableWithoutFeedback>
+        <Image 
+          source={{ uri: imageUrl + item.poster_path}}
+          style={{
+            width: imageW,
+            height: imageH,
+            resizeMode: 'cover',
+            borderRadius: 10,
+            bottom: 30,
+            
+          }}/>
       </View>
     )
   }
@@ -79,51 +82,36 @@ const Trending: React.FC = () => {
 
       {isDataFetched &&
         <MainTrending>
-          <BannerTrendingView>
-            <ImageBackground
-              onLoad={(e) => isImagesRequested()}
-              style={{ width: '100%', height: 240 }}
-              source={{ uri: imageUrl + dataTrendings[0].backdrop_path }}>
-
-              <LinearGradient
-                colors={['#00000000', themeContext.background]}
-                style={{ height: '100%', width: '100%' }}>
-              </LinearGradient>
-
-              <InfoTrendingView>
-                <InfoTrendingText style={{ fontWeight: "500" }}>
-                  {dataTrendings[0].title}
-                </InfoTrendingText>
-
-                <InfoTrendingText style={{ fontSize: 14 }}>
-                  {dataTrendings[0].genre_ids[0] &&
-                    genreMovie[dataTrendings[0].genre_ids[0] as keyof genreMovieProps]}
-                  {dataTrendings[0].genre_ids[1] &&
-                    " - " + genreMovie[dataTrendings[0].genre_ids[1] as keyof genreMovieProps]}
-                  {dataTrendings[0].genre_ids[2] &&
-                    " - " + genreMovie[dataTrendings[0].genre_ids[2] as keyof genreMovieProps]}
-                </InfoTrendingText>
-
-                <TrendingRatingView>
-                  <TrendingRatingImage source={popcornRating} />
-
-                  <InfoTrendingText style={{ fontSize: 14, paddingBottom: 0 }}>
-                    {dataTrendings[0].vote_average.toFixed(1)}
-                  </InfoTrendingText>
-                </TrendingRatingView>
-              </InfoTrendingView>
-            </ImageBackground>
-          </BannerTrendingView>
-
-          <SectionMovieTitle>Trendings</SectionMovieTitle>
-          <FlatList
-            horizontal
+          <View style={StyleSheet.absoluteFillObject}>
+            {dataTrendings.map((item, index) => {
+              const inputRange = [
+                (index - 1) * width,
+                index * width,
+                (index + 1) * width
+              ]
+              const opacity = scrollX.interpolate({
+                inputRange,
+                outputRange: [0, 1, 0]
+              })
+              return (
+                <Animated.Image
+                  key={index}
+                  source={{uri: imageUrl + item.poster_path}}
+                  style={[StyleSheet.absoluteFillObject, { opacity }]}
+                  blurRadius={50}/>
+              )
+            })}
+          </View>
+          <Animated.FlatList 
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {x: scrollX}}}],
+              { useNativeDriver: true}
+            )}
             data={dataTrendings}
-            renderItem={renderItemFlatList}
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyExtractor={(movie) => String(movie.id)}
-            showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={true} />
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={renderItem}
+            pagingEnabled
+            horizontal/>
         </MainTrending>
       }
     </>

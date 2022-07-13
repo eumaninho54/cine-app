@@ -156,7 +156,8 @@ const Sessions: React.FC = () => {
       {HoursMap()}
 
       <ButtonsGroup>
-        <ButtonBuyTicket onPress={addToCar}>
+        <ButtonBuyTicket 
+          onPress={addToCar}>
           <Text>Add to car</Text>
         </ButtonBuyTicket>
 
