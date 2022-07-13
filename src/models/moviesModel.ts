@@ -1,5 +1,5 @@
 export interface dataMoviesModel {
-  id: number
+  id: number;
   vote_average: number;
   overview: string;
   release_date: string;
@@ -8,6 +8,6 @@ export interface dataMoviesModel {
   title: string;
   original_title: string;
   popularity: number;
-  genre_ids: number[]
+  genre_ids: number[];
 }
 

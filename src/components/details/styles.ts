@@ -12,7 +12,7 @@ export const MainDetails = styled.View`
 `;
 
 export const MainTitle = styled.Text`
-  color: ${({ theme }: MainLoginProps) => theme.white};
+  color: ${({ theme }: MainLoginProps) => theme.textColor};
   font-size: 18px;
   margin-bottom: 10px;
 `;
@@ -23,12 +23,12 @@ export const SectionView = styled.View`
 `;
 
 export const SectionTitle = styled.Text`
-  color: ${({ theme }: MainLoginProps) => theme.white};
+  color: ${({ theme }: MainLoginProps) => theme.textColor};
   font-size: 18px;
   font-weight: 600;
 `;
 
 export const SectionInfo = styled.Text`
-  color: ${({ theme }: MainLoginProps) => theme.white};
+  color: ${({ theme }: MainLoginProps) => theme.textColor};
   font-size: 16px;
 `;

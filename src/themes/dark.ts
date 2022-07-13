@@ -2,7 +2,7 @@ export default {
     primaryColor: "#FFC830",
     secundaryColor: "#fccb43",
     backgroundLogin: "#161616",
-    borderColor: "#252525",
+    borderColor: "#fff",
     textColorLogin: "#fff",
     background: "#202020",
     textColor: "#f0f0f0", 

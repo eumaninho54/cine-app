@@ -27,18 +27,21 @@ export const PosterInfoView = styled.View`
 `;
 
 export const PosterTitle = styled.Text`
-  color: ${({ theme }: MainLoginProps) => theme.textColor}; 
+  color: ${({ theme }: MainLoginProps) => theme.white}; 
+  text-shadow: 1px 1px 2px #0000002c;
   padding-bottom: 10px;
 `;
 
 export const PosterGenres = styled.Text`
-  color: ${({ theme }: MainLoginProps) => theme.textColor}; 
+  color: ${({ theme }: MainLoginProps) => theme.white}; 
+  text-shadow: 1px 1px 2px #0000002c;
   padding-bottom: 15px;
 `;
 
 export const RatingView = styled.View`
   flex-direction: row; 
   align-items: center;
+  text-shadow: 1px 1px 2px #0000002c;
 `;
 
 export const RatingPopcorn = styled.Image`

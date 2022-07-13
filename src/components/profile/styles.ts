@@ -62,7 +62,7 @@ export const EmoteLink = styled.View`
 `
 
 export const InfoLink = styled.Text`
-  color: ${({theme}: MainLoginProps) => theme.white};
+  color: ${({theme}: MainLoginProps) => theme.textColor};
   margin-left: 10px;
   font-size: 16px;
 `

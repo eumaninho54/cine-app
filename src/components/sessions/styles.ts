@@ -113,10 +113,17 @@ export const ButtonsGroup = styled.View`
 `;
 
 export const ButtonBuyTicket = styled.TouchableOpacity`
-  background-color: white;
+  background-color: ${({ theme }: MainLoginProps) => theme.borderColor};
   padding: 15px;
   border-radius: 5px;
   width: 90%;
   justify-content: center;
   align-items: center;
 `;
+
+export const TextBuyTicket = styled.Text`
+  color: ${({ theme }: MainLoginProps) => theme.background};
+`;
+
+
+

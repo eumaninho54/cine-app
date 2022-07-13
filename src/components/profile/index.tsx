@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
             <FontAwesome5
               name="linkedin"
               size={30}
-              color={themeContext.white} />
+              color={themeContext.textColor} />
 
           </EmoteLink>
 
@@ -83,7 +83,7 @@ const Profile: React.FC = () => {
             <FontAwesome
               name="mobile"
               size={35}
-              color={themeContext.white} />
+              color={themeContext.textColor} />
           </EmoteLink>
 
           <InfoLink>See app info</InfoLink>

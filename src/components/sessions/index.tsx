@@ -10,7 +10,7 @@ import { dataDays, dataDaysProps, hoursObject } from '../../models/dateWeek';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import { ticketContextProps } from '../../models/ticketModel';
-import { ButtonBuyTicket, ButtonsGroup, CarouselView, DayText, GradientSelected, HoursButton, HoursView, MainSessions, SelectDateText, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
+import { ButtonBuyTicket, ButtonsGroup, CarouselView, DayText, GradientSelected, HoursButton, HoursView, MainSessions, SelectDateText, TextBuyTicket, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 
 const SLIDER_WIDTH = Dimensions.get("window").width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.30
@@ -61,9 +61,9 @@ const Sessions: React.FC = () => {
             return (
               <HoursButton
                 onPress={() => setIndexHourSelected(index)}
-                style={{ borderColor: indexHourSelected == index ? themeContext.primaryColor : "white" }}
+                style={{ borderColor: indexHourSelected == index ? themeContext.primaryColor : themeContext.borderColor }}
                 key={index}>
-                <Text style={{ color: "white" }}>{hour}</Text>
+                <Text style={{ color: themeContext.borderColor }}>{hour}</Text>
               </HoursButton>
             )
           })
@@ -156,15 +156,15 @@ const Sessions: React.FC = () => {
       {HoursMap()}
 
       <ButtonsGroup>
-        <ButtonBuyTicket 
+        <ButtonBuyTicket
           onPress={addToCar}>
-          <Text>Add to car</Text>
+          <TextBuyTicket>Add to car</TextBuyTicket>
         </ButtonBuyTicket>
 
         <ButtonBuyTicket
           onPress={purchase}
           style={{ backgroundColor: themeContext.primaryColor, marginTop: 20 }}>
-          <Text>Purchase</Text>
+          <TextBuyTicket>Purchase</TextBuyTicket>
         </ButtonBuyTicket>
       </ButtonsGroup>
 
