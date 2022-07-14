@@ -10,7 +10,6 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { BackdropBg, BackdropImage, BackdropView, CarouselBg, CarouselPoster, EmptyView, GenresBg, GenreText, GenreView, MainCarousel, MainTrending, OverviewPoster, TitlePoster } from './styles';
 import { Rating } from 'react-native-elements';
 
-
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
 }
@@ -25,7 +24,6 @@ const BACKDROP_HEIGHT = height * 0.6
 
 const Trending: React.FC = () => {
   const [dataTrendings, setDataTrendings] = useState<any[]>([])
-  const [counterImages, setCounterImages] = useState(0)
   const imagesRequested = useRef(0)
   const fadeLoading = useState(new Animated.Value(1))[0]
   const [displayLoading, setDisplayLoading] = useState(true)
@@ -35,12 +33,11 @@ const Trending: React.FC = () => {
 
   useEffect(() => {
     const loadingMovies = async () => {
-      const moviesTrending = await moviesService.getTrending()
+      const moviesTrending = await moviesService.getMovie("trending")
 
       if (moviesTrending == null) {
         return
       }
-      setCounterImages((previus) => previus + moviesTrending.length)
       setDataTrendings([{ key: "left-spacer" }, ...moviesTrending, { key: "right-spacer" }])
     }
 
@@ -50,16 +47,14 @@ const Trending: React.FC = () => {
   const isImagesRequested = () => {
     imagesRequested.current += 1
 
-    if (imagesRequested.current == counterImages) {
+    if (imagesRequested.current == dataTrendings.length) {
       Animated.timing(fadeLoading, {
         toValue: 0,
         duration: 1000,
         useNativeDriver: true,
-      }).start()
-
-      setTimeout(() => {
+      }).start(() => {
         setDisplayLoading(false)
-      }, 800)
+      })
     }
   }
 
@@ -157,10 +152,6 @@ const Trending: React.FC = () => {
                 )
               })}
             </GenresBg>
-
-            <OverviewPoster numberOfLines={3}>
-              {item.overview}
-            </OverviewPoster>
           </CarouselBg>
         </TouchableWithoutFeedback>
       </MainCarousel >

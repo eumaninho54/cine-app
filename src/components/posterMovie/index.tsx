@@ -4,7 +4,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useState } from 'react';
 import { ImageBackground, View, Image, Text } from 'react-native';
 import { ThemeContext } from 'styled-components';
-import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import { MainPosterMovie, PosterGenres, PosterImage, PosterInfoView, PosterTitle, PosterView, RatingPopcorn, RatingText, RatingView, TabView } from './styles';
@@ -31,7 +30,7 @@ const PosterMovie: React.FC = () => {
   return (
     <MainPosterMovie>
       <ImageBackground
-        style={{ width: '100%', height: 350 }}
+        style={{ width: '100%', height: 300 }}
         source={{ uri: imageUrl + dataMovie.backdrop_path }}>
 
         <LinearGradient
@@ -47,11 +46,11 @@ const PosterMovie: React.FC = () => {
 
             <PosterGenres>
               {dataMovie.genre_ids[0] &&
-                genreMovie[dataMovie.genre_ids[0] as keyof genreMovieProps]}
+                        dataMovie.genre_ids[0]}
               {dataMovie.genre_ids[1] &&
-                " - " + genreMovie[dataMovie.genre_ids[1] as keyof genreMovieProps]}
+                " - " + dataMovie.genre_ids[1]}
               {dataMovie.genre_ids[2] &&
-                " - " + genreMovie[dataMovie.genre_ids[2] as keyof genreMovieProps]}
+                " - " + dataMovie.genre_ids[2]}
             </PosterGenres>
 
             <RatingView>

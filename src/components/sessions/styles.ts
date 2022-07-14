@@ -7,7 +7,7 @@ export const MainSessions = styled.View`
   background-color: ${({ theme }: MainLoginProps) => theme.background};
   width: 100%;
   flex: 1;
-  align-items: center;
+  justify-content: space-between;
 `;
 
 export const TicketCarouselBorder = styled.View`
@@ -88,41 +88,26 @@ export const SelectDateText = styled.Text`
   padding: 10px 20px;
 `;
 
-export const CarouselView = styled.View`
-  height: 160px;
-`;
-
-export const HoursView = styled.View`
-  width: 70%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-`;
-
-export const HoursButton = styled.TouchableOpacity`
-  border-width: 4px;
-  border-radius: 2px;
-  padding: 10px;
-`
-
 export const ButtonsGroup = styled.View`
-  margin-top: 40px;
+  bottom: 0px;
   width: 100%;
   align-items: center;
-  justify-content: center;
 `;
 
-export const ButtonBuyTicket = styled.TouchableOpacity`
-  background-color: ${({ theme }: MainLoginProps) => theme.borderColor};
+export const ButtonReservation = styled.TouchableOpacity`
+  background-color: ${({ theme }: MainLoginProps) => theme.primaryColor};
   padding: 15px;
-  border-radius: 5px;
-  width: 90%;
+  border-radius: 10px;
+  width: 85%;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 export const TextBuyTicket = styled.Text`
-  color: ${({ theme }: MainLoginProps) => theme.background};
+  color: ${({ theme }: MainLoginProps) => theme.white};
+  font-weight: 900;
+  font-size:  16px;
 `;
 
 

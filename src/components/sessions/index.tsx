@@ -10,7 +10,7 @@ import { dataDays, dataDaysProps, hoursObject } from '../../models/dateWeek';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import { ticketContextProps } from '../../models/ticketModel';
-import { ButtonBuyTicket, ButtonsGroup, CarouselView, DayText, GradientSelected, HoursButton, HoursView, MainSessions, SelectDateText, TextBuyTicket, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
+import { ButtonReservation, ButtonsGroup, DayText, GradientSelected, MainSessions, SelectDateText, TextBuyTicket, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 
 const SLIDER_WIDTH = Dimensions.get("window").width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.30
@@ -19,57 +19,15 @@ const Sessions: React.FC = () => {
   const navigation = useNavigation<NavigationProp<any>>()
   const themeContext = useContext<themeModel>(ThemeContext)
   const [indexDateSelected, setIndexDateSelected] = useState(3)
-  const [indexHourSelected, setIndexHourSelected] = useState<number>()
-  const { numTicketCar, setNumTicketCar } = useContext<ticketContextProps>(TicketContext)
+  const { setNumTicketCar } = useContext<ticketContextProps>(TicketContext)
 
   const addToCar = () => {
-    if (indexHourSelected == undefined) {
-      showMessage({
-        message: "Failed to add",
-        description: "Select the time",
-        backgroundColor: themeContext.primaryColor,
-        icon: 'warning',
-        type: "warning"
-      })
-
-      return
-    }
-
     setNumTicketCar((value) => value + 1)
     navigation.goBack()
   }
 
   const purchase = () => {
-    if (indexHourSelected == undefined) {
-      showMessage({
-        message: "Failed to add",
-        description: "Select the time",
-        backgroundColor: themeContext.primaryColor,
-        icon: 'warning',
-        type: "warning"
-      })
 
-      return
-    }
-  }
-
-  const HoursMap = () => {
-    return (
-      <HoursView>
-        {
-          hoursObject.map((hour, index) => {
-            return (
-              <HoursButton
-                onPress={() => setIndexHourSelected(index)}
-                style={{ borderColor: indexHourSelected == index ? themeContext.primaryColor : themeContext.borderColor }}
-                key={index}>
-                <Text style={{ color: themeContext.borderColor }}>{hour}</Text>
-              </HoursButton>
-            )
-          })
-        }
-      </HoursView>
-    )
   }
 
   const renderItemDate = ({ item, index }: { item: dataDaysProps, index: number }) => {
@@ -135,13 +93,13 @@ const Sessions: React.FC = () => {
 
   return (
     <MainSessions>
-      <SelectDateText>
-        {'Select '}
-        <SelectDateText style={{ fontWeight: "400" }}>
-          Date
+      <View>
+        <SelectDateText>
+          {'Select '}
+          <SelectDateText style={{ fontWeight: "400" }}>
+            Date
+          </SelectDateText>
         </SelectDateText>
-      </SelectDateText>
-      <CarouselView>
         <Carousel
           data={dataDays}
           firstItem={3}
@@ -151,21 +109,13 @@ const Sessions: React.FC = () => {
           itemWidth={ITEM_WIDTH}
           onBeforeSnapToItem={(index) => setIndexDateSelected(index)}
         />
-      </CarouselView>
-
-      {HoursMap()}
+      </View>
 
       <ButtonsGroup>
-        <ButtonBuyTicket
-          onPress={addToCar}>
-          <TextBuyTicket>Add to car</TextBuyTicket>
-        </ButtonBuyTicket>
-
-        <ButtonBuyTicket
-          onPress={purchase}
-          style={{ backgroundColor: themeContext.primaryColor, marginTop: 20 }}>
+        <ButtonReservation
+          onPress={purchase}>
           <TextBuyTicket>Purchase</TextBuyTicket>
-        </ButtonBuyTicket>
+        </ButtonReservation>
       </ButtonsGroup>
 
     </MainSessions>

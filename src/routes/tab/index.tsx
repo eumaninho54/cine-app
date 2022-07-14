@@ -50,7 +50,7 @@ export default function TabNav() {
             borderTopColor: themeContext.tabNav,
             backgroundColor: themeContext.tabNav,
             position: "absolute",
-            bottom: 20,
+            bottom: 5,
             marginHorizontal: 20,
             height: 60,
             borderRadius: 10,
@@ -180,7 +180,7 @@ export default function TabNav() {
           height: 3,
           backgroundColor: themeContext.primaryColor,
           position: 'absolute',
-          bottom: 77,
+          bottom: 62,
           left: 33,
           borderRadius: 50,
           transform: [

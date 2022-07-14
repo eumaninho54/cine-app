@@ -8,8 +8,14 @@ import { themeModel } from '../../models/themeModel';
 const IconSearchHeader: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
 
+  const onSearch = () => {
+
+  }
+
   return (
-    <TouchableOpacity style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
+    <TouchableOpacity 
+      onPress={() => onSearch()}
+      style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
       <FontAwesome5
         name="search"
         size={28}

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, Image, ImageBackground, Animated, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
-import { BannerTrendingView, InfoTrendingText, InfoTrendingView, MainTrending, SectionMovieTitle, TrendingRatingImage, TrendingRatingView } from './styles';
+import { BannerMoviesView, InfoMoviesText, InfoMoviesView, MainMovies, SectionMovieTitle, MoviesRatingImage, MoviesRatingView } from './styles';
 import moviesService from '../../services/moviesService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,27 +16,32 @@ interface navigateProp {
 }
 
 
-const Trending: React.FC = () => {
-  const imageUrl = "https://image.tmdb.org/t/p/original"
-  const [dataTrendings, setDataTrendings] = useState<dataMoviesModel[]>([])
-  const [counterImages, setCounterImages] = useState(0)
+const Movies: React.FC = () => {
+  const [dataNowPlaying, setDataNowPlaying] = useState<dataMoviesModel[]>([])
+  const [dataTopRated, setDataTopRated] = useState<dataMoviesModel[]>([])
+  const [dataAction, setDataAction] = useState<dataMoviesModel[]>([])
+  const [dataPopular, setDataPopular] = useState<dataMoviesModel[]>([])
   const imagesRequested = useRef(0)
   const fadeLoading = useState(new Animated.Value(1))[0]
   const [displayLoading, setDisplayLoading] = useState(true)
-  const [isDataFetched, setIsDataFetched] = useState(false)
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
 
   useEffect(() => {
     const loadingMovies = async () => {
-      const moviesTrending = await moviesService.getTrending()
+      const moviesNowPlaying = await moviesService.getMovie("nowPlaying")
+      const moviesTopRated = await moviesService.getMovie("topRated")
+      const moviesAction = await moviesService.getMovie("action")
+      const moviesPopular = await moviesService.getMovie("popular")
 
-      if (moviesTrending == null) {
+      if (moviesNowPlaying == null || moviesTopRated == null ||
+          moviesAction == null || moviesPopular == null) {
         return
       }
-      setCounterImages((previus) => previus + moviesTrending.slice(0, 9).length)
-      setDataTrendings(moviesTrending.slice(0, 9))
-      setIsDataFetched(true)
+      setDataNowPlaying(moviesNowPlaying.slice(0, 9))
+      setDataTopRated(moviesTopRated.slice(0, 9))
+      setDataAction(moviesAction.slice(0, 9))
+      setDataPopular(moviesPopular.slice(0, 9).reverse())
     }
 
     loadingMovies()
@@ -46,16 +51,14 @@ const Trending: React.FC = () => {
   const isImagesRequested = () => {
     imagesRequested.current += 1
 
-    if (imagesRequested.current == counterImages) {
+    if (imagesRequested.current == 1) {
       Animated.timing(fadeLoading, {
         toValue: 0,
         duration: 1000,
         useNativeDriver: true,
-      }).start()
-
-      setTimeout(() => {
+      }).start(() => {
         setDisplayLoading(false)
-      }, 800)
+      })
     }
   }
 
@@ -63,12 +66,12 @@ const Trending: React.FC = () => {
     return (
       <View style={{ paddingHorizontal: 10 }}>
         <TouchableWithoutFeedback onPress={() => {
-          navigation.navigate('PosterMovie', { dataMovie: item})
+          navigation.navigate('PosterMovie', { dataMovie: item })
         }}>
           <Image
             onLoad={() => isImagesRequested()}
-            source={{ uri: imageUrl + item.poster_path }}
-            style={{ width: 100, height: 150 }}/>
+            source={{ uri: item.poster_path }}
+            style={{ width: 100, height: 150 }} />
         </TouchableWithoutFeedback>
       </View>
     )
@@ -78,59 +81,84 @@ const Trending: React.FC = () => {
     <>
       <LoadingScreen opacity={fadeLoading} display={displayLoading} />
 
-      {isDataFetched &&
-        <MainTrending>
-          <BannerTrendingView>
+      {dataNowPlaying.length != 0 &&
+        <MainMovies>
+          <BannerMoviesView>
             <ImageBackground
               onLoad={(e) => isImagesRequested()}
               style={{ width: '100%', height: 240 }}
-              source={{ uri: imageUrl + dataTrendings[0].backdrop_path }}>
+              source={{ uri: dataNowPlaying[0].backdrop_path }}>
 
               <LinearGradient
                 colors={['#00000000', themeContext.background]}
                 style={{ height: '100%', width: '100%' }}>
               </LinearGradient>
 
-              <InfoTrendingView>
-                <InfoTrendingText style={{ fontWeight: "500" }}>
-                  {dataTrendings[0].title}
-                </InfoTrendingText>
+              <InfoMoviesView>
+                <InfoMoviesText style={{ fontWeight: "500" }}>
+                  {dataNowPlaying[0].title}
+                </InfoMoviesText>
 
-                <InfoTrendingText style={{ fontSize: 14 }}>
-                  {dataTrendings[0].genre_ids[0] &&
-                            dataTrendings[0].genre_ids[0]}
-                  {dataTrendings[0].genre_ids[1] &&
-                    " - " + dataTrendings[0].genre_ids[1]}
-                  {dataTrendings[0].genre_ids[2] &&
-                    " - " + dataTrendings[0].genre_ids[2]}
-                </InfoTrendingText>
+                <InfoMoviesText style={{ fontSize: 14 }}>
+                  {dataNowPlaying[0].genre_ids[0] &&
+                    dataNowPlaying[0].genre_ids[0]}
+                  {dataNowPlaying[0].genre_ids[1] &&
+                    " - " + dataNowPlaying[0].genre_ids[1]}
+                  {dataNowPlaying[0].genre_ids[2] &&
+                    " - " + dataNowPlaying[0].genre_ids[2]}
+                </InfoMoviesText>
 
-                <TrendingRatingView>
-                  <TrendingRatingImage source={popcornRating} />
+                <MoviesRatingView>
+                  <MoviesRatingImage source={popcornRating} />
 
-                  <InfoTrendingText style={{ fontSize: 14, paddingBottom: 0 }}>
-                    {dataTrendings[0].vote_average.toFixed(1)}
-                  </InfoTrendingText>
-                </TrendingRatingView>
-              </InfoTrendingView>
+                  <InfoMoviesText style={{ fontSize: 14, paddingBottom: 0 }}>
+                    {dataNowPlaying[0].vote_average.toFixed(1)}
+                  </InfoMoviesText>
+                </MoviesRatingView>
+              </InfoMoviesView>
             </ImageBackground>
-          </BannerTrendingView>
+          </BannerMoviesView>
 
-          <SectionMovieTitle>Trendings</SectionMovieTitle>
+          <SectionMovieTitle>Now playing</SectionMovieTitle>
           <FlatList
             horizontal
-            data={dataTrendings}
+            data={dataNowPlaying}
             renderItem={renderItemFlatList}
             contentContainerStyle={{ flexGrow: 1 }}
             keyExtractor={(movie) => String(movie.id)}
             showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={true} 
-            />
-        </MainTrending>
+            removeClippedSubviews={true}
+          />
+
+          <SectionMovieTitle>Popular</SectionMovieTitle>
+          <FlatList
+            horizontal
+            data={dataPopular}
+            renderItem={renderItemFlatList}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyExtractor={(movie) => String(movie.id)}
+            showsHorizontalScrollIndicator={false}
+            removeClippedSubviews={true}
+          />
+
+          <SectionMovieTitle>Top rated</SectionMovieTitle>
+          <FlatList
+            horizontal
+            data={dataTopRated}
+            renderItem={renderItemFlatList}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyExtractor={(movie) => String(movie.id)}
+            showsHorizontalScrollIndicator={false}
+            removeClippedSubviews={true}
+          />
+
+
+          <View style={{ height: 100 }} />
+        </MainMovies>
       }
     </>
 
   )
 }
 
-export default Trending;
+export default Movies;

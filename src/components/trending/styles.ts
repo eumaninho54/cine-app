@@ -18,7 +18,7 @@ export const CarouselBg = styled(Animated.View)`
   align-items: center;
   background-color: ${({ theme }: { theme: themeModel }) => theme.background};
   border-radius: 34px;
-  bottom: 60px ;
+  bottom: 25px ;
 `;
 
 export const CarouselPoster = styled.Image`
@@ -60,7 +60,7 @@ export const GenreText = styled.Text`
 `;
 
 export const BackdropView = styled.View`
-  position: absolute; 
+  position: absolute;
   width: ${({ width }: { width: number }) => `${width}px`};
   height: ${({ BACKDROP_HEIGHT }: { BACKDROP_HEIGHT: number, width: number }) => `${BACKDROP_HEIGHT}px`};
 `;

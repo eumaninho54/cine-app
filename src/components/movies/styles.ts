@@ -3,22 +3,22 @@ import { Animated } from "react-native";
 import styled from "styled-components/native";
 import { MainLoginProps } from "../../models/themeModel";
 
-export const MainTrending = styled.ScrollView`
+export const MainMovies = styled.ScrollView`
   background-color: ${({ theme }: MainLoginProps) => theme.background};
   flex: 1;
 `;
 
-export const BannerTrendingView = styled.View`
+export const BannerMoviesView = styled.View`
   height: 240px;
   width: 100%;
 `;
 
-export const BannerTrendingBackground = styled.ImageBackground`
+export const BannerMoviesBackground = styled.ImageBackground`
   width: 100%;
   height: 220px;
 `;
 
-export const InfoTrendingView = styled.View`
+export const InfoMoviesView = styled.View`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
@@ -28,7 +28,7 @@ export const InfoTrendingView = styled.View`
   width: 100%;
 `;
 
-export const InfoTrendingText = styled.Text`
+export const InfoMoviesText = styled.Text`
   font-size: 20px;
   color: ${({ theme }: MainLoginProps) => theme.textColor};
   padding-bottom: 5px;
@@ -37,14 +37,14 @@ export const InfoTrendingText = styled.Text`
   justify-content:  center;
 `;
 
-export const TrendingRatingView = styled.View`
+export const MoviesRatingView = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-top: 5px;
 `;
 
-export const TrendingRatingImage = styled.Image`
+export const MoviesRatingImage = styled.Image`
   width: 25px;
   height: 25px;
 `;

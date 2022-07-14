@@ -9,14 +9,19 @@ class MoviesService {
 
   constructor() { }
 
-  async getTrending(): Promise<dataMoviesModel[] | null> {
+  async getMovie(category: "trending" | "nowPlaying" | "topRated" | "action" | "popular"): Promise<dataMoviesModel[] | null> {
+    const categorySelected = this.switchCategory(category)
     let req: dataMoviesModel[] | null = null
 
     await axios.request({
       method: "get",
-      url: this.baseURL + "/trending/movie/day?api_key=" + KEY_THEMOVIEDB
+      url: this.baseURL + categorySelected + KEY_THEMOVIEDB
     }).then(({data}) => { 
-      req = data['results'].map((
+      const dataReq = data['results'].filter((item: dataMoviesModel) => {
+        return item.backdrop_path != null && item.poster_path != null
+      })
+
+      req = dataReq.map((
         {
           id,
           original_title,
@@ -47,6 +52,21 @@ class MoviesService {
       .catch((res) => { req = null })
 
     return req
+  }
+  
+  private switchCategory(category: string){
+    switch (category) {
+      case "trending":
+          return "/trending/movie/day?api_key="
+      case "nowPlaying":
+          return "/movie/now_playing?api_key="
+      case "topRated":
+          return "/movie/top_rated?api_key="
+      case "action":
+          return "/movie/44943/similar?api_key="
+      case "popular":
+          return "/movie/popular?api_key="
+    }
   }
 
   private getBackdropPath(path: string){

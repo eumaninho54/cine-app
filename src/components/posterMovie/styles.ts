@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import { MainLoginProps } from "../../models/themeModel";
 
-export const MainPosterMovie = styled.ScrollView`
+export const MainPosterMovie = styled.View`
   background-color: ${({ theme }: MainLoginProps) => theme.background};
   flex: 1;
 `;
@@ -56,7 +56,6 @@ export const RatingText = styled.Text`
 `;
 
 export const TabView = styled.View`
-  height: 500px;
   flex: 1;
   padding-top: 10px;
 `;

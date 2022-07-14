@@ -34,12 +34,12 @@ const Details: React.FC = () => {
 
       <SectionView>
         <SectionTitle>Overview</SectionTitle>
-        <SectionInfo numberOfLines={4}>{dataMovie.overview}</SectionInfo>
+        <SectionInfo>{dataMovie.overview}</SectionInfo>
       </SectionView>
 
       <SectionView>
         <SectionTitle>Popularity</SectionTitle>
-        <SectionInfo>{dataMovie.popularity}</SectionInfo>
+        <SectionInfo style={{paddingBottom: 50}}>{dataMovie.popularity}</SectionInfo>
       </SectionView>
     </MainDetails>
   )
