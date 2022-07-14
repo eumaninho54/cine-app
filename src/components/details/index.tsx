@@ -18,7 +18,6 @@ const Details: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const dataMovie = useRoute<routeProp>().params
   
-  console.tron.log!(dataMovie)
   return (
     <MainDetails>
       <MainTitle>Details</MainTitle>

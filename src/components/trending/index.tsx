@@ -1,17 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, Image, ImageBackground, Animated, FlatList, TouchableWithoutFeedback, Dimensions, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image, Animated, FlatList, Dimensions, Platform, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
 import moviesService from '../../services/moviesService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { LinearGradient } from 'expo-linear-gradient';
-import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
-import popcornRating from '../../../assets/popcorn.png'
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { MainTrending } from './styles';
-import MaskedView from '@react-native-community/masked-view'
-import Svg, { Rect } from 'react-native-svg'
+import { BackdropBg, BackdropImage, BackdropView, CarouselBg, CarouselPoster, EmptyView, GenresBg, GenreText, GenreView, MainCarousel, MainTrending, OverviewPoster, TitlePoster } from './styles';
+import { Rating } from 'react-native-elements';
+
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
@@ -26,7 +24,6 @@ const SPACER_ITEM_SIZE = (width - ITEM_SIZE) / 2
 const BACKDROP_HEIGHT = height * 0.6
 
 const Trending: React.FC = () => {
-  const imageUrl = "https://image.tmdb.org/t/p/original"
   const [dataTrendings, setDataTrendings] = useState<any[]>([])
   const [counterImages, setCounterImages] = useState(0)
   const imagesRequested = useRef(0)
@@ -36,8 +33,6 @@ const Trending: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
   const scrollX = useRef(new Animated.Value(0)).current
-
-
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -54,9 +49,9 @@ const Trending: React.FC = () => {
     loadingMovies()
   }, [])
 
-  const Backdrop = ({ movies, scrollX }: any) => {
+  const Backdrop = ({ movies, scrollX }: { movies: dataMoviesModel[], scrollX: Animated.Value }) => {
     return (
-      <View style={{ position: 'absolute', width, height: BACKDROP_HEIGHT }}>
+      <BackdropView width={width} BACKDROP_HEIGHT={BACKDROP_HEIGHT} >
         <FlatList
           data={movies.reverse()}
           keyExtractor={(_, index) => index.toString() + '-backdrop'}
@@ -71,24 +66,21 @@ const Trending: React.FC = () => {
             });
 
             return (
-              <Animated.View
+              <BackdropBg
                 removeClippedSubviews={false}
-                style={{
-                  position: 'absolute',
-                  width: translateX,
-                  height,
-                  overflow: 'hidden'
-                }}>
-                <Image
-                  source={{ uri: imageUrl + item.backdrop_path }}
-                  style={{ width, height: BACKDROP_HEIGHT, position: 'absolute' }} />
-              </Animated.View>
+                height={height}
+                style={{ width: translateX }}>
+                <BackdropImage
+                  width={width}
+                  BACKDROP_HEIGHT={BACKDROP_HEIGHT}
+                  source={{ uri: item.backdrop_path }} />
+              </BackdropBg>
             )
           }} />
         <LinearGradient
           colors={['rgba(0, 0, 0, 0)', themeContext.background]}
           style={{ height: BACKDROP_HEIGHT, width, position: 'absolute', bottom: 0 }} />
-      </View>
+      </BackdropView>
 
     )
   }
@@ -96,7 +88,7 @@ const Trending: React.FC = () => {
   const renderItemCarousel = ({ item, index }: { item: dataMoviesModel, index: number }) => {
     if (!item.id) {
       return (
-        <View style={{ width: SPACER_ITEM_SIZE }} />
+        <EmptyView SPACER_ITEM_SIZE={SPACER_ITEM_SIZE} />
       )
     }
 
@@ -112,39 +104,50 @@ const Trending: React.FC = () => {
     })
 
     return (
-      <View style={{ width: ITEM_SIZE }}>
-        <Animated.View style={{
-          marginHorizontal: SPACING,
-          padding: SPACING * 2,
-          alignItems: 'center',
-          backgroundColor: themeContext.background,
-          borderRadius: 34,
-          transform: [{ translateY }],
-          bottom: '10%'
-        }}>
-          <Image
-            source={{ uri: imageUrl + item.poster_path }}
-            style={{
-              width: '100%',
-              height: ITEM_SIZE * 1.1,
-              resizeMode: 'cover',
-              borderRadius: 24,
-              margin: 0,
-              marginBottom: 10,
-            }} />
-          <Text style={{ fontSize: 24, color: themeContext.textColor }} numberOfLines={1}>
-            {item.title}
-          </Text>
+      <MainCarousel width={ITEM_SIZE}>
+        <TouchableWithoutFeedback 
+          onPress={() => navigation.navigate('PosterMovie', { dataMovie: item})}>
+          <CarouselBg
+            SPACING={SPACING}
+            style={{ transform: [{ translateY }] }}>
+            <CarouselPoster
+              source={{ uri: item.poster_path }}
+              width={ITEM_SIZE}
+              style={{ resizeMode: 'cover' }} />
+            <TitlePoster numberOfLines={1}>
+              {item.title}
+            </TitlePoster>
 
-          {/*RATING*/}
+            {/*RATING*/}
+            <Rating
+              type='custom'
+              imageSize={20}
+              readonly
+              startingValue={item.vote_average / 2}
+              ratingColor={themeContext.primaryColor}
+              tintColor={themeContext.background} />
 
-          {/*GENRES*/}
+            {/*GENRES*/}
+            <GenresBg>
+              {item.genre_ids.map((genre, index) => {
+                if (index > 2) return
 
-          <Text style={{ fontSize: 12 }} numberOfLines={3}>
-            {item.overview}
-          </Text>
-        </Animated.View>
-      </View>
+                return (
+                  <GenreView key={`${index}-genre`}>
+                    <GenreText>
+                      {genre}
+                    </GenreText>
+                  </GenreView>
+                )
+              })}
+            </GenresBg>
+
+            <OverviewPoster numberOfLines={3}>
+              {item.overview}
+            </OverviewPoster>
+          </CarouselBg>
+        </TouchableWithoutFeedback>
+      </MainCarousel >
     )
   }
 

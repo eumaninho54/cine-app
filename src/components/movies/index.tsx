@@ -45,7 +45,7 @@ const Trending: React.FC = () => {
   const isImagesRequested = () => {
     imagesRequested.current += 1
 
-    if (imagesRequested.current == 4) {
+    if (imagesRequested.current == 10) {
       Animated.timing(fadeLoading, {
         toValue: 0,
         duration: 1000,
@@ -97,11 +97,11 @@ const Trending: React.FC = () => {
 
                 <InfoTrendingText style={{ fontSize: 14 }}>
                   {dataTrendings[0].genre_ids[0] &&
-                    genreMovie[dataTrendings[0].genre_ids[0] as keyof genreMovieProps]}
+                            dataTrendings[0].genre_ids[0]}
                   {dataTrendings[0].genre_ids[1] &&
-                    " - " + genreMovie[dataTrendings[0].genre_ids[1] as keyof genreMovieProps]}
+                    " - " + dataTrendings[0].genre_ids[1]}
                   {dataTrendings[0].genre_ids[2] &&
-                    " - " + genreMovie[dataTrendings[0].genre_ids[2] as keyof genreMovieProps]}
+                    " - " + dataTrendings[0].genre_ids[2]}
                 </InfoTrendingText>
 
                 <TrendingRatingView>
