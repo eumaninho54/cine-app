@@ -42,10 +42,11 @@ const Trending: React.FC = () => {
     loadingMovies()
   }, [])
 
+
   const isImagesRequested = () => {
     imagesRequested.current += 1
 
-    if (imagesRequested.current == 10) {
+    if (imagesRequested.current == counterImages) {
       Animated.timing(fadeLoading, {
         toValue: 0,
         duration: 1000,
@@ -123,7 +124,8 @@ const Trending: React.FC = () => {
             contentContainerStyle={{ flexGrow: 1 }}
             keyExtractor={(movie) => String(movie.id)}
             showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={true} />
+            removeClippedSubviews={true} 
+            />
         </MainTrending>
       }
     </>

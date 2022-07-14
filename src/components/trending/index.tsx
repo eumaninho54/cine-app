@@ -28,8 +28,7 @@ const Trending: React.FC = () => {
   const [counterImages, setCounterImages] = useState(0)
   const imagesRequested = useRef(0)
   const fadeLoading = useState(new Animated.Value(1))[0]
-  const [displayLoading, setDisplayLoading] = useState(false)
-  const [isDataFetched, setIsDataFetched] = useState(false)
+  const [displayLoading, setDisplayLoading] = useState(true)
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
   const scrollX = useRef(new Animated.Value(0)).current
@@ -41,19 +40,34 @@ const Trending: React.FC = () => {
       if (moviesTrending == null) {
         return
       }
-      setCounterImages((previus) => previus + moviesTrending.slice(0, 9).length)
+      setCounterImages((previus) => previus + moviesTrending.length)
       setDataTrendings([{ key: "left-spacer" }, ...moviesTrending, { key: "right-spacer" }])
-      setIsDataFetched(true)
     }
 
     loadingMovies()
   }, [])
 
+  const isImagesRequested = () => {
+    imagesRequested.current += 1
+
+    if (imagesRequested.current == counterImages) {
+      Animated.timing(fadeLoading, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start()
+
+      setTimeout(() => {
+        setDisplayLoading(false)
+      }, 800)
+    }
+  }
+
   const Backdrop = ({ movies, scrollX }: { movies: dataMoviesModel[], scrollX: Animated.Value }) => {
     return (
       <BackdropView width={width} BACKDROP_HEIGHT={BACKDROP_HEIGHT} >
         <FlatList
-          data={movies.reverse()}
+          data={movies}
           keyExtractor={(_, index) => index.toString() + '-backdrop'}
           removeClippedSubviews={false}
           contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
@@ -71,6 +85,7 @@ const Trending: React.FC = () => {
                 height={height}
                 style={{ width: translateX }}>
                 <BackdropImage
+                  onLoad={() => isImagesRequested()}
                   width={width}
                   BACKDROP_HEIGHT={BACKDROP_HEIGHT}
                   source={{ uri: item.backdrop_path }} />
@@ -105,12 +120,13 @@ const Trending: React.FC = () => {
 
     return (
       <MainCarousel width={ITEM_SIZE}>
-        <TouchableWithoutFeedback 
-          onPress={() => navigation.navigate('PosterMovie', { dataMovie: item})}>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('PosterMovie', { dataMovie: item })}>
           <CarouselBg
             SPACING={SPACING}
             style={{ transform: [{ translateY }] }}>
             <CarouselPoster
+              onLoad={() => isImagesRequested()}
               source={{ uri: item.poster_path }}
               width={ITEM_SIZE}
               style={{ resizeMode: 'cover' }} />
@@ -155,7 +171,7 @@ const Trending: React.FC = () => {
     <>
       <LoadingScreen opacity={fadeLoading} display={displayLoading} />
 
-      {isDataFetched &&
+      {dataTrendings.length != 0 &&
         <MainTrending>
           <Backdrop movies={dataTrendings} scrollX={scrollX} />
           <Animated.FlatList
