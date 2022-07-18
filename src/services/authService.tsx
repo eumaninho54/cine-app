@@ -16,7 +16,6 @@ class AuthService {
       .catch(() => null)
 
     return req
-
   }
 
   async signIn(email: string, password: string) {
@@ -44,6 +43,19 @@ class AuthService {
       }
     }).then(() => true)
       .catch(() => false)
+
+    return req
+  }
+
+  async changeFavorite(movieSelected: { isSelected: boolean, idMovie: number }, idUser: number): Promise<userProps | null> {
+    const req = await axios({
+      method: "patch",
+      url: this.baseURL + `/user/favorite/${idUser}`,
+      data: {
+        movieSelected: movieSelected
+      }
+    }).then((res) => res.data)
+      .catch(() => null)
 
     return req
   }

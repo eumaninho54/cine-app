@@ -9,11 +9,21 @@ export interface authContextProps {
   logout: () => void
   infoUser: userProps
   setInfoUser: React.Dispatch<React.SetStateAction<userProps>>
+  isSelectedFavorite: {
+    isSelected: boolean;
+    idMovie: number;
+  }
+  setIsSelectedFavorite: React.Dispatch<React.SetStateAction<{
+    isSelected: boolean;
+    idMovie: number;
+  }>>
 }
 
 export interface userProps {
+  id: number
   email: string
   username: string
+  favorites: number[]
 }
 
 export interface signInProps {
@@ -22,7 +32,9 @@ export interface signInProps {
     token: string
   }
   infoUser: {
+    id: number
     username: string,
     email: string
+    favorites: number[]
   }
 }

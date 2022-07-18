@@ -114,7 +114,7 @@ const Sessions: React.FC = () => {
       <ButtonsGroup>
         <ButtonReservation
           onPress={purchase}>
-          <TextBuyTicket>Purchase</TextBuyTicket>
+          <TextBuyTicket>Reservation</TextBuyTicket>
         </ButtonReservation>
       </ButtonsGroup>
 

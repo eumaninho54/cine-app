@@ -6,19 +6,17 @@ import moviesService from '../../services/moviesService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { LinearGradient } from 'expo-linear-gradient';
 import LoadingScreen from '../../templates/loadingScreen';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
 import { BackdropBg, BackdropImage, BackdropView, CarouselBg, CarouselPoster, EmptyView, GenresBg, GenreText, GenreView, MainCarousel, MainTrending, OverviewPoster, TitlePoster } from './styles';
 import { Rating } from 'react-native-elements';
-
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
-}
+import authService from '../../services/authService';
+import { authContextProps } from '../../models/authModel';
+import { AuthContext } from '../../context/authContext';
 
 const { width, height } = Dimensions.get("screen")
 const SPACING = 10
 const ITEM_SIZE = width * 0.72
 const imageW = width * 0.5
-const imageH = imageW * 1.50
 const SPACER_ITEM_SIZE = (width - ITEM_SIZE) / 2
 const BACKDROP_HEIGHT = height * 0.6
 
@@ -30,6 +28,7 @@ const Trending: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
   const scrollX = useRef(new Animated.Value(0)).current
+  const { infoUser, setIsSelectedFavorite } = useContext<authContextProps>(AuthContext)
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -43,6 +42,17 @@ const Trending: React.FC = () => {
 
     loadingMovies()
   }, [])
+
+  const selectedMovie = (item: dataMoviesModel) => {
+    if(infoUser.favorites.find((value) => value == item.id)){
+      setIsSelectedFavorite({isSelected: true, idMovie: item.id})
+      navigation.navigate('PosterMovie', { dataMovie: item })
+      return
+    }
+    
+    setIsSelectedFavorite({isSelected: false, idMovie: item.id})
+    navigation.navigate('PosterMovie', { dataMovie: item })
+  }
 
   const isImagesRequested = () => {
     imagesRequested.current += 1
@@ -116,7 +126,7 @@ const Trending: React.FC = () => {
     return (
       <MainCarousel width={ITEM_SIZE}>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('PosterMovie', { dataMovie: item })}>
+          onPress={() => selectedMovie(item)}>
           <CarouselBg
             SPACING={SPACING}
             style={{ transform: [{ translateY }] }}>

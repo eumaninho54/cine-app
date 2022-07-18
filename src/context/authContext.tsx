@@ -13,13 +13,16 @@ export const AuthContext = createContext<authContextProps | any>({})
 const { Provider } = AuthContext
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [isSelectedFavorite, setIsSelectedFavorite] = useState({isSelected: false, idMovie: 0})
   const [authState, setAuthState] = useState<authStateProps>({
     auth: null,
     token: null
   })
   const [infoUser, setInfoUser] = useState<userProps>({
+    id: 0,
     email: "",
-    username: ""
+    username: "",
+    favorites: []
   })
 
   const logout = async () => {
@@ -57,7 +60,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setAuthState,
         logout,
         infoUser,
-        setInfoUser
+        setInfoUser,
+        isSelectedFavorite,
+        setIsSelectedFavorite
       }}>
       {children}
     </Provider>

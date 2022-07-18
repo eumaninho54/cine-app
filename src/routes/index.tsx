@@ -1,26 +1,53 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/authContext'
 import LoginNavigation from './login'
 import TabNav from './tab'
 import { authContextProps } from '../models/authModel'
 import Profile from '../components/profile'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { themeModel } from '../models/themeModel'
 import { ThemeContext } from 'styled-components'
 import LoadingScreen from '../templates/loadingScreen'
 import PosterMovie from '../components/posterMovie'
+import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
+import { ButtonIsFavorite } from './styles'
+import authService from '../services/authService'
+import * as SecureStore from 'expo-secure-store';
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
 
 export default function Routes() {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const authContext = useContext<authContextProps>(AuthContext)
+  const {
+    isSelectedFavorite,
+    setIsSelectedFavorite,
+    setAuthState,
+    authState,
+    infoUser,
+    setInfoUser
+  } = useContext<authContextProps>(AuthContext)
+
+  const onFavoriteMovie = async () => {
+    setIsSelectedFavorite((value) => ({ isSelected: !value.isSelected, idMovie: value.idMovie }))
+    const isChanged = await authService.changeFavorite(
+      {
+        isSelected: !isSelectedFavorite.isSelected,
+        idMovie: isSelectedFavorite.idMovie
+      }, infoUser.id)
+    console.tron.log!(isChanged)
+
+    if (isChanged != null) {
+      setInfoUser(isChanged)
+      console.tron.log!(isChanged)
+    }
+  }
+
 
   return (
-    authContext.authState["auth"]
+    authState["auth"]
       ? (
         <NavigationContainer>
           <Navigator
@@ -34,8 +61,22 @@ export default function Routes() {
               headerTitle: () => (<></>),
               headerShadowVisible: false,
               headerTintColor: themeContext.primaryColor,
-              headerTransparent: true
-            }}/>
+              headerTransparent: true,
+              headerRight: () => (
+                <ButtonIsFavorite onPress={() => onFavoriteMovie()}>
+                  <FontAwesome5
+                    name="bookmark"
+                    size={20}
+                    color={themeContext.primaryColor}
+                    style={{ display: isSelectedFavorite.isSelected ? "none" : "flex" }} />
+                  <FontAwesome
+                    name="bookmark"
+                    size={20}
+                    color={themeContext.primaryColor}
+                    style={{ display: isSelectedFavorite.isSelected ? "flex" : "none" }} />
+                </ButtonIsFavorite>
+              )
+            }} />
             <Screen name='Profile' component={Profile} options={{
               presentation: "modal",
               headerShown: true,

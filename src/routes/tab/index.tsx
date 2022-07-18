@@ -14,11 +14,6 @@ import IconTicketHeader from '../../templates/iconTicketHeader'
 import IconSearchHeader from '../../templates/iconSearchHeader'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string }) => void
-}
-
-
 const { Navigator, Screen } = createBottomTabNavigator()
 
 export default function TabNav() {

@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ImageBackground, View, Image, Text } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { dataMoviesModel } from '../../models/moviesModel';
@@ -9,8 +9,6 @@ import { themeModel } from '../../models/themeModel';
 import { MainPosterMovie, PosterGenres, PosterImage, PosterInfoView, PosterTitle, PosterView, RatingPopcorn, RatingText, RatingView, TabView } from './styles';
 import popcornRating from '../../../assets/popcorn.png'
 import PostMovieTab from '../../routes/postMovieTab';
-
-
 interface routeProp {
   key: string;
   name: string;
@@ -22,7 +20,6 @@ interface routeProp {
 
 
 const PosterMovie: React.FC = () => {
-  const imageUrl = "https://image.tmdb.org/t/p/original"
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
   const { dataMovie } = useRoute<routeProp>().params
@@ -31,7 +28,7 @@ const PosterMovie: React.FC = () => {
     <MainPosterMovie>
       <ImageBackground
         style={{ width: '100%', height: 300 }}
-        source={{ uri: imageUrl + dataMovie.backdrop_path }}>
+        source={{ uri: dataMovie.backdrop_path }}>
 
         <LinearGradient
           colors={['#00000060', themeContext.background]}
@@ -39,14 +36,14 @@ const PosterMovie: React.FC = () => {
         </LinearGradient>
 
         <PosterView>
-          <PosterImage source={{ uri: imageUrl + dataMovie.poster_path }}/>
+          <PosterImage source={{ uri: dataMovie.poster_path }} />
 
           <PosterInfoView>
             <PosterTitle>{dataMovie.title}</PosterTitle>
 
             <PosterGenres>
               {dataMovie.genre_ids[0] &&
-                        dataMovie.genre_ids[0]}
+                dataMovie.genre_ids[0]}
               {dataMovie.genre_ids[1] &&
                 " - " + dataMovie.genre_ids[1]}
               {dataMovie.genre_ids[2] &&
@@ -54,7 +51,7 @@ const PosterMovie: React.FC = () => {
             </PosterGenres>
 
             <RatingView>
-              <RatingPopcorn source={popcornRating}/>
+              <RatingPopcorn source={popcornRating} />
 
               <RatingText>
                 {dataMovie.vote_average.toFixed(1)}
@@ -65,7 +62,7 @@ const PosterMovie: React.FC = () => {
       </ImageBackground>
 
       <TabView>
-        <PostMovieTab dataMovie={dataMovie}/>
+        <PostMovieTab dataMovie={dataMovie} />
       </TabView>
     </MainPosterMovie>
   )
