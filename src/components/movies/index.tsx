@@ -19,7 +19,6 @@ interface navigateProp {
 const Movies: React.FC = () => {
   const [dataNowPlaying, setDataNowPlaying] = useState<dataMoviesModel[]>([])
   const [dataTopRated, setDataTopRated] = useState<dataMoviesModel[]>([])
-  const [dataAction, setDataAction] = useState<dataMoviesModel[]>([])
   const [dataPopular, setDataPopular] = useState<dataMoviesModel[]>([])
   const imagesRequested = useRef(0)
   const fadeLoading = useState(new Animated.Value(1))[0]
@@ -40,7 +39,6 @@ const Movies: React.FC = () => {
       }
       setDataNowPlaying(moviesNowPlaying.slice(0, 9))
       setDataTopRated(moviesTopRated.slice(0, 9))
-      setDataAction(moviesAction.slice(0, 9))
       setDataPopular(moviesPopular.slice(0, 9).reverse())
     }
 

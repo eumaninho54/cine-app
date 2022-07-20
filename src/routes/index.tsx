@@ -30,14 +30,12 @@ export default function Routes() {
 
   const onFavoriteMovie = async () => {
     if (authState.token != null) {
-      console.tron.log!(isSelectedFavorite)
       setIsSelectedFavorite((value) => ({ isSelected: !value.isSelected, dataMovie: value.dataMovie }))
       const isChanged = await authService.changeFavorite(
         {
           isSelected: !isSelectedFavorite.isSelected,
           dataMovie: isSelectedFavorite.dataMovie
         }, authState.token)
-      console.tron.log!(isChanged?.favorites)
       if (isChanged != null) {
         setInfoUser((value) => (
           {

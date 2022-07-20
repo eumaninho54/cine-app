@@ -60,13 +60,11 @@ class AuthService {
     return req
   }
 
-  async getFavorites(token: string){
+  async getFavorites(token: string): Promise<dataMoviesModel[] | null>{
     const req = await axios({
       method: "get",
       url: this.baseURL + `/user/favorite`,
-      data: {
-        token: token
-      }
+      headers: {"x-access-token": token }
     }).then((res) => res.data)
       .catch(() => null)
 

@@ -15,6 +15,6 @@ export const TitleBag = styled.Text`
   font-size: 30px;
   width: 100%;
   text-align: left;
-  padding: 20px;
+  padding: 20px 13px;
   font-weight: 600;
 `
