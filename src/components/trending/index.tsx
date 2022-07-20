@@ -44,13 +44,13 @@ const Trending: React.FC = () => {
   }, [])
 
   const selectedMovie = (item: dataMoviesModel) => {
-    if(infoUser.favorites.find((value) => value == item.id)){
-      setIsSelectedFavorite({isSelected: true, idMovie: item.id})
+    if(infoUser.favorites.find((value) => value.id == item.id)){
+      setIsSelectedFavorite({isSelected: true, dataMovie: item})
       navigation.navigate('PosterMovie', { dataMovie: item })
       return
     }
     
-    setIsSelectedFavorite({isSelected: false, idMovie: item.id})
+    setIsSelectedFavorite({isSelected: false, dataMovie: item})
     navigation.navigate('PosterMovie', { dataMovie: item })
   }
 

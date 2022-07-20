@@ -13,7 +13,7 @@ export const AuthContext = createContext<authContextProps | any>({})
 const { Provider } = AuthContext
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isSelectedFavorite, setIsSelectedFavorite] = useState({isSelected: false, idMovie: 0})
+  const [isSelectedFavorite, setIsSelectedFavorite] = useState({isSelected: false, dataMovie: {}})
   const [authState, setAuthState] = useState<authStateProps>({
     auth: null,
     token: null

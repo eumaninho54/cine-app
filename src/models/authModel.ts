@@ -1,3 +1,4 @@
+import { dataMoviesModel } from './moviesModel';
 export interface authStateProps {
   auth: null | boolean;
   token: null | string;
@@ -11,11 +12,11 @@ export interface authContextProps {
   setInfoUser: React.Dispatch<React.SetStateAction<userProps>>
   isSelectedFavorite: {
     isSelected: boolean;
-    idMovie: number;
+    dataMovie: dataMoviesModel
   }
   setIsSelectedFavorite: React.Dispatch<React.SetStateAction<{
     isSelected: boolean;
-    idMovie: number;
+    dataMovie: dataMoviesModel;
   }>>
 }
 
@@ -23,7 +24,7 @@ export interface userProps {
   id: number
   email: string
   username: string
-  favorites: number[]
+  favorites: dataMoviesModel[]
 }
 
 export interface signInProps {
@@ -35,6 +36,6 @@ export interface signInProps {
     id: number
     username: string,
     email: string
-    favorites: number[]
+    favorites: dataMoviesModel[]
   }
 }

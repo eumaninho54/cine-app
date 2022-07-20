@@ -8,5 +8,13 @@ export const MainBag = styled.View`
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+`
+
+export const TitleBag = styled.Text`
+  color: ${({theme}: MainLoginProps) => theme.textColor};
+  font-size: 30px;
+  width: 100%;
+  text-align: left;
+  padding: 20px;
+  font-weight: 600;
 `

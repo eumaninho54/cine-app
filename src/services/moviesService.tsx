@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { KEY_THEMOVIEDB } from '@env'
 import { dataMoviesModel } from "../models/moviesModel";
 import { genreMovie, genreMovieProps } from "../models/enumGenreMovie";
+import { userProps } from "../models/authModel";
 
 class MoviesService {
   private baseURL = "https://api.themoviedb.org/3"

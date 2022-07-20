@@ -1,6 +1,7 @@
 import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
 import { signInProps, userProps } from "../models/authModel";
+import { dataMoviesModel } from "../models/moviesModel";
 
 class AuthService {
   private baseURL = "http://192.168.1.105:3333"
@@ -47,12 +48,24 @@ class AuthService {
     return req
   }
 
-  async changeFavorite(movieSelected: { isSelected: boolean, idMovie: number }, idUser: number): Promise<userProps | null> {
+  async changeFavorite(movieSelected: { isSelected: boolean, dataMovie: dataMoviesModel }, token: string): Promise<{favorites: dataMoviesModel[]} | null> {
     const req = await axios({
       method: "patch",
-      url: this.baseURL + `/user/favorite/${idUser}`,
+      url: this.baseURL + "/user/favorite/change/",
+      data: movieSelected,
+      headers: { "x-access-token": token }
+    }).then((res) => res.data)
+      .catch(() => null)
+
+    return req
+  }
+
+  async getFavorites(token: string){
+    const req = await axios({
+      method: "get",
+      url: this.baseURL + `/user/favorite`,
       data: {
-        movieSelected: movieSelected
+        token: token
       }
     }).then((res) => res.data)
       .catch(() => null)

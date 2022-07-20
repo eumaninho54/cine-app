@@ -6,15 +6,13 @@ import LoginNavigation from './login'
 import TabNav from './tab'
 import { authContextProps } from '../models/authModel'
 import Profile from '../components/profile'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { themeModel } from '../models/themeModel'
 import { ThemeContext } from 'styled-components'
-import LoadingScreen from '../templates/loadingScreen'
 import PosterMovie from '../components/posterMovie'
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ButtonIsFavorite } from './styles'
+import moviesService from '../services/moviesService'
 import authService from '../services/authService'
-import * as SecureStore from 'expo-secure-store';
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -31,20 +29,25 @@ export default function Routes() {
   } = useContext<authContextProps>(AuthContext)
 
   const onFavoriteMovie = async () => {
-    setIsSelectedFavorite((value) => ({ isSelected: !value.isSelected, idMovie: value.idMovie }))
-    const isChanged = await authService.changeFavorite(
-      {
-        isSelected: !isSelectedFavorite.isSelected,
-        idMovie: isSelectedFavorite.idMovie
-      }, infoUser.id)
-    console.tron.log!(isChanged)
-
-    if (isChanged != null) {
-      setInfoUser(isChanged)
-      console.tron.log!(isChanged)
+    if (authState.token != null) {
+      console.tron.log!(isSelectedFavorite)
+      setIsSelectedFavorite((value) => ({ isSelected: !value.isSelected, dataMovie: value.dataMovie }))
+      const isChanged = await authService.changeFavorite(
+        {
+          isSelected: !isSelectedFavorite.isSelected,
+          dataMovie: isSelectedFavorite.dataMovie
+        }, authState.token)
+      console.tron.log!(isChanged?.favorites)
+      if (isChanged != null) {
+        setInfoUser((value) => (
+          {
+            ...value,
+            favorites: isChanged.favorites
+          }
+        ))
+      }
     }
   }
-
 
   return (
     authState["auth"]
