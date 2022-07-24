@@ -138,19 +138,6 @@ const Movies: React.FC = () => {
             showsHorizontalScrollIndicator={false}
             removeClippedSubviews={true}
           />
-
-          <SectionMovieTitle>Top rated</SectionMovieTitle>
-          <FlatList
-            horizontal
-            data={dataTopRated}
-            renderItem={renderItemFlatList}
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyExtractor={(movie) => String(movie.id)}
-            showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={true}
-          />
-
-
           <View style={{ height: 100 }} />
         </MainMovies>
       }

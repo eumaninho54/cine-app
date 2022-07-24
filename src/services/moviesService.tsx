@@ -40,6 +40,7 @@ class MoviesService {
           id: id,
           original_title: original_title,
           backdrop_path: this.getBackdropPath(backdrop_path),
+          banner: this.getBanner(backdrop_path),
           genre_ids: genre_ids.map((genre) => genreMovie[genre as keyof genreMovieProps]),
           overview: overview,
           popularity: popularity,
@@ -76,6 +77,10 @@ class MoviesService {
 
   private getPosterPath (path: string){
     return `https://image.tmdb.org/t/p/w440_and_h660_face${path}`
+  }
+
+  private getBanner (path: string){
+    return `https://image.tmdb.org/t/p/w400${path}`
   }
 }
 

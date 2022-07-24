@@ -15,9 +15,25 @@ interface dayWeekProps {
   13: string;
 }
 
+interface monthProps {
+  0: number;
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+  6: number;
+  7: number;
+  8: number;
+  9: number;
+  10: number;
+  11: number;
+}
+
 export interface dataDaysProps {
-  day: number
-  week: string
+  day: number;
+  week: string;
+  month: string;
 }
 
 const dayWeek: dayWeekProps = {
@@ -37,38 +53,36 @@ const dayWeek: dayWeekProps = {
   13: "Sat",
 };
 
+export const listMonth = {
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec",
+};
 
-export const setDataDays = () => [
-  {
-    day: new Date().getDate(),
-    week: dayWeek[new Date().getDay() as keyof dayWeekProps],
-  },
-  {
-    day: new Date().getDate() + 1,
-    week: dayWeek[(new Date().getDay() + 1) as keyof dayWeekProps],
-  },
-  {
-    day: new Date().getDate() + 2,
-    week: dayWeek[(new Date().getDay() + 2) as keyof dayWeekProps],
-  },
-  {
-    day: new Date().getDate() + 3,
-    week: dayWeek[(new Date().getDay() + 3) as keyof dayWeekProps],
-  },
-  {
-    day: new Date().getDate() + 4,
-    week: dayWeek[(new Date().getDay() + 4) as keyof dayWeekProps],
-  },
-  {
-    day: new Date().getDate() + 5,
-    week: dayWeek[(new Date().getDay() + 5) as keyof dayWeekProps],
-  },
-  {
-    day: new Date().getDate() + 6,
-    week: dayWeek[(new Date().getDay() + 6) as keyof dayWeekProps],
-  },
-];
+export const setDataDays = () => {
+  let listData: dataDaysProps[] = [];
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+
+    listData.push({
+      day: date.getDate(),
+      week: dayWeek[date.getDay() as keyof dayWeekProps],
+      month: listMonth[date.getMonth() as keyof monthProps],
+    });
+  }
+
+  return listData;
+};
 
 export const dataDays: dataDaysProps[] = setDataDays();
-
-export const hoursObject = ["13:00", "15:15", "17:30"]

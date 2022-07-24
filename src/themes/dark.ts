@@ -5,6 +5,7 @@ export default {
     borderColor: "#fff",
     textColorLogin: "#fff",
     background: "#202020",
+    backgroundView: "#404040",
     textColor: "#f0f0f0", 
     tabNav: "#161616",
     iconTabNav: "#d0d0d0",

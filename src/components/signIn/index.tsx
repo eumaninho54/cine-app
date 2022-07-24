@@ -51,6 +51,7 @@ const SignIn: React.FC = () => {
         <ImageLogin show={focusInput} source={logo} type={'logo'} />
         <InputLogin
           placeholder='Email'
+          autoCapitalize='none'
           placeholderTextColor={'#808080'}
           onChangeText={(input) => setInputEmail(input)}
           onBlur={() => setFocusInput(false)}
@@ -58,6 +59,7 @@ const SignIn: React.FC = () => {
         <InputLogin
           ref={refPassword}
           placeholder='Password'
+          autoCapitalize='none'
           placeholderTextColor={'#808080'}
           onChangeText={(input) => setInputPassword(input)}
           secureTextEntry={true}

@@ -3,11 +3,10 @@ import { Animated, Dimensions } from "react-native";
 import styled from "styled-components/native";
 import { MainLoginProps } from "../../models/themeModel";
 
-export const MainSessions = styled.View`
+export const MainSessions = styled.ScrollView`
   background-color: ${({ theme }: MainLoginProps) => theme.background};
   width: 100%;
   flex: 1;
-  justify-content: space-between;
 `;
 
 export const TicketCarouselBorder = styled.View`
@@ -75,7 +74,7 @@ export const WeekText = styled.Text`
 `;
 
 export const DayText = styled.Text`
-  font-size: 20px;
+  font-size: 24px;
   color: white;
   font-weight: 900;
 `;
@@ -94,12 +93,13 @@ export const ButtonsGroup = styled.View`
   align-items: center;
 `;
 
-export const ButtonReservation = styled.TouchableOpacity`
+export const ButtonFinish = styled.TouchableOpacity`
   background-color: ${({ theme }: MainLoginProps) => theme.primaryColor};
-  padding: 15px;
-  border-radius: 10px;
+  padding: 20px;
+  border-radius: 15px;
   width: 85%;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 20px;
 `;

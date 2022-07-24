@@ -81,12 +81,14 @@ const SignUp: React.FC = () => {
         <ImageLogin show={focusInput} source={logo} type={'logo'} />
         <InputLogin
           placeholder='Email'
+          autoCapitalize='none'
           placeholderTextColor={'#808080'}
           onChangeText={(text) => setInputEmail(text)}
           onBlur={() => setFocusInput(false)}
           onFocus={() => setFocusInput(true)} />
         <InputLogin
           placeholder='Password'
+          autoCapitalize='none'
           placeholderTextColor={'#808080'}
           onChangeText={(text) => setInputPassword(text)}
           secureTextEntry={true}

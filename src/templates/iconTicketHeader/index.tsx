@@ -10,7 +10,7 @@ import { ticketContextProps } from '../../models/ticketModel';
 
 const IconTicketHeader: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { numTicketCar, setNumTicketCar } = useContext<ticketContextProps>(TicketContext)
+  const { ticketsToBuy } = useContext<ticketContextProps>(TicketContext)
 
   return (
     <TouchableOpacity style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
@@ -21,9 +21,9 @@ const IconTicketHeader: React.FC = () => {
       />
 
       <Badge
-        value={numTicketCar}
+        value={ticketsToBuy.length}
         badgeStyle={{
-          display: numTicketCar == 0 ? "none" : "flex",
+          display: ticketsToBuy.length == 0 ? "none" : "flex",
           backgroundColor: "#303030",
           borderColor: "#303030"
         }}

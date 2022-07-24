@@ -9,13 +9,14 @@ import { themeModel } from '../../models/themeModel';
 import { MainPosterMovie, PosterGenres, PosterImage, PosterInfoView, PosterTitle, PosterView, RatingPopcorn, RatingText, RatingView, TabView } from './styles';
 import popcornRating from '../../../assets/popcorn.png'
 import PostMovieTab from '../../routes/postMovieTab';
+
 interface routeProp {
   key: string;
   name: string;
   path?: string | undefined;
   params: {
     dataMovie: dataMoviesModel
-  }
+  };
 }
 
 
@@ -36,7 +37,7 @@ const PosterMovie: React.FC = () => {
         </LinearGradient>
 
         <PosterView>
-          <PosterImage source={{ uri: dataMovie.poster_path }} />
+          <PosterImage source={{ uri: dataMovie.poster_path }} key={dataMovie.id + "-posterMovie"} />
 
           <PosterInfoView>
             <PosterTitle>{dataMovie.title}</PosterTitle>

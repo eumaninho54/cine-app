@@ -65,7 +65,6 @@ const Profile: React.FC = () => {
               name="linkedin"
               size={30}
               color={themeContext.textColor} />
-
           </EmoteLink>
 
           <InfoLink>Talk to me</InfoLink>

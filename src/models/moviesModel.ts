@@ -4,10 +4,21 @@ export interface dataMoviesModel {
   overview: string;
   release_date: string;
   backdrop_path: string;
+  banner: string;
   poster_path: string;
   title: string;
   original_title: string;
   popularity: number;
   genre_ids: number[];
+}
+
+export interface dataMoviesToBuy extends dataMoviesModel {
+  hoursSession: string,
+  dataSession : {
+    day: number
+    week: string
+    month: string
+  }
+
 }
 

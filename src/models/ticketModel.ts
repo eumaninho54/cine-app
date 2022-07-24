@@ -1,4 +1,6 @@
+import { dataMoviesToBuy } from "./moviesModel";
+
 export interface ticketContextProps {
-  numTicketCar: number;
-  setNumTicketCar: React.Dispatch<React.SetStateAction<number>>;
+  ticketsToBuy: dataMoviesToBuy[];
+  setTicketsToBuy: React.Dispatch<React.SetStateAction<dataMoviesToBuy[]>>;
 }

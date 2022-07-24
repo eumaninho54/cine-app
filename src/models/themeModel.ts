@@ -5,6 +5,7 @@ export interface themeModel {
   borderColor: string
   textColorLogin: string
   background: string
+  backgroundView: string
   textColor: string
   tabNav: string
   iconTabNav: string
