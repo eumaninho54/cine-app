@@ -46,9 +46,58 @@ export const ViewEmptyData = styled.View`
   align-items: center;
 `
 
+export const ItemToBuyBg = styled.View`
+  margin: 20px 10px;
+  width: ${({width}: {width: number}) => `${width - 50}px`};
+  height: 130px;
+  flex-direction: row;
+  border-radius: 12px;
+`
+
+export const MaskedBanner = styled.View`
+  width: ${({width}: {width: number}) => `${(width - 50) * 0.7}px`};
+  height: 130px;
+  border-radius: 12px;
+  background-color: blue;
+`
+
+export const BannerTicket = styled.Image`
+  width: ${({width}: {width: number}) => `${(width - 50) * 0.7}px`};
+  height: 130px;
+`
+
+export const DetailTicket = styled.View`
+  position: absolute;
+  left: 67.5%;
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  background-color: ${({theme}: MainLoginProps) => theme.background};
+  z-index: 3;
+`
+
+export const InfoTicket = styled.View`
+  width: 30%;
+  height: 100%;
+  background-color: ${({theme}: MainLoginProps) => theme.backgroundView};
+  border-radius: 12px;
+  padding: 10px;
+`
+
+export const DateTicket = styled.Text`
+  color: ${({theme}: MainLoginProps) => theme.primaryColor};
+  font-size: 12px; 
+  margin-bottom: 15px;
+`
+
+export const TitleTicket = styled.Text`
+  color: ${({theme}: MainLoginProps) => theme.textColor};
+  font-size: 15px;
+`
+
 export const RemoveButton = styled.TouchableOpacity`
   position: absolute;
   width: 35px;
   height: 35px;
-  left: 10px;
+  left: 3px;
 `

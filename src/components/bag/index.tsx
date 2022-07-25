@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, Image, FlatList, Animated, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { View, Text, Image, FlatList, Animated, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { AuthContext } from '../../context/authContext';
 import { authContextProps } from '../../models/authModel';
@@ -8,7 +8,7 @@ import { dataMoviesModel, dataMoviesToBuy } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import authService from '../../services/authService';
 import LoadingScreen from '../../templates/loadingScreen';
-import { MainBag, RemoveButton, Section, SectionDivisor, SectionTitle, TitleBag, ViewEmptyData } from './styles';
+import { BannerTicket, DateTicket, DetailTicket, InfoTicket, ItemToBuyBg, MainBag, MaskedBanner, RemoveButton, Section, SectionDivisor, SectionTitle, TitleBag, TitleTicket, ViewEmptyData } from './styles';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ticketContextProps } from '../../models/ticketModel';
 import { TicketContext } from '../../context/ticketContext';
@@ -27,6 +27,7 @@ const Bag: React.FC = () => {
   const [isFetched, setIsFetched] = useState(false)
   const fadeLoading = useState(new Animated.Value(1))[0]
   const [displayLoading, setDisplayLoading] = useState(true)
+  const navigation = useNavigation<NavigationProp<any>>()
 
   useEffect(() => {
     const loadingBag = async () => {
@@ -73,12 +74,13 @@ const Bag: React.FC = () => {
   const renderItemFavorite = ({ item, index }: { item: dataMoviesModel, index: number }) => {
 
     return (
-      <View
+      <TouchableOpacity
+        onPress={() => navigation.navigate('PosterMovie', { dataMovie: item })}
         style={{ paddingHorizontal: 10 }} >
         <Image
           source={{ uri: item.poster_path }}
           style={{ width: 100, height: 150 }} />
-        <RemoveButton onPress={() => {
+        <RemoveButton style={{left: 10}} onPress={() => {
           setDataFavorites(dataFavorites.filter((_, i) => i != index))
           removeFavorite(item)
         }}>
@@ -88,7 +90,7 @@ const Bag: React.FC = () => {
             color={'#f22'}
             style={{ left: 5, top: 3 }} />
         </RemoveButton>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -101,78 +103,41 @@ const Bag: React.FC = () => {
     }
 
     return (
-      <View
+      <ItemToBuyBg
+        width={width}
         style={{
-          marginHorizontal: 10,
-          marginVertical: 20,
-          width: width - 50,
-          height: 130,
-          flexDirection: 'row',
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 0 },
           shadowRadius: 8,
           shadowOpacity: 0.2,
           elevation: 10,
-          borderRadius: 12,
         }} >
 
         <MaskedView
           style={{ width: '70%', height: '100%' }}
           maskElement={
-            <View
-              style={{
-                width: (width - 50) * 0.7,
-                height: 130,
-                backgroundColor: 'blue',
-                borderRadius: 12
-              }} />
+            <MaskedBanner width={width} />
           }>
-          <Image source={{ uri: item.banner }} style={{ width: (width - 50) * 0.7, height: 130 }} />
+          <BannerTicket width={width} source={{ uri: item.banner }} />
         </MaskedView>
 
-        <View style={{
-          position: 'absolute',
-          left: '67.5%',
-          top: -10,
-          height: 20,
-          width: 20,
-          borderRadius: 10,
-          backgroundColor: themeContext.background,
-          zIndex: 3
-        }} />
+        <DetailTicket style={{ top: -10 }} />
 
-        <View style={{
-          position: 'absolute',
-          left: '67.5%',
-          bottom: -10,
-          height: 20,
-          width: 20,
-          borderRadius: 10,
-          backgroundColor: themeContext.background,
-          zIndex: 3
-        }} />
+        <DetailTicket style={{ bottom: -10 }} />
 
-        <View
-          style={{
-            width: '30%',
-            height: '100%',
-            backgroundColor: themeContext.backgroundView,
-            borderRadius: 12,
-            padding: 10
-          }}>
-            <Text style={{color: themeContext.primaryColor, fontSize: 12, marginBottom: 15}}>
-              {item.dataSession['month'] + " "}
-              {item.dataSession['day'] + " - "}
-              {item.hoursSession}
-            </Text>
+        <InfoTicket>
+          <DateTicket>
+            {item.dataSession['month'] + " "}
+            {item.dataSession['day'] + " - "}
+            {item.hoursSession}
+          </DateTicket>
 
-            <Text style={{color: themeContext.textColor, fontSize: 15}}>
-              {item.title}
-            </Text>
-        </View>
+          <TitleTicket>
+            {item.title}
+          </TitleTicket>
+        </InfoTicket>
 
         <RemoveButton onPress={() => {
-          console.tron.log!(index - 1)
           setTicketsToBuy(ticketsToBuy.filter((_, i) => i != index - 1))
         }}>
           <FontAwesome
@@ -182,30 +147,10 @@ const Bag: React.FC = () => {
             style={{ left: 5, top: 3 }} />
         </RemoveButton>
 
-      </View >
+      </ItemToBuyBg >
 
     )
   }
-
-  {/*<View
-        style={{ paddingHorizontal: 10, backgroundColor: "green" }} >
-        <Image
-          source={{ uri: item.poster_path }}
-          style={{ width: 100, height: 150 }} />
-        <RemoveButton onPress={() => {
-          setTicketsToBuy(ticketsToBuy.filter((_, i) => i != index))
-        }}>
-          <FontAwesome
-            name="remove"
-            size={20}
-            color={'#f22'}
-            style={{ left: 5, top: 3 }} />
-        </RemoveButton>
-
-        <View style={{backgroundColor: "blue", width: '100%', height: 50}}>
-
-        </View>
-      </View >*/}
 
   return (
     <>
@@ -222,18 +167,36 @@ const Bag: React.FC = () => {
 
           {ticketsToBuy.length > 0
             ?
-            <FlatList
-              horizontal
-              snapToInterval={ITEM_SIZE}
-              data={[null, ...ticketsToBuy, null]}
-              renderItem={renderItemToBuy}
-              contentContainerStyle={{ alignItems: 'center' }}
-              keyExtractor={(_, index) => String(index) + '-toBuy'}
-              showsHorizontalScrollIndicator={false}
-              decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
+            <>
+              <FlatList
+                horizontal
+                snapToInterval={ITEM_SIZE}
+                data={[null, ...ticketsToBuy, null]}
+                renderItem={renderItemToBuy}
+                contentContainerStyle={{ alignItems: 'center' }}
+                keyExtractor={(_, index) => String(index) + '-toBuy'}
+                showsHorizontalScrollIndicator={false}
+                decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
 
-              scrollEventThrottle={16}
-            />
+                scrollEventThrottle={16}
+              />
+              <TouchableOpacity
+                style={{
+                  width: 120,
+                  height: 40,
+                  backgroundColor: themeContext.primaryColor,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 10,
+                  marginBottom: 20,
+                  marginTop: 10
+                }}>
+                <Text style={{
+                  color: themeContext.textColor,
+                  fontWeight: '900'
+                }}>Buy now</Text>
+              </TouchableOpacity>
+            </>
             :
             <ViewEmptyData>
               <FontAwesome5
