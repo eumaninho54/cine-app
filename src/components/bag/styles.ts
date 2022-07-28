@@ -24,6 +24,7 @@ export const Section = styled.View`
   flex-direction: row; 
   align-items: center; 
   justify-content: space-between;
+  margin-top: 10px;
 `
 
 export const SectionDivisor = styled.Text`
@@ -40,7 +41,7 @@ export const SectionTitle = styled.Text`
 export const ViewEmptyData = styled.View`
   height: 30px;
   width: 100%;
-  margin: 10px 0px 10px 40%;
+  margin: 10px 0px 40px 40%;
   padding: 0px 20px;
   flex-direction: row;
   align-items: center;
@@ -88,6 +89,7 @@ export const DateTicket = styled.Text`
   color: ${({theme}: MainLoginProps) => theme.primaryColor};
   font-size: 12px; 
   margin-bottom: 15px;
+  font-weight: 900;
 `
 
 export const TitleTicket = styled.Text`
@@ -100,4 +102,20 @@ export const RemoveButton = styled.TouchableOpacity`
   width: 35px;
   height: 35px;
   left: 3px;
+`
+
+export const BuyNowButton = styled.TouchableOpacity`
+  width: 120px;
+  height: 40px;
+  background-color: ${({theme}: MainLoginProps) => theme.primaryColor};
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+`
+
+export const BuyNowTitle = styled.Text`
+  color: ${({theme}: MainLoginProps) => theme.textColor};
+  font-weight: 900;
 `

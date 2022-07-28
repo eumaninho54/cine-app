@@ -8,7 +8,7 @@ import { dataMoviesModel, dataMoviesToBuy } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import authService from '../../services/authService';
 import LoadingScreen from '../../templates/loadingScreen';
-import { BannerTicket, DateTicket, DetailTicket, InfoTicket, ItemToBuyBg, MainBag, MaskedBanner, RemoveButton, Section, SectionDivisor, SectionTitle, TitleBag, TitleTicket, ViewEmptyData } from './styles';
+import { BannerTicket, BuyNowButton, BuyNowTitle, DateTicket, DetailTicket, InfoTicket, ItemToBuyBg, MainBag, MaskedBanner, RemoveButton, Section, SectionDivisor, SectionTitle, TitleBag, TitleTicket, ViewEmptyData } from './styles';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ticketContextProps } from '../../models/ticketModel';
 import { TicketContext } from '../../context/ticketContext';
@@ -80,7 +80,7 @@ const Bag: React.FC = () => {
         <Image
           source={{ uri: item.poster_path }}
           style={{ width: 100, height: 150 }} />
-        <RemoveButton style={{left: 10}} onPress={() => {
+        <RemoveButton style={{ left: 10 }} onPress={() => {
           setDataFavorites(dataFavorites.filter((_, i) => i != index))
           removeFavorite(item)
         }}>
@@ -94,7 +94,7 @@ const Bag: React.FC = () => {
     )
   }
 
-  const renderItemToBuy = ({ item, index }: { item: dataMoviesToBuy | null, index: number }) => {
+  const renderItemYourTickets = ({ item, index }: { item: dataMoviesToBuy | null, index: number }) => {
 
     if (item == null) {
       return (
@@ -103,16 +103,7 @@ const Bag: React.FC = () => {
     }
 
     return (
-      <ItemToBuyBg
-        width={width}
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 0 },
-          shadowRadius: 8,
-          shadowOpacity: 0.2,
-          elevation: 10,
-        }} >
-
+      <ItemToBuyBg width={width}>
         <MaskedView
           style={{ width: '70%', height: '100%' }}
           maskElement={
@@ -125,7 +116,13 @@ const Bag: React.FC = () => {
 
         <DetailTicket style={{ bottom: -10 }} />
 
-        <InfoTicket>
+        <InfoTicket style={{
+          shadowColor: "#000000c8",
+          shadowOffset: { width: 0, height: 0 },
+          shadowRadius: 4,
+          shadowOpacity: 0.1,
+          elevation: 4
+        }}>
           <DateTicket>
             {item.dataSession['month'] + " "}
             {item.dataSession['day'] + " - "}
@@ -146,9 +143,7 @@ const Bag: React.FC = () => {
             color={'#f22'}
             style={{ left: 5, top: 3 }} />
         </RemoveButton>
-
       </ItemToBuyBg >
-
     )
   }
 
@@ -157,11 +152,13 @@ const Bag: React.FC = () => {
       <LoadingScreen opacity={fadeLoading} display={displayLoading} />
 
       {isFetched &&
-        <MainBag contentContainerStyle={{ alignItems: 'center' }}>
+        <MainBag
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ alignItems: 'center' }}>
           <TitleBag>Bag</TitleBag>
 
           <Section>
-            <SectionTitle>To buy</SectionTitle>
+            <SectionTitle>Your tickets</SectionTitle>
             <SectionDivisor />
           </Section>
 
@@ -172,41 +169,24 @@ const Bag: React.FC = () => {
                 horizontal
                 snapToInterval={ITEM_SIZE}
                 data={[null, ...ticketsToBuy, null]}
-                renderItem={renderItemToBuy}
+                renderItem={renderItemYourTickets}
                 contentContainerStyle={{ alignItems: 'center' }}
                 keyExtractor={(_, index) => String(index) + '-toBuy'}
                 showsHorizontalScrollIndicator={false}
                 decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
-
                 scrollEventThrottle={16}
               />
-              <TouchableOpacity
-                style={{
-                  width: 120,
-                  height: 40,
-                  backgroundColor: themeContext.primaryColor,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 10,
-                  marginBottom: 20,
-                  marginTop: 10
-                }}>
-                <Text style={{
-                  color: themeContext.textColor,
-                  fontWeight: '900'
-                }}>Buy now</Text>
-              </TouchableOpacity>
             </>
             :
             <ViewEmptyData>
-              <FontAwesome5
-                name="cart-plus"
+              <FontAwesome
+                name="dollar"
                 size={20}
                 color={themeContext.primaryColor}
                 style={{ width: 30 }} />
               <View>
-                <Text style={{ color: themeContext.gray }}>You don't have movies in bag</Text>
-                <Text style={{ color: themeContext.textColor }}>Add movies to purchase</Text>
+                <Text style={{ color: themeContext.gray }}>You don't have movies purchase</Text>
+                <Text style={{ color: themeContext.textColor }}>Purchase now!</Text>
               </View>
             </ViewEmptyData>
           }
@@ -222,7 +202,7 @@ const Bag: React.FC = () => {
               horizontal
               data={dataFavorites}
               renderItem={renderItemFavorite}
-              contentContainerStyle={{ flexGrow: 1 }}
+              contentContainerStyle={{ flexGrow: 1, marginBottom: 100 }}
               keyExtractor={(_, index) => String(index) + '-favorites'}
               showsHorizontalScrollIndicator={false}
             />
