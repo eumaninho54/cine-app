@@ -10,6 +10,8 @@ import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
 import popcornRating from '../../../assets/popcorn.png'
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { authContextProps } from '../../models/authModel';
+import { AuthContext } from '../../context/authContext';
 
 interface navigateProp {
   navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
@@ -25,6 +27,7 @@ const Movies: React.FC = () => {
   const [displayLoading, setDisplayLoading] = useState(true)
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
+  const { infoUser, setIsSelectedFavorite } = useContext<authContextProps>(AuthContext)
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -60,12 +63,21 @@ const Movies: React.FC = () => {
     }
   }
 
+  const selectedMovie = (item: dataMoviesModel) => {
+    if(infoUser.favorites.find((value) => value.id == item.id)){
+      setIsSelectedFavorite({isSelected: true, dataMovie: item})
+      navigation.navigate('PosterMovie', { dataMovie: item })
+      return
+    }
+    
+    setIsSelectedFavorite({isSelected: false, dataMovie: item})
+    navigation.navigate('PosterMovie', { dataMovie: item })
+  }
+
   const renderItemFlatList = ({ item, index }: { item: dataMoviesModel, index: number }) => {
     return (
       <View style={{ paddingHorizontal: 10 }}>
-        <TouchableWithoutFeedback onPress={() => {
-          navigation.navigate('PosterMovie', { dataMovie: item })
-        }}>
+        <TouchableWithoutFeedback onPress={() => selectedMovie(item)}>
           <Image
             onLoad={() => isImagesRequested()}
             source={{ uri: item.poster_path }}
