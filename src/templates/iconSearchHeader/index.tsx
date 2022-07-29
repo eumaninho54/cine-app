@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, View, Text, Platform, SafeAreaView, KeyboardAvoidingView, Keyboard, FlatList, TouchableWithoutFeedback, Image, useColorScheme } from 'react-native';
+import { TouchableOpacity, View, Text, Platform, SafeAreaView, KeyboardAvoidingView, Keyboard, FlatList, TouchableWithoutFeedback, Image, useColorScheme, Animated } from 'react-native';
 import { FontAwesome5 } from "@expo/vector-icons"
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
@@ -11,23 +11,30 @@ import { AuthContext } from '../../context/authContext';
 import authService from '../../services/authService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import moviesService from '../../services/moviesService';
+import LoadingScreen from '../loadingScreen';
 
 
 const IconSearchHeader: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const [modalActivated, setModalActivated] = useState(false)
-  const { infoUser, setInfoUser, authState } = useContext<authContextProps>(AuthContext)
   const [textSearch, setTextSearch] = useState("")
   const [moviesSearch, setMoviesSearch] = useState<dataMoviesModel[]>([])
-  const deviceTheme = useColorScheme()
+  const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation<NavigationProp<any>>()
-  const theme = deviceTheme != null && deviceTheme != undefined
-    ? themes[deviceTheme]
-    : themes['light']
 
   useEffect(() => {
     const reloadSearch = async () => {
-      
+      if (textSearch.trim() == '') return
+
+      setIsLoading(true)
+      const moviesSearch = await moviesService.searchMovie(textSearch)
+
+      if (moviesSearch == null) {
+        return
+      }
+      setMoviesSearch(moviesSearch)
+      setIsLoading(false)
     }
 
     reloadSearch()
@@ -39,6 +46,7 @@ const IconSearchHeader: React.FC = () => {
       <View style={{ paddingHorizontal: 10 }}>
         <TouchableWithoutFeedback onPress={() => {
           navigation.navigate('PosterMovie', { dataMovie: item })
+          setModalActivated(false)
         }}>
           <Image
             source={{ uri: item.poster_path }}
@@ -84,14 +92,15 @@ const IconSearchHeader: React.FC = () => {
             inputContainerStyle={{ height: 20 }}
             platform={Platform.OS == 'android' ? 'android' : 'ios'}
             placeholder="Type Movie..."
-            onChangeText={(text) => setTextSearch(text)}
-            onCancel={() => setModalActivated(false)}
             value={textSearch}
+            onChangeText={(text) => setTextSearch(text)}
+            showLoading={isLoading}
+            loadingProps={{ color: themeContext.primaryColor }}
           />
         </SafeAreaView>
 
         <View onTouchStart={() => setModalActivated(false)} style={{ height: '30%' }} />
-
+        
         <View style={{ height: 150 }}>
           <FlatList
             horizontal
