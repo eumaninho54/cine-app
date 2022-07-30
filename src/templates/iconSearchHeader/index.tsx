@@ -96,6 +96,7 @@ const IconSearchHeader: React.FC = () => {
             onChangeText={(text) => setTextSearch(text)}
             showLoading={isLoading}
             loadingProps={{ color: themeContext.primaryColor }}
+            
           />
         </SafeAreaView>
 

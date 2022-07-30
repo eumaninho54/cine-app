@@ -6,14 +6,27 @@ import { themeModel } from '../../models/themeModel';
 import { Badge, withBadge } from 'react-native-elements'
 import { TicketContext } from '../../context/ticketContext';
 import { ticketContextProps } from '../../models/ticketModel';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 
 const IconTicketHeader: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const { ticketsToBuy } = useContext<ticketContextProps>(TicketContext)
+  const navigation = useNavigation<NavigationProp<any>>()
 
   return (
-    <TouchableOpacity style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
+    <TouchableOpacity 
+      onPress={() => ticketsToBuy.length > 0 
+        ? navigation.navigate('Purchase', {}) 
+        : showMessage({
+          message: "Invalid to buy",
+          description: "There are no tickets!",
+          backgroundColor: themeContext.primaryColor,
+          icon: 'info',
+          type: "info"
+        })}
+      style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
       <FontAwesome
         name="ticket"
         size={28}

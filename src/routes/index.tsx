@@ -13,6 +13,7 @@ import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ButtonIsFavorite } from './styles'
 import moviesService from '../services/moviesService'
 import authService from '../services/authService'
+import Purchase from '../components/purchase'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -79,6 +80,17 @@ export default function Routes() {
               )
             }} />
             <Screen name='Profile' component={Profile} options={{
+              presentation: "modal",
+              headerShown: true,
+              headerBackTitleVisible: false,
+              headerTitle: () => (<></>),
+              headerShadowVisible: false,
+              headerTintColor: themeContext.primaryColor,
+              headerStyle: {
+                backgroundColor: themeContext.background
+              }
+            }} />
+            <Screen name='Purchase' component={Purchase} options={{
               presentation: "modal",
               headerShown: true,
               headerBackTitleVisible: false,
