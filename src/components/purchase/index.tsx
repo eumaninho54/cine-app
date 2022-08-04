@@ -8,7 +8,7 @@ import { dataMoviesModel, dataMoviesToBuy } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import { ticketContextProps } from '../../models/ticketModel';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
-import { ButtonFinish, MainBg, MainToBuy, RemoveButton, TextBuyTicket, TitleToBuy, EmptyData } from './styles';
+import { ButtonFinish, MainBg, MainToBuy, RemoveButton, TextBuyTicket, TitleToBuy, EmptyData, MovieBagView, ImageMovie, ViewInfo, TextInfo } from './styles';
 import { Divider } from 'react-native-elements';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 
@@ -26,10 +26,8 @@ const Purchase: React.FC = () => {
 
   const renderItemFavorite = ({ item, index }: { item: dataMoviesToBuy, index: number }) => {
     return (
-      <View style={{ paddingHorizontal: 10, height: 220 }} >
-        <Image
-          source={{ uri: item.poster_path }}
-          style={{ width: 100, height: 150 }} />
+      <MovieBagView>
+        <ImageMovie source={{ uri: item.poster_path }}/>
         <RemoveButton style={{ left: 10 }} onPress={() => {
           setTicketsToBuy(ticketsToBuy.filter((_, i) => i != index))
         }}>
@@ -40,16 +38,16 @@ const Purchase: React.FC = () => {
             style={{ left: 5, top: 3 }} />
         </RemoveButton>
 
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: themeContext.textColor }}>
+        <ViewInfo>
+          <TextInfo>
             {item.dataSession['month']}
             {item.dataSession['day'] + " - "}
             {item.dataSession['week']}
-          </Text>
+          </TextInfo>
 
-          <Text style={{ color: themeContext.textColor }}>$10</Text>
-        </View>
-      </View>
+          <TextInfo style={{ color: themeContext.textColor }}>$10</TextInfo>
+        </ViewInfo>
+      </MovieBagView>
     )
   }
 

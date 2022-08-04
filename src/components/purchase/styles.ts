@@ -56,3 +56,22 @@ export const TextBuyTicket = styled.Text`
   font-weight: 900;
   font-size: 16px;
 `;
+
+export const MovieBagView = styled.View`
+  padding: 0px 10px;
+  height: 220px;
+`;
+
+export const ImageMovie = styled.Image`
+  width: 100px; 
+  height: 150px;
+`;
+
+export const ViewInfo = styled.View`
+  align-items: center;
+  justify-content: center;
+`;
+
+export const TextInfo = styled.Text`
+  color: ${({ theme }: MainLoginProps) => theme.textColor};
+`;
