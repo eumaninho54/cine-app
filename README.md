@@ -2,6 +2,10 @@
   <img style="height: 100px" src="https://user-images.githubusercontent.com/87163356/180675599-c2f7a72b-b3eb-499f-b49f-94c0c2d539c7.png">
 </div>
 
+<div align="center">
+  <img style="height: 1000px" src="https://user-images.githubusercontent.com/87163356/182254617-cbe259a1-f339-4851-ad3a-ab9907bc57a5.png">
+</div>
+
 # About 💻
 In order to increase my knowledge and acquire new knowledge, I built this app that consists of selling cinema tickets.
 I built a backend application, an api to authenticate the user and their purchased tickets. 
