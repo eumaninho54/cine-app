@@ -4,7 +4,7 @@ import { signInProps, userProps } from "../models/authModel";
 import { dataMoviesModel } from "../models/moviesModel";
 
 class AuthService {
-  private baseURL = "http://192.168.1.100:3333"
+  private baseURL = "http://192.168.1.106:3333"
 
   constructor() { }
 

@@ -16,16 +16,8 @@ const IconTicketHeader: React.FC = () => {
   const navigation = useNavigation<NavigationProp<any>>()
 
   return (
-    <TouchableOpacity 
-      onPress={() => ticketsToBuy.length > 0 
-        ? navigation.navigate('Purchase', {}) 
-        : showMessage({
-          message: "Invalid to buy",
-          description: "There are no tickets!",
-          backgroundColor: themeContext.primaryColor,
-          icon: 'info',
-          type: "info"
-        })}
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Purchase', {})}
       style={{ padding: 5, alignItems: 'center', justifyContent: 'center' }}>
       <FontAwesome
         name="ticket"

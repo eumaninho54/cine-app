@@ -11,7 +11,7 @@ export const MainBg = styled.View`
 
 export const MainToBuy = styled.View`
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex: 1;
 `;
 
@@ -31,11 +31,12 @@ export const RemoveButton = styled.TouchableOpacity`
   left: 3px;
 `;
 
-export const ViewEmptyData = styled.View`
-  height: 40px;
+export const EmptyData = styled.View`
+  flex: 1;
   width: 100%;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 100px;
   justify-content: center;
 `;
 
