@@ -13,14 +13,9 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { authContextProps } from '../../models/authModel';
 import { AuthContext } from '../../context/authContext';
 
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string, dataMovie: dataMoviesModel }) => void
-}
-
 
 const Movies: React.FC = () => {
   const [dataNowPlaying, setDataNowPlaying] = useState<dataMoviesModel[]>([])
-  const [dataTopRated, setDataTopRated] = useState<dataMoviesModel[]>([])
   const [dataPopular, setDataPopular] = useState<dataMoviesModel[]>([])
   const imagesRequested = useRef(0)
   const fadeLoading = useState(new Animated.Value(1))[0]
@@ -32,16 +27,12 @@ const Movies: React.FC = () => {
   useEffect(() => {
     const loadingMovies = async () => {
       const moviesNowPlaying = await moviesService.getMovie("nowPlaying")
-      const moviesTopRated = await moviesService.getMovie("topRated")
-      const moviesAction = await moviesService.getMovie("action")
       const moviesPopular = await moviesService.getMovie("popular")
 
-      if (moviesNowPlaying == null || moviesTopRated == null ||
-          moviesAction == null || moviesPopular == null) {
+      if (moviesNowPlaying == null || moviesPopular == null) {
         return
       }
       setDataNowPlaying(moviesNowPlaying.slice(0, 9))
-      setDataTopRated(moviesTopRated.slice(0, 9))
       setDataPopular(moviesPopular.slice(0, 9).reverse())
     }
 

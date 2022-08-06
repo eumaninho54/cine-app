@@ -56,13 +56,13 @@ class MoviesService {
     return req
   }
 
-  async getMovie(category: "trending" | "nowPlaying" | "topRated" | "action" | "popular"): Promise<dataMoviesModel[] | null> {
+  async getMovie(category: "trending" | "nowPlaying" | "popular" | "features"): Promise<dataMoviesModel[] | null> {
     const categorySelected = this.switchCategory(category)
     let req: dataMoviesModel[] | null = null
 
     await axios.request({
       method: "get",
-      url: this.baseURL + categorySelected + KEY_THEMOVIEDB
+      url: this.baseURL + categorySelected 
     }).then(({data}) => { 
       const dataReq = data['results'].filter((item: dataMoviesModel) => {
         return item.backdrop_path != null && item.poster_path != null
@@ -105,15 +105,13 @@ class MoviesService {
   private switchCategory(category: string){
     switch (category) {
       case "trending":
-          return "/trending/movie/day?api_key="
+          return "/trending/movie/day?api_key=" + KEY_THEMOVIEDB
       case "nowPlaying":
-          return "/movie/now_playing?api_key="
-      case "topRated":
-          return "/movie/top_rated?api_key="
-      case "action":
-          return "/movie/44943/similar?api_key="
+          return "/movie/now_playing?api_key=" + KEY_THEMOVIEDB
       case "popular":
-          return "/movie/popular?api_key="
+          return "/movie/popular?api_key=" + KEY_THEMOVIEDB
+      case "features":
+          return "/movie/upcoming?api_key=" + KEY_THEMOVIEDB + "&region=us" + "&page=1"
     }
   }
 
