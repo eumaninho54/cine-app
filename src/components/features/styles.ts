@@ -75,7 +75,7 @@ export const DateView = styled.View`
 `;
 
 export const DateText = styled.Text`
-  font-size: 16;
+  font-size: 16px;
   color: white;
   font-weight: 600;
 `

@@ -1,7 +1,7 @@
 import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
 import { signInProps, userProps } from "../models/authModel";
-import { dataMoviesModel } from "../models/moviesModel";
+import { dataMoviesToBuy, dataMoviesBag, dataMoviesModel } from "../models/moviesModel";
 
 class AuthService {
   private baseURL = "http://192.168.1.106:3333"
@@ -64,6 +64,42 @@ class AuthService {
     const req = await axios({
       method: "get",
       url: this.baseURL + `/user/favorite`,
+      headers: {"x-access-token": token }
+    }).then((res) => res.data)
+      .catch(() => null)
+
+    return req
+  }
+
+  async buyTicket(movieBuy: dataMoviesToBuy[], token: string): Promise<userProps | null> {
+    let dataMovie: dataMoviesBag[] = []
+    movieBuy.forEach((movie) => {
+      dataMovie.push({
+        id: movie.id,
+        banner: movie.banner,
+        hours_session: movie.hoursSession,
+        session_date: new Date(movie.dateSession),
+        title: movie.title
+      })
+    })
+
+    console.tron.log!(dataMovie)
+
+    const req = await axios({
+      method: "post",
+      url: this.baseURL + "/user/ticket/buy",
+      data: dataMovie,
+      headers: { "x-access-token": token }
+    }).then((user) => user.data)
+      .catch(() =>  null)
+
+    return req
+  }
+
+  async getTickets(token: string): Promise<dataMoviesBag[] | null>{
+    const req = await axios({
+      method: "get",
+      url: this.baseURL + `/user/ticket`,
       headers: {"x-access-token": token }
     }).then((res) => res.data)
       .catch(() => null)

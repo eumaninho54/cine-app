@@ -15,7 +15,7 @@ interface dayWeekProps {
   13: string;
 }
 
-interface monthProps {
+export interface monthProps {
   0: number;
   1: number;
   2: number;
@@ -31,12 +31,11 @@ interface monthProps {
 }
 
 export interface dataDaysProps {
-  day: number;
   week: string;
-  month: string;
+  date: Date;
 }
 
-const dayWeek: dayWeekProps = {
+export const dayWeek: dayWeekProps = {
   0: "Sun",
   1: "Mon",
   2: "Tue",
@@ -76,13 +75,14 @@ export const setDataDays = () => {
     date.setDate(date.getDate() + i);
 
     listData.push({
-      day: date.getDate(),
-      week: dayWeek[date.getDay() as keyof dayWeekProps],
-      month: listMonth[date.getMonth() as keyof monthProps],
+      date: date,
+      week: dayWeek[date.getDay() as keyof dayWeekProps]
     });
   }
 
   return listData;
 };
+
+
 
 export const dataDays: dataDaysProps[] = setDataDays();

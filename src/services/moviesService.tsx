@@ -111,7 +111,7 @@ class MoviesService {
       case "popular":
           return "/movie/popular?api_key=" + KEY_THEMOVIEDB
       case "features":
-          return "/movie/upcoming?api_key=" + KEY_THEMOVIEDB + "&region=us" + "&page=1"
+          return "/movie/upcoming?api_key=" + KEY_THEMOVIEDB + "&region=br" + "&page=1"
     }
   }
 

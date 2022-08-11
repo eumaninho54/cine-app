@@ -13,12 +13,16 @@ export interface dataMoviesModel {
 }
 
 export interface dataMoviesToBuy extends dataMoviesModel {
-  hoursSession: string,
-  dataSession : {
-    day: number
-    week: string
-    month: string
-  }
+  hoursSession: string
+  weekSession: string
+  dateSession: Date
+}
 
+export interface dataMoviesBag {
+  id: number;
+  title: string;
+  banner: string;
+  session_date: Date;
+  hours_session: string;
 }
 

@@ -4,7 +4,7 @@ import { View, Text, Image, FlatList, Animated, TouchableOpacity, Dimensions, Pl
 import { ThemeContext } from 'styled-components';
 import { AuthContext } from '../../context/authContext';
 import { authContextProps } from '../../models/authModel';
-import { dataMoviesModel, dataMoviesToBuy } from '../../models/moviesModel';
+import { dataMoviesBag, dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import authService from '../../services/authService';
 import LoadingScreen from '../../templates/loadingScreen';
@@ -13,6 +13,7 @@ import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ticketContextProps } from '../../models/ticketModel';
 import { TicketContext } from '../../context/ticketContext';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { dayWeek, listMonth, monthProps } from '../../models/dateWeek';
 
 
 const { width, height } = Dimensions.get("screen")
@@ -21,9 +22,9 @@ const SPACER_ITEM_SIZE = (width - ITEM_SIZE) / 2
 
 const Bag: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { ticketsToBuy, setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const { infoUser, setInfoUser, authState } = useContext<authContextProps>(AuthContext)
   const [dataFavorites, setDataFavorites] = useState<dataMoviesModel[]>([])
+  const [dataTickets, setDataTickets] = useState<dataMoviesBag[]>([])
   const [isFetched, setIsFetched] = useState(false)
   const fadeLoading = useState(new Animated.Value(1))[0]
   const [displayLoading, setDisplayLoading] = useState(true)
@@ -32,11 +33,14 @@ const Bag: React.FC = () => {
   useEffect(() => {
     const loadingBag = async () => {
       if (authState.token != null) {
-        const req = await authService.getFavorites(authState.token)
+        const ticketsReq = await authService.getTickets(authState.token)
+        const favoritesReq = await authService.getFavorites(authState.token)
 
-        if (req != null) {
-          setDataFavorites(req)
-        }
+        if (favoritesReq != null) setDataFavorites(favoritesReq)
+        if (ticketsReq != null) setDataTickets(ticketsReq)
+
+        console.tron.log!(ticketsReq)
+
         setIsFetched(true)
         Animated.timing(fadeLoading, {
           toValue: 0,
@@ -50,7 +54,7 @@ const Bag: React.FC = () => {
     }
     loadingBag()
 
-  }, [infoUser.favorites])
+  }, [infoUser])
 
   const removeFavorite = async (dataMovie: dataMoviesModel) => {
     if (authState.token != null) {
@@ -94,7 +98,7 @@ const Bag: React.FC = () => {
     )
   }
 
-  const renderItemYourTickets = ({ item, index }: { item: dataMoviesToBuy | null, index: number }) => {
+  const renderItemYourTickets = ({ item, index }: { item: dataMoviesBag | null, index: number }) => {
 
     if (item == null) {
       return (
@@ -124,25 +128,15 @@ const Bag: React.FC = () => {
           elevation: 4
         }}>
           <DateTicket>
-            {item.dataSession['month'] + " "}
-            {item.dataSession['day'] + " - "}
-            {item.hoursSession}
+            {new Date(item.session_date).getDate() + " "}
+            {listMonth[new Date(item.session_date).getMonth() as keyof monthProps] + " - "}
+            {item.hours_session}
           </DateTicket>
 
           <TitleTicket>
             {item.title}
           </TitleTicket>
         </InfoTicket>
-
-        <RemoveButton onPress={() => {
-          setTicketsToBuy(ticketsToBuy.filter((_, i) => i != index - 1))
-        }}>
-          <FontAwesome
-            name="remove"
-            size={20}
-            color={'#f22'}
-            style={{ left: 5, top: 3 }} />
-        </RemoveButton>
       </ItemToBuyBg >
     )
   }
@@ -162,13 +156,13 @@ const Bag: React.FC = () => {
             <SectionDivisor />
           </Section>
 
-          {ticketsToBuy.length > 0
+          {dataTickets.length > 0
             ?
             <>
               <FlatList
                 horizontal
                 snapToInterval={ITEM_SIZE}
-                data={[null, ...ticketsToBuy, null]}
+                data={[null, ...dataTickets, null]}
                 renderItem={renderItemYourTickets}
                 contentContainerStyle={{ alignItems: 'center' }}
                 keyExtractor={(_, index) => String(index) + '-toBuy'}

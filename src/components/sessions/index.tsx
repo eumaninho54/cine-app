@@ -13,6 +13,9 @@ import { themeModel } from '../../models/themeModel';
 import { ticketContextProps } from '../../models/ticketModel';
 import { ButtonFinish, ButtonsGroup, DayText, GradientSelected, MainSessions, SelectDateText, TextBuyTicket, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 import { Divider } from 'react-native-elements';
+import authService from '../../services/authService';
+import { authContextProps } from '../../models/authModel';
+import { AuthContext } from '../../context/authContext';
 
 
 interface routeProp {
@@ -30,9 +33,10 @@ const Sessions: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const [indexDateSelected, setIndexDateSelected] = useState(1)
   const dataMovie = useRoute<routeProp>().params
-  const { setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
+  const { setTicketsToBuy, ticketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const hoursObject = ["13:00", "15:15", "17:30"]
   const [hourSelected, setHourSelected] = useState<number>()
+  const { authState, infoUser, setInfoUser } = useContext<authContextProps>(AuthContext)
 
   const addToCar = () => {
     if (hourSelected == null) {
@@ -45,17 +49,49 @@ const Sessions: React.FC = () => {
       })
       return
     }
-    
+
     setTicketsToBuy((tickets) => [...tickets, {
       ...dataMovie,
       hoursSession: hoursObject[hourSelected],
-      dataSession: dataDays[indexDateSelected]
+      dateSession: dataDays[indexDateSelected].date,
+      weekSession: dataDays[indexDateSelected].week
     }])
     navigation.goBack()
   }
 
-  const purchase = () => {
+  const purchase = async () => {
+    if (hourSelected == null) {
+      showMessage({
+        message: "Invalid add to car",
+        description: "Select hour",
+        backgroundColor: themeContext.primaryColor,
+        icon: 'warning',
+        type: "warning"
+      })
+      return
+    }
 
+    if (authState.token != null) {
+      const req = await authService.buyTicket([
+        {
+          ...dataMovie,
+          hoursSession: hoursObject[hourSelected],
+          dateSession: dataDays[indexDateSelected].date,
+          weekSession: dataDays[indexDateSelected].week
+        }], authState.token)
+
+      if (req != null){
+        setInfoUser(req)
+        showMessage({
+          message: "Successful",
+          description: "Ticket purchase",
+          backgroundColor: themeContext.primaryColor,
+          icon: 'success',
+          type: "success"
+        })
+        navigation.goBack()
+      }
+    }
   }
 
   const hoursRender = (value: string, index: number) => {
@@ -80,6 +116,7 @@ const Sessions: React.FC = () => {
   }
 
   const renderItemDate = ({ item, index }: { item: dataDaysProps, index: number }) => {
+
     return (
       <TicketCarouselBorder style={{ width: ITEM_WIDTH - 20 }}>
         <LinearGradient
@@ -133,7 +170,7 @@ const Sessions: React.FC = () => {
             <TicketDetail />
 
             <WeekText>{item.week}</WeekText>
-            <DayText>{item.day}</DayText>
+            <DayText>{item.date.getDate()}</DayText>
           </TicketCarouselView>
         </TicketCarouselBg>
       </TicketCarouselBorder>
@@ -149,10 +186,11 @@ const Sessions: React.FC = () => {
             Date
           </SelectDateText>
         </SelectDateText>
+
         <Carousel
           data={dataDays}
           firstItem={1}
-          keyExtractor={(item) => String(item.day)}
+          keyExtractor={(item) => String(item.date.getDate())}
           renderItem={renderItemDate}
           sliderWidth={SLIDER_WIDTH + 20}
           itemWidth={ITEM_WIDTH}
@@ -176,10 +214,10 @@ const Sessions: React.FC = () => {
             orientation={'vertical'} />
 
           <FontAwesome5
-                name="cart-plus"
-                size={20}
-                color={themeContext.primaryColor}
-                style={{ width: 30 }} />
+            name="cart-plus"
+            size={20}
+            color={themeContext.primaryColor}
+            style={{ width: 30 }} />
         </ButtonFinish>
 
         <ButtonFinish

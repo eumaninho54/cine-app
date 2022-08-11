@@ -11,6 +11,9 @@ import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ButtonFinish, MainBg, MainToBuy, RemoveButton, TextBuyTicket, TitleToBuy, EmptyData, MovieBagView, ImageMovie, ViewInfo, TextInfo } from './styles';
 import { Divider } from 'react-native-elements';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { listMonth, monthProps } from '../../models/dateWeek';
+import authService from '../../services/authService';
+import { showMessage } from 'react-native-flash-message';
 
 
 const Purchase: React.FC = () => {
@@ -19,15 +22,39 @@ const Purchase: React.FC = () => {
   const { ticketsToBuy, setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const [valuePurchase, setValuePurchase] = useState(0)
   const navigation = useNavigation<NavigationProp<any>>()
-  
-  const purchase = () => {
 
+  const purchase = async () => {
+    if (authState.token != null) {
+      const req = await authService.buyTicket(ticketsToBuy, authState.token)
+
+      if (req == null) {
+        showMessage({
+          message: "Error to buy",
+          description: "Invalid tickets",
+          backgroundColor: themeContext.primaryColor,
+          icon: 'danger',
+          type: "danger"
+        })
+
+        return
+      }
+
+      setInfoUser(req)
+      showMessage({
+        message: "Successful",
+        description: "Ticket purchase",
+        backgroundColor: themeContext.primaryColor,
+        icon: 'success',
+        type: "success"
+      })
+      navigation.goBack()
+    }
   }
 
   const renderItemFavorite = ({ item, index }: { item: dataMoviesToBuy, index: number }) => {
     return (
       <MovieBagView>
-        <ImageMovie source={{ uri: item.poster_path }}/>
+        <ImageMovie source={{ uri: item.poster_path }} />
         <RemoveButton style={{ left: 10 }} onPress={() => {
           setTicketsToBuy(ticketsToBuy.filter((_, i) => i != index))
         }}>
@@ -40,9 +67,9 @@ const Purchase: React.FC = () => {
 
         <ViewInfo>
           <TextInfo>
-            {item.dataSession['month']}
-            {item.dataSession['day'] + " - "}
-            {item.dataSession['week']}
+            {listMonth[item.dateSession.getMonth() as keyof monthProps] + " "}
+            {item.dateSession.getDate() + " - "}
+            {item.weekSession}
           </TextInfo>
 
           <TextInfo style={{ color: themeContext.textColor }}>$10</TextInfo>
