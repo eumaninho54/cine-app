@@ -77,13 +77,10 @@ class AuthService {
       dataMovie.push({
         id: movie.id,
         banner: movie.banner,
-        hours_session: movie.hoursSession,
         session_date: new Date(movie.dateSession),
         title: movie.title
       })
     })
-
-    console.tron.log!(dataMovie)
 
     const req = await axios({
       method: "post",

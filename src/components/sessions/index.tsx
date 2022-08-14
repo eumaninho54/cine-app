@@ -50,10 +50,12 @@ const Sessions: React.FC = () => {
       return
     }
 
+    const dateSession = dataDays[indexDateSelected].date
+    dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
+
     setTicketsToBuy((tickets) => [...tickets, {
       ...dataMovie,
-      hoursSession: hoursObject[hourSelected],
-      dateSession: dataDays[indexDateSelected].date,
+      dateSession: dateSession,
       weekSession: dataDays[indexDateSelected].week
     }])
     navigation.goBack()
@@ -72,15 +74,17 @@ const Sessions: React.FC = () => {
     }
 
     if (authState.token != null) {
+      const dateSession = dataDays[indexDateSelected].date
+      dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
+
       const req = await authService.buyTicket([
         {
           ...dataMovie,
-          hoursSession: hoursObject[hourSelected],
-          dateSession: dataDays[indexDateSelected].date,
+          dateSession: dateSession,
           weekSession: dataDays[indexDateSelected].week
         }], authState.token)
 
-      if (req != null){
+      if (req != null) {
         setInfoUser(req)
         showMessage({
           message: "Successful",

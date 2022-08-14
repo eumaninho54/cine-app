@@ -25,6 +25,7 @@ const Bag: React.FC = () => {
   const { infoUser, setInfoUser, authState } = useContext<authContextProps>(AuthContext)
   const [dataFavorites, setDataFavorites] = useState<dataMoviesModel[]>([])
   const [dataTickets, setDataTickets] = useState<dataMoviesBag[]>([])
+  const [dataClosed, setDataClosed] = useState<dataMoviesBag[]>([])
   const [isFetched, setIsFetched] = useState(false)
   const fadeLoading = useState(new Animated.Value(1))[0]
   const [displayLoading, setDisplayLoading] = useState(true)
@@ -37,9 +38,11 @@ const Bag: React.FC = () => {
         const favoritesReq = await authService.getFavorites(authState.token)
 
         if (favoritesReq != null) setDataFavorites(favoritesReq)
-        if (ticketsReq != null) setDataTickets(ticketsReq)
 
-        console.tron.log!(ticketsReq)
+        if (ticketsReq != null) {
+          setDataClosed(ticketsReq.filter((ticket) => new Date(ticket.session_date).getTime() < new Date().getTime()))
+          setDataTickets(ticketsReq.filter((ticket) => new Date(ticket.session_date).getTime() > new Date().getTime()))
+        }
 
         setIsFetched(true)
         Animated.timing(fadeLoading, {
@@ -130,7 +133,8 @@ const Bag: React.FC = () => {
           <DateTicket>
             {new Date(item.session_date).getDate() + " "}
             {listMonth[new Date(item.session_date).getMonth() as keyof monthProps] + " - "}
-            {item.hours_session}
+            {`${new Date(item.session_date).getHours()}:${String(new Date(item.session_date).getMinutes()) == "0"
+              ? "00" : new Date(item.session_date).getMinutes()}`}
           </DateTicket>
 
           <TitleTicket>
@@ -165,7 +169,7 @@ const Bag: React.FC = () => {
                 data={[null, ...dataTickets, null]}
                 renderItem={renderItemYourTickets}
                 contentContainerStyle={{ alignItems: 'center' }}
-                keyExtractor={(_, index) => String(index) + '-toBuy'}
+                keyExtractor={(_, index) => String(index) + '-Tickets'}
                 showsHorizontalScrollIndicator={false}
                 decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
                 scrollEventThrottle={16}
@@ -181,6 +185,40 @@ const Bag: React.FC = () => {
               <View>
                 <Text style={{ color: themeContext.gray }}>You don't have movies purchase</Text>
                 <Text style={{ color: themeContext.textColor }}>Purchase now!</Text>
+              </View>
+            </ViewEmptyData>
+          }
+
+          <Section>
+            <SectionTitle>Closed</SectionTitle>
+            <SectionDivisor />
+          </Section>
+
+          {dataClosed.length > 0
+            ?
+            <>
+              <FlatList
+                horizontal
+                snapToInterval={ITEM_SIZE}
+                data={[null, ...dataClosed, null]}
+                renderItem={renderItemYourTickets}
+                contentContainerStyle={{ alignItems: 'center', opacity: 0.6 }}
+                keyExtractor={(_, index) => String(index) + '-closed'}
+                showsHorizontalScrollIndicator={false}
+                decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
+                scrollEventThrottle={16}
+              />
+            </>
+            :
+            <ViewEmptyData>
+              <FontAwesome
+                name="close"
+                size={20}
+                color={themeContext.primaryColor}
+                style={{ width: 30 }} />
+              <View>
+                <Text style={{ color: themeContext.gray }}>You don't have movies closed</Text>
+                <Text style={{ color: themeContext.textColor }}>Your expired tickets will appear here</Text>
               </View>
             </ViewEmptyData>
           }
