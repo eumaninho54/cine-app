@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import { ImageLoginProps, MainLoginProps } from "../../models/styledModel";
+import { ImageLoginProps, MainLoginProps } from "../../models/themeModel";
 
 interface TextLoginProps {
   color: string;

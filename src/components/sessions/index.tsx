@@ -33,10 +33,10 @@ const Sessions: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const [indexDateSelected, setIndexDateSelected] = useState(1)
   const dataMovie = useRoute<routeProp>().params
-  const { setTicketsToBuy, ticketsToBuy } = useContext<ticketContextProps>(TicketContext)
+  const { setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const hoursObject = ["13:00", "15:15", "17:30"]
   const [hourSelected, setHourSelected] = useState<number>()
-  const { authState, infoUser, setInfoUser } = useContext<authContextProps>(AuthContext)
+  const { authState, setInfoUser } = useContext<authContextProps>(AuthContext)
 
   const addToCar = () => {
     if (hourSelected == null) {
@@ -44,14 +44,26 @@ const Sessions: React.FC = () => {
         message: "Invalid add to car",
         description: "Select hour",
         backgroundColor: themeContext.primaryColor,
-        icon: 'warning',
-        type: "warning"
+        icon: 'danger',
+        type: "danger",
+        duration: 3000,
       })
       return
     }
 
     const dateSession = dataDays[indexDateSelected].date
     dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
+
+    if(dateSession < new Date()){
+      showMessage({
+        message: "Invalid to purchase",
+        description: "Check the date",
+        backgroundColor: themeContext.primaryColor,
+        icon: 'warning',
+        type: "warning"
+      })
+      return 
+    }
 
     setTicketsToBuy((tickets) => [...tickets, {
       ...dataMovie,
@@ -67,8 +79,9 @@ const Sessions: React.FC = () => {
         message: "Invalid add to car",
         description: "Select hour",
         backgroundColor: themeContext.primaryColor,
-        icon: 'warning',
-        type: "warning"
+        icon: 'danger',
+        type: "danger",
+        duration: 3000,
       })
       return
     }
@@ -76,6 +89,17 @@ const Sessions: React.FC = () => {
     if (authState.token != null) {
       const dateSession = dataDays[indexDateSelected].date
       dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
+
+      if(dateSession < new Date()){
+        showMessage({
+          message: "Invalid to purchase",
+          description: "Check the date",
+          backgroundColor: themeContext.primaryColor,
+          icon: 'warning',
+          type: "warning"
+        })
+        return 
+      }
 
       const req = await authService.buyTicket([
         {

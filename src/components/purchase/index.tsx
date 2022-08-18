@@ -18,13 +18,29 @@ import { showMessage } from 'react-native-flash-message';
 
 const Purchase: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { infoUser, setInfoUser, authState, } = useContext<authContextProps>(AuthContext)
+  const { setInfoUser, authState, } = useContext<authContextProps>(AuthContext)
   const { ticketsToBuy, setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
-  const [valuePurchase, setValuePurchase] = useState(0)
   const navigation = useNavigation<NavigationProp<any>>()
 
   const purchase = async () => {
     if (authState.token != null) {
+      const ticketsToBuyValid = ticketsToBuy.filter((movie) => (
+        movie.dateSession > new Date() ? true : false
+      ))
+
+      if (ticketsToBuyValid.length != ticketsToBuy.length) {
+        showMessage({
+          message: "Invalid to purchase",
+          description: "Expired movies have been removed from the bag",
+          backgroundColor: themeContext.primaryColor,
+          icon: 'danger',
+          type: "danger",
+          duration: 3000,
+        })
+        setTicketsToBuy(ticketsToBuyValid)
+        return
+      }
+
       const req = await authService.buyTicket(ticketsToBuy, authState.token)
 
       if (req == null) {
@@ -47,6 +63,7 @@ const Purchase: React.FC = () => {
         icon: 'success',
         type: "success"
       })
+      setTicketsToBuy([])
       navigation.goBack()
     }
   }
@@ -69,7 +86,8 @@ const Purchase: React.FC = () => {
           <TextInfo>
             {listMonth[item.dateSession.getMonth() as keyof monthProps] + " "}
             {item.dateSession.getDate() + " - "}
-            {item.weekSession}
+            {`${new Date(item.dateSession).getHours()}:${String(new Date(item.dateSession).getMinutes()) == "0"
+              ? "00" : new Date(item.dateSession).getMinutes()}`}
           </TextInfo>
 
           <TextInfo style={{ color: themeContext.textColor }}>$10</TextInfo>

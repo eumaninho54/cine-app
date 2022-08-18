@@ -91,7 +91,6 @@ export default function Routes() {
               }
             }} />
             <Screen name='Purchase' component={Purchase} options={{
-              presentation: "modal",
               headerShown: true,
               headerBackTitleVisible: false,
               headerTitle: () => (<></>),
