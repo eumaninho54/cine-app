@@ -3,7 +3,6 @@ import { FlatList, TouchableOpacity, View, Image, Text } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { AuthContext } from '../../context/authContext';
 import { TicketContext } from '../../context/ticketContext';
-import { authContextProps } from '../../models/authModel';
 import { dataMoviesModel, dataMoviesToBuy } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import { ticketContextProps } from '../../models/ticketModel';
@@ -18,12 +17,12 @@ import { showMessage } from 'react-native-flash-message';
 
 const Purchase: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { setInfoUser, authState, } = useContext<authContextProps>(AuthContext)
+  const { setInfoUser, infoUser, } = useContext<authContextProps>(AuthContext)
   const { ticketsToBuy, setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const navigation = useNavigation<NavigationProp<any>>()
 
   const purchase = async () => {
-    if (authState.token != null) {
+    if (infoUser.token != null) {
       const ticketsToBuyValid = ticketsToBuy.filter((movie) => (
         movie.dateSession > new Date() ? true : false
       ))
@@ -41,7 +40,7 @@ const Purchase: React.FC = () => {
         return
       }
 
-      const req = await authService.buyTicket(ticketsToBuy, authState.token)
+      const req = await authService.buyTicket(ticketsToBuy, infoUser.token)
 
       if (req == null) {
         showMessage({

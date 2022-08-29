@@ -1,55 +1,40 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../context/authContext'
 import LoginNavigation from './login'
 import TabNav from './tab'
-import { authContextProps } from '../models/authModel'
 import Profile from '../components/profile'
 import { themeModel } from '../models/themeModel'
 import { ThemeContext } from 'styled-components'
 import PosterMovie from '../components/posterMovie'
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ButtonIsFavorite } from './styles'
-import moviesService from '../services/moviesService'
-import authService from '../services/authService'
 import Purchase from '../components/purchase'
+import { useDispatch, useSelector } from 'react-redux'
+import { StatesModel } from '../models/storeModel'
+import { changeFavorite } from '../store/userSlice'
+import { AppDispatch } from '../store'
+import { setMovie } from '../store/selectedMovieSlice'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
 
 export default function Routes() {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const {
-    isSelectedFavorite,
-    setIsSelectedFavorite,
-    setAuthState,
-    authState,
-    infoUser,
-    setInfoUser
-  } = useContext<authContextProps>(AuthContext)
+  const user = useSelector((state: StatesModel) => state.user)
+  const movieSelected = useSelector((state: StatesModel) => state.selectedMovie)
+  const dispatch = useDispatch<AppDispatch>()
+  const dataMovie = useSelector((state: StatesModel) => state.selectedMovie)
 
   const onFavoriteMovie = async () => {
-    if (authState.token != null) {
-      setIsSelectedFavorite((value) => ({ isSelected: !value.isSelected, dataMovie: value.dataMovie }))
-      const isChanged = await authService.changeFavorite(
-        {
-          isSelected: !isSelectedFavorite.isSelected,
-          dataMovie: isSelectedFavorite.dataMovie
-        }, authState.token)
-      if (isChanged != null) {
-        setInfoUser((value) => (
-          {
-            ...value,
-            favorites: isChanged.favorites
-          }
-        ))
-      }
+    if (user.token != null) {
+      await dispatch(changeFavorite({ dataMovie, token: user.token }))
+      dispatch(setMovie({ ...dataMovie, isFavorite: !dataMovie.isFavorite }))
     }
   }
 
   return (
-    authState["auth"]
+    user.auth == true
       ? (
         <NavigationContainer>
           <Navigator
@@ -70,12 +55,12 @@ export default function Routes() {
                     name="bookmark"
                     size={20}
                     color={themeContext.primaryColor}
-                    style={{ display: isSelectedFavorite.isSelected ? "none" : "flex" }} />
+                    style={{ display: movieSelected.isFavorite ? "none" : "flex" }} />
                   <FontAwesome
                     name="bookmark"
                     size={20}
                     color={themeContext.primaryColor}
-                    style={{ display: isSelectedFavorite.isSelected ? "flex" : "none" }} />
+                    style={{ display: movieSelected.isFavorite ? "flex" : "none" }} />
                 </ButtonIsFavorite>
               )
             }} />

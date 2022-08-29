@@ -10,8 +10,11 @@ import { NavigationProp, useNavigation, useRoute } from '@react-navigation/nativ
 import { BackdropBg, BackdropImage, BackdropView, CarouselBg, CarouselPoster, EmptyView, GenresBg, GenreText, GenreView, MainCarousel, MainTrending, OverviewPoster, TitlePoster } from './styles';
 import { Rating } from 'react-native-elements';
 import authService from '../../services/authService';
-import { authContextProps } from '../../models/authModel';
 import { AuthContext } from '../../context/authContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { StatesModel } from '../../models/storeModel';
+import { setMovie } from '../../store/selectedMovieSlice';
+import { AppDispatch } from '../../store';
 
 const { width, height } = Dimensions.get("screen")
 const SPACING = 10
@@ -28,7 +31,8 @@ const Trending: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
   const scrollX = useRef(new Animated.Value(0)).current
-  const { infoUser, setIsSelectedFavorite } = useContext<authContextProps>(AuthContext)
+  const user = useSelector((state: StatesModel) => state.user)
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -44,14 +48,14 @@ const Trending: React.FC = () => {
   }, [])
 
   const selectedMovie = (item: dataMoviesModel) => {
-    if(infoUser.favorites.find((value) => value.id == item.id)){
-      setIsSelectedFavorite({isSelected: true, dataMovie: item})
-      navigation.navigate('PosterMovie', { dataMovie: item })
+    if (user.favorites.find((value) => value.id == item.id)) {
+      dispatch(setMovie({ ...item, isFavorite: true }))
+      navigation.navigate('PosterMovie')
       return
     }
-    
-    setIsSelectedFavorite({isSelected: false, dataMovie: item})
-    navigation.navigate('PosterMovie', { dataMovie: item })
+
+    dispatch(setMovie({ ...item, isFavorite: false }))
+    navigation.navigate('PosterMovie')
   }
 
   const isImagesRequested = () => {

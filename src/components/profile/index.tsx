@@ -4,15 +4,19 @@ import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { AuthContext } from '../../context/authContext';
-import { authContextProps } from '../../models/authModel';
 import { EmoteLink, ExitText, HeaderInfo, InfoLink, InfoView, ProfileBackground, ProfileHeader, SectionLink, TextHeaderProfile, TextModifyUsername } from './styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { StatesModel } from '../../models/storeModel';
+import { logout } from '../../store/userSlice';
+import { AppDispatch } from '../../store';
 
 
 const Profile: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { infoUser, logout } = useContext<authContextProps>(AuthContext)
   const [modalVisible, setModalVisible] = useState(false)
-
+  const user = useSelector((state: StatesModel) => state.user)
+  const dispatch = useDispatch<AppDispatch>()
+  
   const changeUsername = () => {
   }
 
@@ -45,7 +49,7 @@ const Profile: React.FC = () => {
             color={themeContext.iconTabNav} />
 
           <View>
-            <TextHeaderProfile>Hello, {infoUser.username} !</TextHeaderProfile>
+            <TextHeaderProfile>Hello, {user.username} !</TextHeaderProfile>
 
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <TextModifyUsername>Press to modify username</TextModifyUsername>
@@ -53,7 +57,7 @@ const Profile: React.FC = () => {
           </View>
         </HeaderInfo>
 
-        <TouchableOpacity onPress={logout}>
+        <TouchableOpacity onPress={() => dispatch(logout())}>
           <ExitText>Exit</ExitText>
         </TouchableOpacity>
       </ProfileHeader>

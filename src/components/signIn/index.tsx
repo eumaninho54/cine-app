@@ -7,10 +7,12 @@ import authService from '../../services/authService';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import * as SecureStore from 'expo-secure-store';
-import { AuthContext } from '../../context/authContext';
-import { authContextProps } from '../../models/authModel';
 import { themeModel } from '../../models/themeModel';
 import { ThemeContext } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import userSlice, { login, verifyToken } from '../../store/userSlice';
+import { StatesModel, userProps } from '../../models/storeModel';
+import { AppDispatch } from '../../store';
 
 
 const SignIn: React.FC = () => {
@@ -20,17 +22,14 @@ const SignIn: React.FC = () => {
   const [inputPassword, setInputPassword] = useState("")
   const refPassword = useRef<any>()
   const navigation = useNavigation<NavigationProp<any>>()
-  const authContext = useContext<authContextProps>(AuthContext)
+  const dispatch = useDispatch<AppDispatch>()
+  const user = useSelector((state: StatesModel) => state.user)
 
   const onSignIn = async () => {
-    const reqSignIn = await authService.signIn(inputEmail, inputPassword)
-    
-    if (reqSignIn != null) {
-      await SecureStore.setItemAsync("token", reqSignIn.authentication["token"])
-      authContext.setInfoUser(reqSignIn.infoUser)
-      authContext.setAuthState(reqSignIn.authentication)
-      navigation.navigate('BrowserNavigation', {})
-    } else {
+    const userInfo = (await dispatch(login({email: inputEmail, password: inputPassword}))).payload as userProps
+    console.tron.log!(user)
+
+    if(userInfo.token == ""){
       setInputPassword("")
       refPassword.current.clear()
       showMessage({
@@ -40,6 +39,7 @@ const SignIn: React.FC = () => {
         icon: 'warning',
         type: "warning"
       })
+      return
     }
   }
 

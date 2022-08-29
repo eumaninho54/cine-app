@@ -5,7 +5,6 @@ import logo from '../../../assets/logo.png'
 import { ScrollView } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../context/authContext';
-import { authContextProps } from '../../models/authModel';
 import authService from '../../services/authService';
 import * as SecureStore from 'expo-secure-store';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
@@ -19,7 +18,6 @@ interface navigateProp {
 
 const SignUp: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const authContext = useContext<authContextProps>(AuthContext)
   const [inputEmail, setInputEmail] = useState("")
   const [inputPassword, setInputPassword] = useState("")
   const [inputConfirmPassword, setInputConfirmPassword] = useState("")

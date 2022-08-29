@@ -14,7 +14,6 @@ import { ticketContextProps } from '../../models/ticketModel';
 import { ButtonFinish, ButtonsGroup, DayText, GradientSelected, MainSessions, SelectDateText, TextBuyTicket, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 import { Divider } from 'react-native-elements';
 import authService from '../../services/authService';
-import { authContextProps } from '../../models/authModel';
 import { AuthContext } from '../../context/authContext';
 
 
@@ -36,7 +35,7 @@ const Sessions: React.FC = () => {
   const { setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const hoursObject = ["13:00", "15:15", "17:30"]
   const [hourSelected, setHourSelected] = useState<number>()
-  const { authState, setInfoUser } = useContext<authContextProps>(AuthContext)
+  const { infoUser, setInfoUser } = useContext<authContextProps>(AuthContext)
 
   const addToCar = () => {
     if (hourSelected == null) {
@@ -86,7 +85,7 @@ const Sessions: React.FC = () => {
       return
     }
 
-    if (authState.token != null) {
+    if (infoUser.token != null) {
       const dateSession = dataDays[indexDateSelected].date
       dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
 
@@ -106,7 +105,7 @@ const Sessions: React.FC = () => {
           ...dataMovie,
           dateSession: dateSession,
           weekSession: dataDays[indexDateSelected].week
-        }], authState.token)
+        }], infoUser.token)
 
       if (req != null) {
         setInfoUser(req)

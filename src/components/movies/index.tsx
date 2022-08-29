@@ -6,12 +6,13 @@ import { BannerMoviesView, InfoMoviesText, InfoMoviesView, MainMovies, SectionMo
 import moviesService from '../../services/moviesService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { LinearGradient } from 'expo-linear-gradient';
-import { genreMovie, genreMovieProps } from '../../models/enumGenreMovie';
 import LoadingScreen from '../../templates/loadingScreen';
 import popcornRating from '../../../assets/popcorn.png'
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { authContextProps } from '../../models/authModel';
-import { AuthContext } from '../../context/authContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { StatesModel } from '../../models/storeModel';
+import { setMovie } from "../../store/selectedMovieSlice"
+import { AppDispatch } from '../../store';
 
 
 const Movies: React.FC = () => {
@@ -22,7 +23,8 @@ const Movies: React.FC = () => {
   const [displayLoading, setDisplayLoading] = useState(true)
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
-  const { infoUser, setIsSelectedFavorite } = useContext<authContextProps>(AuthContext)
+  const user = useSelector((state: StatesModel) => state.user)
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     const loadingMovies = async () => {
@@ -55,14 +57,14 @@ const Movies: React.FC = () => {
   }
 
   const selectedMovie = (item: dataMoviesModel) => {
-    if(infoUser.favorites.find((value) => value.id == item.id)){
-      setIsSelectedFavorite({isSelected: true, dataMovie: item})
-      navigation.navigate('PosterMovie', { dataMovie: item })
+    if (user.favorites.find((value) => value.id == item.id)) {
+      dispatch(setMovie({ ...item, isFavorite: true }))
+      navigation.navigate('PosterMovie')
       return
     }
-    
-    setIsSelectedFavorite({isSelected: false, dataMovie: item})
-    navigation.navigate('PosterMovie', { dataMovie: item })
+
+    dispatch(setMovie({ ...item, isFavorite: false }))
+    navigation.navigate('PosterMovie')
   }
 
   const renderItemFlatList = ({ item, index }: { item: dataMoviesModel, index: number }) => {

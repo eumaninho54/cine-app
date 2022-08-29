@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
     "@react-navigation/stack": "^6.2.1",
+    "@reduxjs/toolkit": "^1.8.4",
     "axios": "^0.27.2",
     "axios-auth-refresh": "^3.3.1",
     "expo": "~45.0.0",
@@ -45,6 +46,7 @@
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.7",
+    "react-redux": "^8.0.2",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {

@@ -1,7 +1,7 @@
 import axios from "axios"
 import * as SecureStore from 'expo-secure-store';
-import { signInProps, userProps } from "../models/authModel";
 import { dataMoviesToBuy, dataMoviesBag, dataMoviesModel } from "../models/moviesModel";
+import { userProps } from "../models/storeModel";
 
 class AuthService {
   private baseURL = "http://192.168.1.106:3333"
@@ -20,7 +20,7 @@ class AuthService {
   }
 
   async signIn(email: string, password: string) {
-    const req = await axios.request<signInProps>({
+    const req = await axios.request<userProps>({
       method: "post",
       url: this.baseURL + "/login",
       data: {
@@ -48,11 +48,25 @@ class AuthService {
     return req
   }
 
-  async changeFavorite(movieSelected: { isSelected: boolean, dataMovie: dataMoviesModel }, token: string): Promise<{favorites: dataMoviesModel[]} | null> {
+  async changeFavorite(movieSelected: dataMoviesModel, token: string): Promise<dataMoviesModel[] | null> {
     const req = await axios({
       method: "patch",
       url: this.baseURL + "/user/favorite/change/",
-      data: movieSelected,
+      data: {
+        dataMovie: {
+          id: movieSelected.id,
+          title: movieSelected.title,
+          backdrop_path: movieSelected.backdrop_path,
+          genre_ids: movieSelected.genre_ids,
+          original_title: movieSelected.original_title,
+          overview: movieSelected.overview,
+          popularity: movieSelected.popularity,
+          poster_path: movieSelected.poster_path,
+          release_date: movieSelected.release_date,
+          vote_average: movieSelected.vote_average
+        },
+        isSelected: movieSelected.isFavorite
+      },
       headers: { "x-access-token": token }
     }).then((res) => res.data)
       .catch(() => null)
@@ -60,11 +74,11 @@ class AuthService {
     return req
   }
 
-  async getFavorites(token: string): Promise<dataMoviesModel[] | null>{
+  async getFavorites(token: string): Promise<dataMoviesModel[] | null> {
     const req = await axios({
       method: "get",
       url: this.baseURL + `/user/favorite`,
-      headers: {"x-access-token": token }
+      headers: { "x-access-token": token }
     }).then((res) => res.data)
       .catch(() => null)
 
@@ -88,16 +102,16 @@ class AuthService {
       data: dataMovie,
       headers: { "x-access-token": token }
     }).then((user) => user.data)
-      .catch(() =>  null)
+      .catch(() => null)
 
     return req
   }
 
-  async getTickets(token: string): Promise<dataMoviesBag[] | null>{
+  async getTickets(token: string): Promise<dataMoviesBag[] | null> {
     const req = await axios({
       method: "get",
       url: this.baseURL + `/user/ticket`,
-      headers: {"x-access-token": token }
+      headers: { "x-access-token": token }
     }).then((res) => res.data)
       .catch(() => null)
 

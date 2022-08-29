@@ -10,6 +10,7 @@ export interface dataMoviesModel {
   original_title: string;
   popularity: number;
   genre_ids: number[];
+  isFavorite: boolean;
 }
 
 export interface dataMoviesToBuy extends dataMoviesModel {

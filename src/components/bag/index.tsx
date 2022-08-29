@@ -2,8 +2,6 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, Image, FlatList, Animated, TouchableOpacity, Dimensions, Platform, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'styled-components';
-import { AuthContext } from '../../context/authContext';
-import { authContextProps } from '../../models/authModel';
 import { dataMoviesBag, dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import authService from '../../services/authService';
@@ -14,6 +12,7 @@ import { ticketContextProps } from '../../models/ticketModel';
 import { TicketContext } from '../../context/ticketContext';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { dayWeek, listMonth, monthProps } from '../../models/dateWeek';
+import { AuthContext } from '../../context/authContext';
 
 
 const { width, height } = Dimensions.get("screen")
@@ -22,7 +21,7 @@ const SPACER_ITEM_SIZE = (width - ITEM_SIZE) / 2
 
 const Bag: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { infoUser, setInfoUser, authState } = useContext<authContextProps>(AuthContext)
+  const { infoUser, setInfoUser } = useContext<any>(AuthContext)
   const [dataFavorites, setDataFavorites] = useState<dataMoviesModel[]>([])
   const [dataTickets, setDataTickets] = useState<dataMoviesBag[]>([])
   const [dataClosed, setDataClosed] = useState<dataMoviesBag[]>([])
@@ -33,9 +32,9 @@ const Bag: React.FC = () => {
 
   useEffect(() => {
     const loadingBag = async () => {
-      if (authState.token != null) {
-        const ticketsReq = await authService.getTickets(authState.token)
-        const favoritesReq = await authService.getFavorites(authState.token)
+      if (infoUser.token != null) {
+        const ticketsReq = await authService.getTickets(infoUser.token)
+        const favoritesReq = await authService.getFavorites(infoUser.token)
 
         if (favoritesReq != null) setDataFavorites(favoritesReq)
 
@@ -60,13 +59,13 @@ const Bag: React.FC = () => {
   }, [infoUser])
 
   const removeFavorite = async (dataMovie: dataMoviesModel) => {
-    if (authState.token != null) {
+    if (infoUser.token != null) {
 
       const isChanged = await authService.changeFavorite(
         {
           isSelected: false,
           dataMovie: dataMovie
-        }, authState.token)
+        }, infoUser.token)
       if (isChanged != null) {
         setInfoUser((value) => (
           {

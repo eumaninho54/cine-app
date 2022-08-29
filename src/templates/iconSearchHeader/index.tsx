@@ -6,7 +6,6 @@ import { themeModel } from '../../models/themeModel';
 import Modal from "react-native-modal";
 import { SearchBar } from 'react-native-elements';
 import themes from '../../themes';
-import { authContextProps } from '../../models/authModel';
 import { AuthContext } from '../../context/authContext';
 import authService from '../../services/authService';
 import { dataMoviesModel } from '../../models/moviesModel';

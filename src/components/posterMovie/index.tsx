@@ -9,21 +9,14 @@ import { themeModel } from '../../models/themeModel';
 import { MainPosterMovie, PosterGenres, PosterImage, PosterInfoView, PosterTitle, PosterView, RatingPopcorn, RatingText, RatingView, TabView } from './styles';
 import popcornRating from '../../../assets/popcorn.png'
 import PostMovieTab from '../../routes/postMovieTab';
-
-interface routeProp {
-  key: string;
-  name: string;
-  path?: string | undefined;
-  params: {
-    dataMovie: dataMoviesModel
-  };
-}
+import { useSelector } from 'react-redux';
+import { StatesModel } from '../../models/storeModel';
 
 
 const PosterMovie: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const navigation = useNavigation<NavigationProp<any>>()
-  const { dataMovie } = useRoute<routeProp>().params
+  const dataMovie = useSelector((state: StatesModel) => state.selectedMovie)
 
   return (
     <MainPosterMovie>

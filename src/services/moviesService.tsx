@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { KEY_THEMOVIEDB } from '@env'
 import { dataMoviesModel } from "../models/moviesModel";
 import { genreMovie, genreMovieProps } from "../models/enumGenreMovie";
-import { userProps } from "../models/authModel";
+import { userProps } from "../models/storeModel";
 
 class MoviesService {
   private baseURL = "https://api.themoviedb.org/3"
@@ -46,7 +46,8 @@ class MoviesService {
           poster_path: this.getPosterPath(poster_path),
           release_date: release_date,
           title: title,
-          vote_average: vote_average
+          vote_average: vote_average,
+          isFavorite: false
         }
       ))
     }).catch(() => {
