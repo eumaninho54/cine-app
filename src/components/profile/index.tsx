@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
-import { AuthContext } from '../../context/authContext';
 import { EmoteLink, ExitText, HeaderInfo, InfoLink, InfoView, ProfileBackground, ProfileHeader, SectionLink, TextHeaderProfile, TextModifyUsername } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatesModel } from '../../models/storeModel';

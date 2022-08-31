@@ -14,8 +14,7 @@ export interface dataMoviesModel {
 }
 
 export interface dataMoviesToBuy extends dataMoviesModel {
-  weekSession: string
-  dateSession: Date
+  session_date: Date
 }
 
 export interface dataMoviesBag {

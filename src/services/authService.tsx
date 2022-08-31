@@ -91,7 +91,7 @@ class AuthService {
       dataMovie.push({
         id: movie.id,
         banner: movie.banner,
-        session_date: new Date(movie.dateSession),
+        session_date: new Date(movie.session_date),
         title: movie.title
       })
     })

@@ -3,12 +3,10 @@ import { ThemeProvider } from 'styled-components/native';
 import { useColorScheme } from 'react-native';
 import { reactotron } from './src/config/reactotron'
 import themes from './src/themes';
-import { AuthProvider } from "./src/context/authContext"
 import Routes from './src/routes';
 import FlashMessage from 'react-native-flash-message';
 import "./src/config/ignoreWarnings"
 import React, { useEffect } from 'react';
-import { TicketProvider } from './src/context/ticketContext';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
 import { verifyToken } from './src/store/userSlice';
@@ -28,16 +26,12 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <TicketProvider>
-          <AuthProvider>
-            <SafeAreaView style={{ flex: 0, backgroundColor: theme.primaryColor }} />
-            <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
-              <StatusBar barStyle={'dark-content'} animated backgroundColor={theme.primaryColor} />
-              <FlashMessage position="top" />
-              <Routes />
-            </SafeAreaView>
-          </AuthProvider>
-        </TicketProvider>
+        <SafeAreaView style={{ flex: 0, backgroundColor: theme.primaryColor }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
+          <StatusBar barStyle={'dark-content'} animated backgroundColor={theme.primaryColor} />
+          <FlashMessage position="top" />
+          <Routes />
+        </SafeAreaView>
       </Provider>
     </ThemeProvider>
   );

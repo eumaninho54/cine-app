@@ -25,6 +25,7 @@ const selectedMovieSlice = createSlice({
   reducers: {
     setMovie(state, {payload}: {payload: dataMoviesModel}){
       state = payload
+      return state
     }
   },
   extraReducers:{}

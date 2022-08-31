@@ -10,7 +10,6 @@ import { NavigationProp, useNavigation, useRoute } from '@react-navigation/nativ
 import { BackdropBg, BackdropImage, BackdropView, CarouselBg, CarouselPoster, EmptyView, GenresBg, GenreText, GenreView, MainCarousel, MainTrending, OverviewPoster, TitlePoster } from './styles';
 import { Rating } from 'react-native-elements';
 import authService from '../../services/authService';
-import { AuthContext } from '../../context/authContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatesModel } from '../../models/storeModel';
 import { setMovie } from '../../store/selectedMovieSlice';

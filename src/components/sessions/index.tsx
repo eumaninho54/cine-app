@@ -5,16 +5,18 @@ import { View, Text, Dimensions, Animated, TouchableOpacity } from 'react-native
 import { showMessage } from 'react-native-flash-message';
 import Carousel from 'react-native-snap-carousel';
 import { ThemeContext } from 'styled-components';
-import { TicketContext } from '../../context/ticketContext';
 import { dataDays, dataDaysProps } from '../../models/dateWeek';
 import { FontAwesome5 } from "@expo/vector-icons"
 import { dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
-import { ticketContextProps } from '../../models/ticketModel';
 import { ButtonFinish, ButtonsGroup, DayText, GradientSelected, MainSessions, SelectDateText, TextBuyTicket, TicketCarouselBg, TicketCarouselBorder, TicketCarouselView, TicketDetail, TicketDetailView, TicketSelectedBorder, WeekText } from './styles';
 import { Divider } from 'react-native-elements';
 import authService from '../../services/authService';
-import { AuthContext } from '../../context/authContext';
+import { StatesModel } from '../../models/storeModel';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { setToBuy } from '../../store/toBuyTickets';
+import { verifyToken } from '../../store/userSlice';
 
 
 interface routeProp {
@@ -32,10 +34,11 @@ const Sessions: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
   const [indexDateSelected, setIndexDateSelected] = useState(1)
   const dataMovie = useRoute<routeProp>().params
-  const { setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const hoursObject = ["13:00", "15:15", "17:30"]
   const [hourSelected, setHourSelected] = useState<number>()
-  const { infoUser, setInfoUser } = useContext<authContextProps>(AuthContext)
+  const toBuyTickets = useSelector((state: StatesModel) => state.toBuyTickets)
+  const user = useSelector((state: StatesModel) => state.user)
+  const dispatch = useDispatch<AppDispatch>()
 
   const addToCar = () => {
     if (hourSelected == null) {
@@ -50,10 +53,10 @@ const Sessions: React.FC = () => {
       return
     }
 
-    const dateSession = dataDays[indexDateSelected].date
-    dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
+    const session_date = dataDays[indexDateSelected].date
+    session_date.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
 
-    if(dateSession < new Date()){
+    if(session_date < new Date()){
       showMessage({
         message: "Invalid to purchase",
         description: "Check the date",
@@ -63,12 +66,10 @@ const Sessions: React.FC = () => {
       })
       return 
     }
-
-    setTicketsToBuy((tickets) => [...tickets, {
+    dispatch(setToBuy([...toBuyTickets, {
       ...dataMovie,
-      dateSession: dateSession,
-      weekSession: dataDays[indexDateSelected].week
-    }])
+      session_date: session_date,
+    }]))
     navigation.goBack()
   }
 
@@ -85,11 +86,11 @@ const Sessions: React.FC = () => {
       return
     }
 
-    if (infoUser.token != null) {
-      const dateSession = dataDays[indexDateSelected].date
-      dateSession.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
+    if (user.token != null) {
+      const session_date = dataDays[indexDateSelected].date
+      session_date.setHours(Number(hoursObject[hourSelected].substring(0, 2)), Number(hoursObject[hourSelected].substring(3, 5)), 0)
 
-      if(dateSession < new Date()){
+      if(session_date < new Date()){
         showMessage({
           message: "Invalid to purchase",
           description: "Check the date",
@@ -103,12 +104,11 @@ const Sessions: React.FC = () => {
       const req = await authService.buyTicket([
         {
           ...dataMovie,
-          dateSession: dateSession,
-          weekSession: dataDays[indexDateSelected].week
-        }], infoUser.token)
+          session_date: session_date
+        }], user.token)
 
       if (req != null) {
-        setInfoUser(req)
+        
         showMessage({
           message: "Successful",
           description: "Ticket purchase",
@@ -116,6 +116,7 @@ const Sessions: React.FC = () => {
           icon: 'success',
           type: "success"
         })
+        await dispatch(verifyToken())
         navigation.goBack()
       }
     }

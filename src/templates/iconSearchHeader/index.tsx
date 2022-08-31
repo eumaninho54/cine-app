@@ -5,13 +5,9 @@ import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
 import Modal from "react-native-modal";
 import { SearchBar } from 'react-native-elements';
-import themes from '../../themes';
-import { AuthContext } from '../../context/authContext';
-import authService from '../../services/authService';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import moviesService from '../../services/moviesService';
-import LoadingScreen from '../loadingScreen';
 
 
 const IconSearchHeader: React.FC = () => {

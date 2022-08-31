@@ -2,7 +2,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, Animated, Image, ImageBackground, FlatList } from 'react-native';
 import { ThemeContext } from 'styled-components';
-import { AuthContext } from '../../context/authContext';
 import { dataMoviesModel } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
 import moviesService from '../../services/moviesService';

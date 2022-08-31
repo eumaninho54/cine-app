@@ -1,8 +1,9 @@
-import { dataMoviesModel } from "./moviesModel";
+import { dataMoviesModel, dataMoviesToBuy } from "./moviesModel";
 
 export interface StatesModel {
   user: userProps
   selectedMovie: dataMoviesModel
+  toBuyTickets: dataMoviesToBuy[]
 }
 
 export interface userProps {
@@ -11,7 +12,7 @@ export interface userProps {
   username: string;
   favorites: dataMoviesModel[];
   auth: boolean;
-  token: string;
+  token: string | null;
 }
 
 export interface movieProps {

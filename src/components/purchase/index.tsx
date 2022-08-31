@@ -1,11 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { FlatList, TouchableOpacity, View, Image, Text } from 'react-native';
 import { ThemeContext } from 'styled-components';
-import { AuthContext } from '../../context/authContext';
-import { TicketContext } from '../../context/ticketContext';
 import { dataMoviesModel, dataMoviesToBuy } from '../../models/moviesModel';
 import { themeModel } from '../../models/themeModel';
-import { ticketContextProps } from '../../models/ticketModel';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
 import { ButtonFinish, MainBg, MainToBuy, RemoveButton, TextBuyTicket, TitleToBuy, EmptyData, MovieBagView, ImageMovie, ViewInfo, TextInfo } from './styles';
 import { Divider } from 'react-native-elements';
@@ -13,21 +10,27 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { listMonth, monthProps } from '../../models/dateWeek';
 import authService from '../../services/authService';
 import { showMessage } from 'react-native-flash-message';
+import { useDispatch, useSelector } from 'react-redux';
+import { StatesModel } from '../../models/storeModel';
+import { AppDispatch } from '../../store';
+import { setToBuy } from '../../store/toBuyTickets';
+import { verifyToken } from '../../store/userSlice';
 
 
 const Purchase: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const { setInfoUser, infoUser, } = useContext<authContextProps>(AuthContext)
-  const { ticketsToBuy, setTicketsToBuy } = useContext<ticketContextProps>(TicketContext)
   const navigation = useNavigation<NavigationProp<any>>()
+  const toBuyTickets = useSelector((state: StatesModel) => state.toBuyTickets)
+  const user = useSelector((state: StatesModel) => state.user)
+  const dispatch = useDispatch<AppDispatch>()
 
   const purchase = async () => {
-    if (infoUser.token != null) {
-      const ticketsToBuyValid = ticketsToBuy.filter((movie) => (
-        movie.dateSession > new Date() ? true : false
+    if (user.token != null) {
+      const ticketsToBuyValid = toBuyTickets.filter((movie) => (
+        movie.session_date > new Date() ? true : false
       ))
 
-      if (ticketsToBuyValid.length != ticketsToBuy.length) {
+      if (ticketsToBuyValid.length != toBuyTickets.length) {
         showMessage({
           message: "Invalid to purchase",
           description: "Expired movies have been removed from the bag",
@@ -36,11 +39,11 @@ const Purchase: React.FC = () => {
           type: "danger",
           duration: 3000,
         })
-        setTicketsToBuy(ticketsToBuyValid)
+        dispatch(setToBuy(ticketsToBuyValid))
         return
       }
 
-      const req = await authService.buyTicket(ticketsToBuy, infoUser.token)
+      const req = await authService.buyTicket(toBuyTickets, user.token)
 
       if (req == null) {
         showMessage({
@@ -54,7 +57,6 @@ const Purchase: React.FC = () => {
         return
       }
 
-      setInfoUser(req)
       showMessage({
         message: "Successful",
         description: "Ticket purchase",
@@ -62,7 +64,8 @@ const Purchase: React.FC = () => {
         icon: 'success',
         type: "success"
       })
-      setTicketsToBuy([])
+      await dispatch(verifyToken())
+      dispatch(setToBuy(null))
       navigation.goBack()
     }
   }
@@ -72,7 +75,7 @@ const Purchase: React.FC = () => {
       <MovieBagView>
         <ImageMovie source={{ uri: item.poster_path }} />
         <RemoveButton style={{ left: 10 }} onPress={() => {
-          setTicketsToBuy(ticketsToBuy.filter((_, i) => i != index))
+          dispatch(setToBuy(toBuyTickets.filter((_, i) => i != index)))
         }}>
           <FontAwesome
             name="remove"
@@ -83,10 +86,10 @@ const Purchase: React.FC = () => {
 
         <ViewInfo>
           <TextInfo>
-            {listMonth[item.dateSession.getMonth() as keyof monthProps] + " "}
-            {item.dateSession.getDate() + " - "}
-            {`${new Date(item.dateSession).getHours()}:${String(new Date(item.dateSession).getMinutes()) == "0"
-              ? "00" : new Date(item.dateSession).getMinutes()}`}
+            {listMonth[item.session_date.getMonth() as keyof monthProps] + " "}
+            {item.session_date.getDate() + " - "}
+            {`${new Date(item.session_date).getHours()}:${String(new Date(item.session_date).getMinutes()) == "0"
+              ? "00" : new Date(item.session_date).getMinutes()}`}
           </TextInfo>
 
           <TextInfo style={{ color: themeContext.textColor }}>$10</TextInfo>
@@ -100,11 +103,11 @@ const Purchase: React.FC = () => {
 
       <TitleToBuy>To buy</TitleToBuy>
 
-      {ticketsToBuy.length > 0
+      {toBuyTickets.length > 0
         ?
         <FlatList
           horizontal
-          data={ticketsToBuy}
+          data={toBuyTickets}
           renderItem={renderItemFavorite}
           contentContainerStyle={{
             flexGrow: 1,
@@ -131,9 +134,9 @@ const Purchase: React.FC = () => {
       }
 
       <ButtonFinish
-        onPress={ticketsToBuy.length > 0 ? purchase : navigation.goBack}>
+        onPress={toBuyTickets.length > 0 ? purchase : navigation.goBack}>
         {
-          ticketsToBuy.length > 0
+          toBuyTickets.length > 0
             ?
             <>
               <TextBuyTicket>Purchase</TextBuyTicket>
@@ -143,7 +146,7 @@ const Purchase: React.FC = () => {
                 color={themeContext.white}
                 style={{ opacity: 0.6 }}
                 orientation={'vertical'} />
-              <TextBuyTicket>{ticketsToBuy.length * 10}$</TextBuyTicket>
+              <TextBuyTicket>{toBuyTickets.length * 10}$</TextBuyTicket>
             </>
             :
             <TextBuyTicket>Back</TextBuyTicket>

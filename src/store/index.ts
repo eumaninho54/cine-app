@@ -1,14 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit"
 import selectedMovieSlice from "./selectedMovieSlice"
-import bagSlice from "./movieSlice"
+import toBuySlice from "./toBuyTickets"
 import userSlice from "./userSlice"
 
 export const store = configureStore({
   reducer: {
     user: userSlice,
-    movieSelected: selectedMovieSlice,
-    moviesData: bagSlice
-  }
+    selectedMovie: selectedMovieSlice,
+    toBuyTickets: toBuySlice
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  })
 })  
 
 export type AppDispatch = typeof store.dispatch

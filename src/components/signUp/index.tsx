@@ -4,10 +4,8 @@ import banner from '../../../assets/icon2.png'
 import logo from '../../../assets/logo.png'
 import { ScrollView } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { AuthContext } from '../../context/authContext';
 import authService from '../../services/authService';
-import * as SecureStore from 'expo-secure-store';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import { themeModel } from '../../models/themeModel';
 import { ThemeContext } from 'styled-components';
 
@@ -24,7 +22,6 @@ const SignUp: React.FC = () => {
   const [focusInput, setFocusInput] = useState(false)
   const navigation = useNavigation<NavigationProp<any>>()
 
-
   const onSignUp = async () => {
     //Validation fields
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
@@ -39,7 +36,7 @@ const SignUp: React.FC = () => {
       return
     }
 
-    if(inputPassword.length < 8){
+    if (inputPassword.length < 8) {
       showMessage({
         message: "Subscribe failed",
         description: "Password must be 8 characters",
@@ -60,7 +57,7 @@ const SignUp: React.FC = () => {
         type: "success"
       })
       navigation.navigate('LoginNavigation', { screen: "SignIn" })
-    }else{
+    } else {
       showMessage({
         message: "Subscribe failed",
         description: "Email already used",

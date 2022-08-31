@@ -27,7 +27,6 @@ const SignIn: React.FC = () => {
 
   const onSignIn = async () => {
     const userInfo = (await dispatch(login({email: inputEmail, password: inputPassword}))).payload as userProps
-    console.tron.log!(user)
 
     if(userInfo.token == ""){
       setInputPassword("")
