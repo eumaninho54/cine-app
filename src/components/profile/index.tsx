@@ -17,6 +17,7 @@ const Profile: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   
   const changeUsername = () => {
+
   }
 
   const linkSection = async(linkTo: string) => {

@@ -75,12 +75,46 @@ class AuthService {
   }
 
   async getFavorites(token: string): Promise<dataMoviesModel[] | null> {
-    const req = await axios({
+    let req: dataMoviesModel[] | null = null
+
+    await axios({
       method: "get",
       url: this.baseURL + `/user/favorite`,
       headers: { "x-access-token": token }
-    }).then((res) => res.data)
-      .catch(() => null)
+    }).then((res) => {
+      req = res.data.map(
+        (
+          {
+            id,
+            original_title,
+            backdrop_path,
+            genre_ids,
+            overview,
+            popularity,
+            poster_path,
+            release_date,
+            title,
+            vote_average
+          }: dataMoviesModel
+        ) => (
+          {
+            id: id,
+            original_title: original_title,
+            backdrop_path: backdrop_path,
+            banner: backdrop_path,
+            genre_ids: genre_ids,
+            overview: overview,
+            popularity: popularity,
+            poster_path: poster_path,
+            release_date: release_date,
+            title: title,
+            vote_average: vote_average,
+            isFavorite: true
+          }
+        )
+      )
+    })
+      .catch(() => req = null)
 
     return req
   }
@@ -111,6 +145,18 @@ class AuthService {
     const req = await axios({
       method: "get",
       url: this.baseURL + `/user/ticket`,
+      headers: { "x-access-token": token }
+    }).then((res) => res.data)
+      .catch(() => null)
+
+    return req
+  }
+
+  async changeUser(token: string, userData: userProps): Promise<userProps | null> {
+    const req = await axios({
+      method: "put",
+      url: this.baseURL + `/user/change`,
+      data: userData,
       headers: { "x-access-token": token }
     }).then((res) => res.data)
       .catch(() => null)

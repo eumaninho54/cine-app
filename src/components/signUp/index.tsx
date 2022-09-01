@@ -9,10 +9,6 @@ import { showMessage } from 'react-native-flash-message';
 import { themeModel } from '../../models/themeModel';
 import { ThemeContext } from 'styled-components';
 
-interface navigateProp {
-  navigate: (route: string, { screen }: { screen?: string }) => void
-}
-
 
 const SignUp: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)

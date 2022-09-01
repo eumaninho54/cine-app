@@ -50,6 +50,7 @@ export const changeFavorite = createAsyncThunk("changeFavorite", async ({dataMov
 });
 
 
+
 const userSlice = createSlice({
   name: "userAuth",
   initialState: initialState,
@@ -73,6 +74,7 @@ const userSlice = createSlice({
     }),
 
     builder.addCase(changeFavorite.fulfilled, (state, { payload }) => {
+      console.tron.log!(payload)
       payload == null 
         ? (state.favorites = initialState.favorites) 
         : (state.favorites = payload)
