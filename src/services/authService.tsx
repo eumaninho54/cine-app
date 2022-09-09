@@ -4,7 +4,7 @@ import { dataMoviesToBuy, dataMoviesBag, dataMoviesModel } from "../models/movie
 import { userProps } from "../models/storeModel";
 
 class AuthService {
-  private baseURL = "http://192.168.1.106:3333"
+  private baseURL = "http://192.168.1.108:3333"
 
   constructor() { }
 

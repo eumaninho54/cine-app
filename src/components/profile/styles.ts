@@ -23,7 +23,19 @@ export const HeaderInfo = styled.View`
   align-items: center;
 `
 
+export const ViewHeaderProfile = styled.View`
+  flex-direction: row;
+  align-items: center;
+`
+
 export const TextHeaderProfile = styled.Text`
+  color: ${({theme}: MainLoginProps) => theme.iconTabNav};
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 700;
+`
+
+export const InputHeaderProfile = styled.TextInput`
   color: ${({theme}: MainLoginProps) => theme.iconTabNav};
   margin-left: 10px;
   font-size: 16px;

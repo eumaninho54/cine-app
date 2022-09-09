@@ -27,8 +27,6 @@ export default function Routes() {
   const dataMovie = useSelector((state: StatesModel) => state.selectedMovie)
 
   const onFavoriteMovie = async () => {
-    console.tron.log!(dataMovie)
-    
     if (user.token != null) {
       await dispatch(changeFavorite({ dataMovie, token: user.token }))
       dispatch(setMovie({ ...dataMovie, isFavorite: !dataMovie.isFavorite }))

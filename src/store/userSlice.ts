@@ -19,6 +19,7 @@ export const verifyToken = createAsyncThunk("verifyToken", async () => {
   const token = await SecureStore.getItemAsync("token");
 
   if (token == null) {
+    await SecureStore.deleteItemAsync("token");
     return null;
   }
   return await authService.verifyToken(token);
@@ -29,6 +30,7 @@ export const login = createAsyncThunk("login", async ({email, password}: {email:
   const reqSignIn = await authService.signIn(email, password)
 
   if (reqSignIn == null || reqSignIn.token == null){
+    await SecureStore.deleteItemAsync("token");
     return null
   }
   await SecureStore.setItemAsync("token", reqSignIn.token)
@@ -42,13 +44,30 @@ export const logout = createAsyncThunk("logout", async () => {
 
 
 export const changeFavorite = createAsyncThunk("changeFavorite", async ({dataMovie, token} : {dataMovie: dataMoviesModel, token: string}) => {
-  return await authService.changeFavorite(
+  const req = await authService.changeFavorite(
     {
       ...dataMovie,
       isFavorite: !dataMovie.isFavorite
     }, token)
+
+  if(req == null){
+    await SecureStore.deleteItemAsync("token");
+    return null
+  }
+
+  return req
 });
 
+export const changeUser = createAsyncThunk("changeUser", async ({userData, token}: {userData: userProps, token: string}) => {
+  const req = await authService.changeUser(token, userData)
+
+  if(req == null){
+    await SecureStore.deleteItemAsync("token");
+    return null
+  }
+
+  return req
+});
 
 
 const userSlice = createSlice({
@@ -74,14 +93,20 @@ const userSlice = createSlice({
     }),
 
     builder.addCase(changeFavorite.fulfilled, (state, { payload }) => {
-      console.tron.log!(payload)
       payload == null 
-        ? (state.favorites = initialState.favorites) 
+        ? (state = initialState) 
         : (state.favorites = payload)
       return state
       }),
 
     builder.addCase(login.fulfilled, (state, { payload }) => {
+      payload == null
+        ? state = initialState
+        : state = payload
+      return state
+    }),
+
+    builder.addCase(changeUser.fulfilled, (state, { payload }) => {
       payload == null
         ? state = initialState
         : state = payload

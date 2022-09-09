@@ -1,41 +1,44 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, Linking } from 'react-native';
+import React, { useContext, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, Linking, TextInput } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { themeModel } from '../../models/themeModel';
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons"
-import { EmoteLink, ExitText, HeaderInfo, InfoLink, InfoView, ProfileBackground, ProfileHeader, SectionLink, TextHeaderProfile, TextModifyUsername } from './styles';
+import { EmoteLink, ExitText, HeaderInfo, InfoLink, InfoView, InputHeaderProfile, ProfileBackground, ProfileHeader, SectionLink, TextHeaderProfile, TextModifyUsername, ViewHeaderProfile } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatesModel } from '../../models/storeModel';
-import { logout } from '../../store/userSlice';
+import { changeUser, logout } from '../../store/userSlice';
 import { AppDispatch } from '../../store';
 
 
 const Profile: React.FC = () => {
   const themeContext = useContext<themeModel>(ThemeContext)
-  const [modalVisible, setModalVisible] = useState(false)
+  const focusUserName = useRef<any>()
+  const [isFocusable, setIsFocusable] = useState(false)
   const user = useSelector((state: StatesModel) => state.user)
   const dispatch = useDispatch<AppDispatch>()
-  
-  const changeUsername = () => {
+  const [username, setUsername] = useState(user.username)
 
+  const changeUsername = () => {
+    if (user.token != null)
+      dispatch(changeUser({token: user.token, userData: {...user, username: username}}))
   }
 
-  const linkSection = async(linkTo: string) => {
+  const linkSection = async (linkTo: string) => {
     let supported: boolean
 
     switch (linkTo) {
       case "linkedin":
         supported = await Linking.canOpenURL("https://www.linkedin.com/in/angelo-menti-663040210/")
 
-        if(supported) await Linking.openURL("https://www.linkedin.com/in/angelo-menti-663040210/")
+        if (supported) await Linking.openURL("https://www.linkedin.com/in/angelo-menti-663040210/")
         break;
 
       case "repository":
         supported = await Linking.canOpenURL("https://github.com/eumaninho54")
 
-        if(supported) await Linking.openURL("https://github.com/eumaninho54")
+        if (supported) await Linking.openURL("https://github.com/eumaninho54")
         break;
-    
+
     }
   }
 
@@ -49,9 +52,18 @@ const Profile: React.FC = () => {
             color={themeContext.iconTabNav} />
 
           <View>
-            <TextHeaderProfile>Hello, {user.username} !</TextHeaderProfile>
+            <ViewHeaderProfile >
+              <TextHeaderProfile>Hello,</TextHeaderProfile>
+              <InputHeaderProfile
+                ref={focusUserName}
+                onChangeText={setUsername}
+                value={username}
+                onSubmitEditing={() => changeUsername()} />
+              <TextHeaderProfile>!</TextHeaderProfile>
+            </ViewHeaderProfile>
 
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
+
+            <TouchableOpacity onPress={() => { focusUserName.current.focus(); setIsFocusable(true) }}>
               <TextModifyUsername>Press to modify username</TextModifyUsername>
             </TouchableOpacity>
           </View>
@@ -91,10 +103,10 @@ const Profile: React.FC = () => {
 
           <InfoLink>See app info</InfoLink>
         </InfoView>
-          <FontAwesome
-            name="angle-right"
-            size={35}
-            color={themeContext.primaryColor} />
+        <FontAwesome
+          name="angle-right"
+          size={35}
+          color={themeContext.primaryColor} />
       </SectionLink>
     </ProfileBackground>
   )
