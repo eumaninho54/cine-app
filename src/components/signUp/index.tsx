@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { MainLogin, InputLogin, ButtonLogin, TextLogin, ImageLogin } from '../../templates/login/styles';
 import banner from '../../../assets/icon2.png'
 import logo from '../../../assets/logo.png'
@@ -16,6 +16,9 @@ const SignUp: React.FC = () => {
   const [inputPassword, setInputPassword] = useState("")
   const [inputConfirmPassword, setInputConfirmPassword] = useState("")
   const [focusInput, setFocusInput] = useState(false)
+  const refPassword = useRef<any>()
+  const refConfirmPassword = useRef<any>()
+  const refEmail = useRef<any>() 
   const navigation = useNavigation<NavigationProp<any>>()
 
   const onSignUp = async () => {
@@ -64,6 +67,14 @@ const SignUp: React.FC = () => {
     }
   }
 
+  const changeFocus = () => {
+    if(refEmail.current.isFocused() || refPassword.current.isFocused() || refConfirmPassword.current.isFocused()){
+      setFocusInput(true)
+    }else{
+      setFocusInput(false)
+    }
+  }
+
   return (
     <MainLogin behavior='padding'>
       <ScrollView
@@ -71,28 +82,31 @@ const SignUp: React.FC = () => {
         <ImageLogin show={!focusInput} source={banner} type={'banner'} />
         <ImageLogin show={focusInput} source={logo} type={'logo'} />
         <InputLogin
+          ref={refEmail}
           placeholder='Email'
           autoCapitalize='none'
           placeholderTextColor={'#808080'}
           onChangeText={(text) => setInputEmail(text)}
-          onBlur={() => setFocusInput(false)}
-          onFocus={() => setFocusInput(true)} />
+          onBlur={() => changeFocus()}
+          onFocus={() => changeFocus()} />
         <InputLogin
+          ref={refPassword}
           placeholder='Password'
           autoCapitalize='none'
           placeholderTextColor={'#808080'}
           onChangeText={(text) => setInputPassword(text)}
           secureTextEntry={true}
-          onBlur={() => setFocusInput(false)}
-          onFocus={() => setFocusInput(true)}
+          onBlur={() => changeFocus()}
+          onFocus={() => changeFocus()}
         />
         <InputLogin
+          ref={refConfirmPassword}
           placeholder='Confirm Password'
           placeholderTextColor={'#808080'}
           onChangeText={(text) => setInputConfirmPassword(text)}
           secureTextEntry={true}
-          onBlur={() => setFocusInput(false)}
-          onFocus={() => setFocusInput(true)}
+          onBlur={() => changeFocus()}
+          onFocus={() => changeFocus()}
         />
 
         <ButtonLogin onPress={onSignUp}>
